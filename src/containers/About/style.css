@@ -1,0 +1,9 @@
+.heading {
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.about-description {
+  color: rgba(255, 255, 255, 0.64);
+  font-weight: 500;
+}
