@@ -29,3 +29,11 @@ export function generateMetadataObject(seo: any) {
     },
   };
 }
+
+export const getStrapiURL = (path = "") => {
+  return `${process.env.NEXT_PUBLIC_API_URL}${path}`;
+};
+
+export const getStrapiMedia = (url: string): string => {
+  return url?.startsWith("/") ? getStrapiURL(url) : url;
+};

@@ -1,6 +1,7 @@
 import NextImage from "next/image";
 import { Props } from "./props";
-import { get } from "lodash";
+import { get, isEmpty } from "lodash";
+import { getStrapiMedia } from "morpheus-asia/utils/strapi";
 
 /**
  * ===========================
@@ -24,13 +25,13 @@ export const CustomImage: React.FC<Props> = (props) => {
         width={width || logoWidth}
         height={height || logoHeight}
         alt={logoAlt}
-        src={`${process.env.NEXT_PUBLIC_API_URL}${logoImage}`}
+        src={`${getStrapiMedia(logoImage)}`}
       />
     );
   };
 
   // =============== VIEWS
-  return renderImage();
+  return !isEmpty(logoImage) && renderImage();
 };
 
 /**

@@ -1,14 +1,14 @@
 import Navbar from "morpheus-asia/components/Navbar";
 import fetchContentType from "morpheus-asia/utils/strapi/fetchContentTypes";
-import { ReactNode } from "react";
+// import { ReactNode } from "react";
 import "../globals.css";
 
-type LocaleLayoutProps = {
-  children: ReactNode;
-  params: { locale: string };
-};
+// type LocaleLayoutProps = {
+//   children: ReactNode;
+//   params: { locale: any };
+// };
 
-export default async function LocaleLayout(args: LocaleLayoutProps) {
+export default async function LocaleLayout(args: any) {
   const { children, params } = args;
   // =============== VARIABLES
   const { locale } = await params;

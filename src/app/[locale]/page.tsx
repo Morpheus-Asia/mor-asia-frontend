@@ -12,11 +12,7 @@ import { generateMetadataObject } from "morpheus-asia/utils/strapi";
  * ===========================
  */
 
-export async function generateMetadata({
-  params,
-}: {
-  params: { locale: string; slug: string };
-}): Promise<Metadata> {
+export async function generateMetadata({ params }: any): Promise<Metadata> {
   const { locale, slug } = await params;
   const pageData = await fetchContentType(
     "pages",
@@ -35,11 +31,7 @@ export async function generateMetadata({
   return metadata;
 }
 
-export default async function HomePage({
-  params,
-}: {
-  params: { locale: string };
-}) {
+export default async function HomePage({ params }: any) {
   // =============== VARIABLES
   const { locale } = await params;
   // =============== API
