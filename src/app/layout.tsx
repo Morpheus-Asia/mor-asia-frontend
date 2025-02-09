@@ -2,6 +2,7 @@ import { Locale, i18n } from "../../i18n.config";
 import { ChakraProvider } from "morpheus-asia/containers/ChakraProvider";
 
 import { SlugProvider } from "morpheus-asia/containers/SlugProvider";
+import "./globals.css";
 
 export async function generateStaticParams() {
   return i18n.locales.map((locale) => ({ lang: locale }));

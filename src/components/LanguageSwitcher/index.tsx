@@ -1,15 +1,12 @@
-import { Box, IconButton, Text } from "@chakra-ui/react";
-import { MenuRoot, MenuTrigger, MenuContent, MenuItem } from "../ui/menu";
-import { AiOutlineGlobal } from "react-icons/ai";
-import { IoChevronDownOutline } from "react-icons/io5";
+import { Box, HStack, Text } from "@chakra-ui/react";
 import { useSlugContext } from "morpheus-asia/containers/SlugProvider";
 import { usePathname } from "next/navigation";
-import { map, upperCase } from "lodash";
+import { map } from "lodash";
 import Link from "next/link";
 import { Props } from "./props";
 
 const localeMapper: Record<string, string> = {
-  en: "English",
+  en: "EN",
   cn: "中文简体",
 };
 
@@ -53,6 +50,11 @@ export const LanguageSwitcher: React.FC<Props> = (props) => {
   // =============== RENDER FUNCTIONS
   const renderLocalization = () => {
     return map(Object.keys(localizedSlugs), (locale) => {
+      const isCurrentLocale = locale === currentLocale;
+      const background =
+        isCurrentLocale && !showBackground ? "primary.400" : "transparent";
+      const textDecoration =
+        isCurrentLocale && showBackground ? "underline" : "none";
       return (
         <Link
           href={generateLocalizedPath(locale)}
@@ -61,62 +63,33 @@ export const LanguageSwitcher: React.FC<Props> = (props) => {
             border: "none",
             outline: "none",
           }}
+          passHref
         >
-          <MenuItem
-            value={locale}
-            color={"white"}
+          <Box
+            background={background}
+            px={4}
             py={2}
+            borderRadius={8}
             cursor={"pointer"}
-            focusRing={"none"}
+            textDecoration={textDecoration}
+            style={{
+              transition: "all 0.3s ease-in-out",
+              textUnderlineOffset: "3px",
+            }}
             _hover={{
-              background: "rgba(255, 255, 255, 0.04)",
+              background: showBackground ? "transparent" : "primary.400",
+              textDecoration: showBackground ? "underline" : "none",
             }}
           >
-            {localeMapper[locale]}
-          </MenuItem>
+            <Text>{localeMapper[locale]}</Text>
+          </Box>
         </Link>
       );
     });
   };
 
-  const renderCurrentLocale = (locale: string) => {
-    if (locale === "en") return upperCase(locale);
-    if (locale === "cn") return "中文简体";
-    return "";
-  };
-
   // =============== VIEWS
-  return (
-    <Box cursor={"pointer"}>
-      <MenuRoot size={"md"}>
-        <MenuTrigger asChild>
-          <IconButton
-            background={"transparent"}
-            border={"none"}
-            focusRing={"none"}
-            px={4}
-            py={5}
-            _hover={{
-              background: "primary.400",
-            }}
-          >
-            <AiOutlineGlobal />
-            <Text color="white" fontWeight={"bold"} fontSize={"1rem"}>
-              {renderCurrentLocale(currentLocale)}
-            </Text>
-            <IoChevronDownOutline />
-          </IconButton>
-        </MenuTrigger>
-        <MenuContent
-          background={"primary.400"}
-          borderRadius={8}
-          top={!showBackground ? 0 : 12}
-        >
-          {renderLocalization()}
-        </MenuContent>
-      </MenuRoot>
-    </Box>
-  );
+  return <HStack color="white">{renderLocalization()}</HStack>;
 };
 
 /**

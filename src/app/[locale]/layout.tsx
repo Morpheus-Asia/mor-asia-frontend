@@ -1,6 +1,7 @@
 import Navbar from "morpheus-asia/components/Navbar";
 import fetchContentType from "morpheus-asia/utils/strapi/fetchContentTypes";
 import { ReactNode } from "react";
+import "../globals.css";
 
 type LocaleLayoutProps = {
   children: ReactNode;
