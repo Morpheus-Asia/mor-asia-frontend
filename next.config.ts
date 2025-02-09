@@ -12,6 +12,11 @@ const nextConfig: NextConfig = {
         hostname: "localhost",
         pathname: "**",
       },
+      {
+        protocol: "https",
+        hostname: "morpheus-asia.sgp1.digitaloceanspaces.com",
+        pathname: "**",
+      },
     ],
   },
 };
