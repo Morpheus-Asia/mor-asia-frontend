@@ -1,0 +1,11 @@
+.cta-heading {
+  font-size: 2rem;
+  font-weight: bold;
+  line-height: 1.25;
+}
+
+.cta-description {
+  font-size: 1rem;
+  font-weight: 500;
+  word-break: break-word;
+}
