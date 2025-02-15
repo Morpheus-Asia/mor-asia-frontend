@@ -12,8 +12,6 @@ import Link from "next/link";
 export const CustomImage: React.FC<Props> = (props) => {
   const { data, href, width, height, style, ...restProps } = props;
 
-  console.log("...restProps", restProps);
-
   // =============== VARIABLES
   const logoImage = get(data, "url", "");
   const logoAlt = get(data, "name", "");

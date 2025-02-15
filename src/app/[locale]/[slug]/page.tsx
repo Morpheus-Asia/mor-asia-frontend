@@ -65,8 +65,6 @@ export default async function Page({ params }: any) {
     { [locale]: "" }
   );
 
-  console.log("pageData---------", pageData);
-
   // =============== VIEWS
   return (
     <VStack pt={"4rem"}>

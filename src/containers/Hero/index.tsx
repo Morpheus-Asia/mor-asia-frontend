@@ -25,8 +25,6 @@ export const Hero: React.FC<Props> = (props) => {
   const subHeadingTextColor =
     subHeading?.color === "primary" ? "white" : "secondaryText.500";
 
-  console.log("cta--------->", ctaButtonList);
-
   // =============== RENDER FUNCTION
   const renderButton = () => {
     if (size(ctaButtonList) === 1) {

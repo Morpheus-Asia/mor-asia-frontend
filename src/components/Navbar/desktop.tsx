@@ -10,7 +10,6 @@ import CustomImage from "../Image";
 import { Renderer } from "morpheus-asia/Renderer";
 import LanguageSwitcher from "../LanguageSwitcher";
 import { get } from "lodash";
-import Button from "../Button";
 import { DesktopNavBarProps } from "./props";
 
 const MotionVStack = motion(VStack);
@@ -111,7 +110,34 @@ export const DesktopNavBar: React.FC<DesktopNavBarProps> = (props) => {
           />
         </HStack>
         <HStack gap={4}>
-          <Button>Join Now</Button>
+          <Renderer
+            items={data?.rightNavBarItems}
+            locale={locale}
+            propsMapper={(type, component) => {
+              if (type === "shared.link") {
+                return {
+                  children: component?.text,
+                  href: component?.url,
+                  target: component?.target,
+                  textProps: {
+                    fontWeight: "medium",
+                    _hover: {
+                      textDecoration: "underline",
+                      transition: "textDecoration 0.3s ease",
+                    },
+                  },
+                };
+              }
+              if (type === "shared.button") {
+                return {
+                  children: component?.text,
+                  variant: component?.variant,
+                  href: component?.url,
+                  target: component?.target,
+                };
+              }
+            }}
+          />
           <Box>
             <LanguageSwitcher
               currentLocale={locale}

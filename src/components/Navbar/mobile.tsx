@@ -103,6 +103,31 @@ export const MobileNavbar: React.FC<MobileNavBarProps> = (props) => {
                 }
               }}
             />
+            <Renderer
+              items={data?.rightNavBarItems}
+              locale={locale}
+              propsMapper={(type, component) => {
+                if (type === "shared.link") {
+                  return {
+                    children: component?.text,
+                    href: component?.url,
+                    target: component?.target,
+                    textProps: {
+                      fontWeight: "medium",
+                      fontSize: "lg",
+                    },
+                  };
+                }
+                if (type === "shared.button") {
+                  return {
+                    children: component?.text,
+                    variant: component?.variant,
+                    href: component?.url,
+                    target: component?.target,
+                  };
+                }
+              }}
+            />
           </VStack>
         </VStack>
       )}

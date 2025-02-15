@@ -23,8 +23,6 @@ export const Footer: React.FC<Props> = (props) => {
   const footerLogo = data?.footerLogo?.image;
   const footerHref = data?.footerLogo?.href;
 
-  console.log("daata in here--------->", data);
-
   // =============== RENDER FUNCTIONS
   const renderFooterIcon = () => {
     return map(data?.socialIcon, (icon) => {

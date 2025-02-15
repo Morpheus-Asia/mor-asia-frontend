@@ -16,10 +16,8 @@ import { getDictionary } from "morpheus-asia/i18n";
  */
 export const NewsletterButton: React.FC<Props> = (props) => {
   const { config, locale } = props;
-  console.log("locale", locale);
   const localeDictionary = getDictionary(locale)?.newsLetterButton;
 
-  console.log("localeDictionary", localeDictionary);
   // =============== HOOKS
   const schema = yup.object().shape({
     email: yup

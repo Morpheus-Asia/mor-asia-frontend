@@ -27,8 +27,6 @@ import { getDictionary } from "morpheus-asia/i18n";
 export const ContactForm: React.FC<Props> = (props) => {
   const { config, locale } = props;
 
-  console.log("config-------->", config);
-
   const localeDictionary = getDictionary(locale)?.contactForm;
   const schema = yup.object().shape({
     firstName: yup.string().required(localeDictionary?.firstNameRequired),
