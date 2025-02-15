@@ -1,13 +1,11 @@
 import { Box } from "@chakra-ui/react";
 
-export type SpacerProps = {};
-
 /**
  * ===========================
  * MAIN
  * ===========================
  */
-export const Spacer: React.FC<SpacerProps> = (props) => {
+export const Spacer: React.FC<any> = (props) => {
   const { height } = props;
   // =============== HOOKS
 
