@@ -1,9 +1,10 @@
 export type Props = {
-  heading: string;
-  subHeading: string;
-  ctaButton: {
-    text: string;
+  heading: {
+    title: string;
+    color: string;
   };
+  subHeading: { title: string; color: string };
+  ctaButtonList: any[];
   heroImage: {
     name: string;
     width: number;

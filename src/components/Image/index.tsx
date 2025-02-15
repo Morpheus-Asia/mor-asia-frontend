@@ -2,6 +2,7 @@ import NextImage from "next/image";
 import { Props } from "./props";
 import { get, isEmpty } from "lodash";
 import { getStrapiMedia } from "morpheus-asia/utils/strapi";
+import Link from "next/link";
 
 /**
  * ===========================
@@ -9,7 +10,7 @@ import { getStrapiMedia } from "morpheus-asia/utils/strapi";
  * ===========================
  */
 export const CustomImage: React.FC<Props> = (props) => {
-  const { data, width, height } = props;
+  const { data, href, width, height, style, ...restProps } = props;
 
   // =============== VARIABLES
   const logoImage = get(data, "url", "");
@@ -19,13 +20,30 @@ export const CustomImage: React.FC<Props> = (props) => {
 
   // =============== RENDER FUNCTIONS
   const renderImage = () => {
+    if (href) {
+      return (
+        <Link href={href}>
+          <NextImage
+            {...restProps}
+            priority={true}
+            width={width || logoWidth}
+            height={height || logoHeight}
+            alt={logoAlt}
+            src={`${getStrapiMedia(logoImage)}`}
+            style={style}
+          />
+        </Link>
+      );
+    }
     return (
       <NextImage
+        {...restProps}
         priority={true}
         width={width || logoWidth}
         height={height || logoHeight}
         alt={logoAlt}
         src={`${getStrapiMedia(logoImage)}`}
+        style={style}
       />
     );
   };

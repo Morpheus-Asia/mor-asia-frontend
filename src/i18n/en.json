@@ -1,0 +1,17 @@
+{
+  "newsLetterButton": {
+    "invalidEmail": "Invalid Email Address",
+    "emailRequired": "Email is required",
+    "wentWrong": "Something went wrong, please try again later",
+    "success": "Thank you for subscribing to our newsletter!"
+  },
+  "contactForm": {
+    "invalidEmail": "Invalid Email Address",
+    "emailRequired": "Email is required",
+    "firstNameRequired": "First Name is required",
+    "lastNameRequired": "Last Name is required",
+    "messageRequired": "Message is required",
+    "wentWrong": "Something went wrong, please try again later",
+    "success": "Thank you for contacting us!"
+  }
+}

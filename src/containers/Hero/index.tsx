@@ -1,11 +1,12 @@
 "use client";
-import { Box, Heading, Text, VStack } from "@chakra-ui/react";
-import { get } from "lodash";
+import { Box, Heading, SimpleGrid, Text, VStack } from "@chakra-ui/react";
+import { get, size } from "lodash";
 import Button from "morpheus-asia/components/Button";
 import { CustomImage } from "morpheus-asia/components/Image";
 import ContainerWrapper from "../ContainerWrapper";
 import { motion } from "framer-motion";
 import { Props } from "./props";
+import MarkdownRender from "morpheus-asia/components/Markdown";
 
 /**
  * ===========================
@@ -13,10 +14,49 @@ import { Props } from "./props";
  * ===========================
  */
 export const Hero: React.FC<Props> = (props) => {
-  const { heading, subHeading, ctaButton, heroImage } = props;
+  const { heading, subHeading, ctaButtonList, heroImage } = props;
 
   // =============== VARIABLES
   const imageData = get(heroImage, "image", {});
+  const headingText = get(heading, "text.[0].children.[0].text", "");
+  const subHeadingText = get(subHeading, "text.[0].children.[0].text", "");
+  const headingTextColor =
+    heading?.color === "primary" ? "white" : "secondaryText.500";
+  const subHeadingTextColor =
+    subHeading?.color === "primary" ? "white" : "secondaryText.500";
+
+  // =============== RENDER FUNCTION
+  const renderButton = () => {
+    if (size(ctaButtonList) === 1) {
+      return (
+        <Button
+          variant={ctaButtonList?.[0]?.variant}
+          href={ctaButtonList?.[0]?.url}
+        >
+          {ctaButtonList?.[0]?.text}
+        </Button>
+      );
+    }
+    return (
+      <SimpleGrid columns={2} gap={5}>
+        {ctaButtonList.map((ctaButton: any, index: any) => {
+          return (
+            <Button
+              key={index}
+              variant={ctaButton?.variant}
+              size={{ base: "xl", lg: "2xl" }}
+              textProps={{
+                fontSize: { base: "sm", lg: "lg" },
+              }}
+              href={ctaButton?.url}
+            >
+              {ctaButton?.text}
+            </Button>
+          );
+        })}
+      </SimpleGrid>
+    );
+  };
 
   // =============== VIEWS
   return (
@@ -31,12 +71,37 @@ export const Hero: React.FC<Props> = (props) => {
         <ContainerWrapper pt={"1rem"} pb={"2rem"}>
           <VStack justifyContent={"center"} alignItems={"center"}>
             <VStack gap={6}>
-              <Heading fontSize={"5xl"} color="white">
-                {heading}
-              </Heading>
-              <Text fontSize={"lg"} color="white" fontWeight={"bold"}>
-                {subHeading}
-              </Text>
+              <MarkdownRender
+                text={headingText}
+                components={{
+                  p: (props: any) => {
+                    return (
+                      <Heading
+                        fontSize={{ base: "4xl", md: "5xl" }}
+                        color={headingTextColor}
+                      >
+                        {props.children}
+                      </Heading>
+                    );
+                  },
+                }}
+              />
+              <MarkdownRender
+                text={subHeadingText}
+                components={{
+                  p: (props: any) => {
+                    return (
+                      <Text
+                        fontSize={"lg"}
+                        color={subHeadingTextColor}
+                        fontWeight={"bold"}
+                      >
+                        {props.children}
+                      </Text>
+                    );
+                  },
+                }}
+              />
             </VStack>
             <VStack gap={10}>
               <motion.div
@@ -52,7 +117,7 @@ export const Hero: React.FC<Props> = (props) => {
               >
                 <CustomImage data={imageData} />
               </motion.div>
-              <Button>{ctaButton?.text}</Button>
+              {renderButton()}
             </VStack>
           </VStack>
         </ContainerWrapper>

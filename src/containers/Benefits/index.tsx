@@ -55,7 +55,13 @@ export const Benefits: React.FC<Props> = (props) => {
   // =============== VIEWS
   return (
     <ContainerWrapper pt={10} pb={20}>
-      <Grid templateColumns={{ lg: `repeat(${itemLength}, 1fr)` }} gap={12}>
+      <Grid
+        templateColumns={{
+          md: `repeat(2, 1fr)`,
+          lg: `repeat(${itemLength}, 1fr)`,
+        }}
+        gap={12}
+      >
         {renderBenefitsItem()}
       </Grid>
     </ContainerWrapper>

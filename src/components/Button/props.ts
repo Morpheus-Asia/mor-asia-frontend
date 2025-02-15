@@ -9,4 +9,5 @@ export type Props = ButtonProps & {
   textProps?: TextProps;
   pressableButton?: boolean;
   linkStyleProps?: Record<string, any>;
+  wrappedText?: boolean;
 };

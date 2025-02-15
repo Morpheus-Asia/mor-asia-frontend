@@ -36,12 +36,13 @@ export const MobileNavbar: React.FC<MobileNavBarProps> = (props) => {
 
   // =============== VARIABLES
   const logo = get(data, "navBarLogo.image", {});
+  const href = get(data, "navBarLogo.href", "");
 
   // =============== VIEWS
   return (
     <>
       <HStack
-        hideFrom={"md"}
+        hideFrom={"lg"}
         width="100%"
         bg={showBackground ? "primary.400" : "transparent"}
         borderRadius={8}
@@ -50,7 +51,7 @@ export const MobileNavbar: React.FC<MobileNavBarProps> = (props) => {
         px={2}
       >
         <HStack justifyContent={"space-between"} width="100%">
-          <CustomImage data={logo} width={60} height={60} />
+          <CustomImage data={logo} width={60} height={60} href={href} />
           <HStack>
             <LanguageSwitcher
               currentLocale={locale}
@@ -79,6 +80,31 @@ export const MobileNavbar: React.FC<MobileNavBarProps> = (props) => {
           <VStack gap={3} alignItems={"flex-start"} width="100%">
             <Renderer
               items={data?.leftNavBarItems}
+              locale={locale}
+              propsMapper={(type, component) => {
+                if (type === "shared.link") {
+                  return {
+                    children: component?.text,
+                    href: component?.url,
+                    target: component?.target,
+                    textProps: {
+                      fontWeight: "medium",
+                      fontSize: "lg",
+                    },
+                  };
+                }
+                if (type === "shared.button") {
+                  return {
+                    children: component?.text,
+                    variant: component?.variant,
+                    href: component?.url,
+                    target: component?.target,
+                  };
+                }
+              }}
+            />
+            <Renderer
+              items={data?.rightNavBarItems}
               locale={locale}
               propsMapper={(type, component) => {
                 if (type === "shared.link") {
