@@ -29,9 +29,26 @@ const componentMapper: { [key: string]: any } = {
     import("../containers/Metrics").then((mod) => mod.default)
   ),
 
+  "sections.get-started": dynamic(() =>
+    import("../containers/JoinUs").then((mod) => mod.default)
+  ),
+  "sections.social-community": dynamic(() =>
+    import("../containers/JoinUs").then((mod) => mod.default)
+  ),
+
+  "sections.stake-with-us": dynamic(() =>
+    import("../containers/JoinUs").then((mod) => mod.default)
+  ),
+  "sections.contact-us": dynamic(() =>
+    import("../containers/JoinUs").then((mod) => mod.default)
+  ),
+
   // =============== COMPONENTS
   "component.divider": dynamic(() =>
     import("../components/Divider").then((mod) => mod.default)
+  ),
+  "component.spacer": dynamic(() =>
+    import("../components/Spacer").then((mod) => mod.default)
   ),
 };
 
@@ -52,7 +69,7 @@ export const Renderer = (props: {
       }
       return (
         <Component
-          key={component.id}
+          key={`${component.__component}-${component.id}`}
           {...component}
           {...propsMapper?.(type, component)}
           locale={locale}

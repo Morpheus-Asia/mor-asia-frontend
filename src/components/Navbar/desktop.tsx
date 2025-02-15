@@ -42,12 +42,13 @@ export const DesktopNavBar: React.FC<DesktopNavBarProps> = (props) => {
 
   // =============== VARIABLES
   const logo = get(data, "navBarLogo.image", {});
+  const href = get(data, "navBarLogo.href", "");
 
   // =============== VIEWS
   return (
     <MotionVStack
       display="flex"
-      hideBelow={"md"}
+      hideBelow={"lg"}
       position="relative"
       justifyContent="space-between"
       rounded="md"
@@ -79,7 +80,7 @@ export const DesktopNavBar: React.FC<DesktopNavBarProps> = (props) => {
       </AnimatePresence>
       <HStack justifyContent={"space-between"} width="100%" zIndex={1}>
         <HStack gapX={6}>
-          <CustomImage data={logo} width={70} height={70} />
+          <CustomImage data={logo} width={70} height={70} href={href} />
           <Renderer
             items={data?.leftNavBarItems}
             locale={locale}

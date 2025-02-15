@@ -1,0 +1,17 @@
+{
+  "newsLetterButton": {
+    "invalidEmail": "无效的电子邮件地址",
+    "emailRequired": "电子邮件为必填项",
+    "wentWrong": "出现错误，请稍后再试",
+    "success": "感谢您订阅我们的通讯！"
+  },
+  "contactForm": {
+    "invalidEmail": "无效的电子邮件地址",
+    "emailRequired": "电子邮件为必填项",
+    "firstNameRequired": "名字为必填项",
+    "lastNameRequired": "姓氏为必填项",
+    "messageRequired": "留言为必填项",
+    "wentWrong": "出现错误，请稍后再试",
+    "success": "感谢您联系我们！"
+  }
+}

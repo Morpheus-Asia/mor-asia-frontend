@@ -36,12 +36,13 @@ export const MobileNavbar: React.FC<MobileNavBarProps> = (props) => {
 
   // =============== VARIABLES
   const logo = get(data, "navBarLogo.image", {});
+  const href = get(data, "navBarLogo.href", "");
 
   // =============== VIEWS
   return (
     <>
       <HStack
-        hideFrom={"md"}
+        hideFrom={"lg"}
         width="100%"
         bg={showBackground ? "primary.400" : "transparent"}
         borderRadius={8}
@@ -50,7 +51,7 @@ export const MobileNavbar: React.FC<MobileNavBarProps> = (props) => {
         px={2}
       >
         <HStack justifyContent={"space-between"} width="100%">
-          <CustomImage data={logo} width={60} height={60} />
+          <CustomImage data={logo} width={60} height={60} href={href} />
           <HStack>
             <LanguageSwitcher
               currentLocale={locale}

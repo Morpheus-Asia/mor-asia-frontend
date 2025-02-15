@@ -5,6 +5,7 @@ import { Renderer } from "morpheus-asia/Renderer";
 import ClientSlugHandler from "morpheus-asia/components/ClientSlugHandler";
 import { Metadata } from "next";
 import { generateMetadataObject } from "morpheus-asia/utils/strapi";
+import { ReCaptchaProvider } from "next-recaptcha-v3";
 
 /**
  * ===========================
@@ -31,18 +32,18 @@ export async function generateMetadata({ params }: any): Promise<Metadata> {
   return metadata;
 }
 
-export default async function HomePage({ params }: any) {
+export default async function Page({ params }: any) {
   // =============== VARIABLES
-  const { locale } = await params;
+  const { locale, slug } = await params;
   // =============== API
   const pageData = await fetchContentType(
     "pages",
     {
       filters: {
-        slug: "homepage",
+        slug,
         locale,
       },
-      pLevel: 5,
+      pLevel: 10,
     },
     true
   );
@@ -69,8 +70,12 @@ export default async function HomePage({ params }: any) {
   // =============== VIEWS
   return (
     <VStack pt={"4rem"}>
-      <ClientSlugHandler localizedSlugs={localizedSlugs} />
-      <Renderer items={sections} locale={locale} />
+      <ReCaptchaProvider
+        reCaptchaKey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY}
+      >
+        <ClientSlugHandler localizedSlugs={localizedSlugs} />
+        <Renderer items={sections} locale={locale} />
+      </ReCaptchaProvider>
     </VStack>
   );
 }

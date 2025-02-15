@@ -29,6 +29,11 @@ const config = defineConfig({
             value: "#012C33",
           },
         },
+        secondaryText: {
+          500: {
+            value: "rgba(255, 255, 255, 0.64)",
+          },
+        },
       },
     },
   },
