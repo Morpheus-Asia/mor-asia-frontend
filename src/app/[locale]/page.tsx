@@ -42,7 +42,7 @@ export default async function HomePage({ params }: any) {
         slug: "homepage",
         locale,
       },
-      pLevel: 5,
+      pLevel: 4,
     },
     true
   );

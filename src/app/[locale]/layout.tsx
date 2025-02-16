@@ -2,7 +2,7 @@ import Navbar from "morpheus-asia/components/Navbar";
 import fetchContentType from "morpheus-asia/utils/strapi/fetchContentTypes";
 // import { ReactNode } from "react";
 import "../globals.css";
-import Footer from "morpheus-asia/components/Footer";
+import Footer from "morpheus-asia/containers";
 
 // type LocaleLayoutProps = {
 //   children: ReactNode;
@@ -17,7 +17,7 @@ export default async function LocaleLayout(args: any) {
   // =============== API
   const pageData = await fetchContentType(
     "global",
-    { filters: { locale }, pLevel: 10 },
+    { filters: { locale }, pLevel: 5 },
     true
   );
 

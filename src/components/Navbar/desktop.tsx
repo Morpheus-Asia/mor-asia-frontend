@@ -41,7 +41,7 @@ export const DesktopNavBar: React.FC<DesktopNavBarProps> = (props) => {
 
   // =============== VARIABLES
   const logo = get(data, "navBarLogo.image", {});
-  const href = get(data, "navBarLogo.href", "");
+  const href = get(data, "navBarLogo.href.url", "");
 
   // =============== VIEWS
   return (
@@ -104,6 +104,7 @@ export const DesktopNavBar: React.FC<DesktopNavBarProps> = (props) => {
                   variant: component?.variant,
                   href: component?.url,
                   target: component?.target,
+                  pressableButton: true,
                 };
               }
             }}
@@ -134,6 +135,7 @@ export const DesktopNavBar: React.FC<DesktopNavBarProps> = (props) => {
                   variant: component?.variant,
                   href: component?.url,
                   target: component?.target,
+                  pressableButton: true,
                 };
               }
             }}

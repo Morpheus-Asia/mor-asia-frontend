@@ -20,6 +20,9 @@ type StrapiImage = {
     height: number;
     url: string;
   };
+  href: {
+    url: string;
+  };
 };
 
 export type NavbarData = {

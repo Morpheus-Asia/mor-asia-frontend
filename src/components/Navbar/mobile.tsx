@@ -36,7 +36,7 @@ export const MobileNavbar: React.FC<MobileNavBarProps> = (props) => {
 
   // =============== VARIABLES
   const logo = get(data, "navBarLogo.image", {});
-  const href = get(data, "navBarLogo.href", "");
+  const href = get(data, "navBarLogo.href.url", "");
 
   // =============== VIEWS
   return (
@@ -99,6 +99,7 @@ export const MobileNavbar: React.FC<MobileNavBarProps> = (props) => {
                     variant: component?.variant,
                     href: component?.url,
                     target: component?.target,
+                    pressableButton: true,
                   };
                 }
               }}
@@ -124,6 +125,7 @@ export const MobileNavbar: React.FC<MobileNavBarProps> = (props) => {
                     variant: component?.variant,
                     href: component?.url,
                     target: component?.target,
+                    pressableButton: true,
                   };
                 }
               }}
