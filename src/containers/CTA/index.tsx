@@ -57,7 +57,7 @@ export const CTA: React.FC<Props> = (props) => {
 
   // =============== VIEWS
   return (
-    <ContainerWrapper>
+    <ContainerWrapper overflow={"hidden"}>
       <Grid
         templateColumns={{ lg: `repeat(12, 1fr)` }}
         color="white"

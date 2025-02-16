@@ -4,7 +4,7 @@ import MarkdownRender from "morpheus-asia/components/Markdown";
 import "./style.css";
 import ContainerWrapper from "../ContainerWrapper";
 import { LuArrowRight } from "react-icons/lu";
-import { motion, useInView } from "framer-motion";
+import { motion } from "framer-motion";
 import { Props } from "./props";
 import { useRef } from "react";
 
@@ -20,7 +20,6 @@ export const AboutSection: React.FC<Props> = (props) => {
   const itemLength = size(about);
   const colSpan = 12 / itemLength;
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: true });
 
   // =============== RENDER FUNCTIONS
   const renderAbout = () => {
@@ -61,7 +60,7 @@ export const AboutSection: React.FC<Props> = (props) => {
           <motion.div
             ref={ref}
             initial={{ opacity: 0, y: 50 }}
-            animate={isInView ? { opacity: 1, y: 0 } : {}}
+            animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4, ease: "easeOut", delay: index * 0.2 }}
           >
             <VStack alignItems={"flex-start"} color="white" gap={4}>
