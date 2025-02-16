@@ -4,11 +4,13 @@ import { useEffect, useState } from "react";
 import { VStack } from "@chakra-ui/react";
 import { get } from "lodash";
 import fetchContentType from "morpheus-asia/utils/strapi/fetchContentTypes";
-import ClientSlugHandler from "../ClientSlugHandler";
+import ClientSlugHandler from "morpheus-asia/components/ClientSlugHandler";
 import { Renderer } from "morpheus-asia/Renderer";
+import FullPageLoader from "morpheus-asia/components/FullPageLoader";
+import { ReCaptchaProvider } from "next-recaptcha-v3";
 
-export const TestLoading: React.FC<any> = (props) => {
-  const { locale } = props;
+export const PageData: React.FC<any> = (props) => {
+  const { locale, slug } = props;
   // =============== HOOKS
   const [loading, setLoading] = useState(true);
   const [pageData, setPageData] = useState<any>(null);
@@ -22,10 +24,10 @@ export const TestLoading: React.FC<any> = (props) => {
           "pages",
           {
             filters: {
-              slug: "homepage",
+              slug,
               locale,
             },
-            pLevel: 5,
+            pLevel: 6,
           },
           true
         );
@@ -38,7 +40,7 @@ export const TestLoading: React.FC<any> = (props) => {
     };
 
     fetchData();
-  }, []);
+  }, [locale, slug]);
 
   // =============== VARIABLES
   const sections = get(pageData, "sections", []);
@@ -55,12 +57,16 @@ export const TestLoading: React.FC<any> = (props) => {
   );
 
   // =============== RENDER FUNCTIONS
-  if (loading) return null;
+  if (loading) return <FullPageLoader />;
 
   return (
     <VStack pt={"4rem"}>
-      <ClientSlugHandler localizedSlugs={localizedSlugs} />
-      <Renderer items={sections} locale={locale} />
+      <ReCaptchaProvider
+        reCaptchaKey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY}
+      >
+        <ClientSlugHandler localizedSlugs={localizedSlugs} />
+        <Renderer items={sections} locale={locale} />
+      </ReCaptchaProvider>
     </VStack>
   );
 };

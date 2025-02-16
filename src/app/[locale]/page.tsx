@@ -1,11 +1,10 @@
-// import { VStack } from "@chakra-ui/react";
+import { VStack } from "@chakra-ui/react";
 import fetchContentType from "morpheus-asia/utils/strapi/fetchContentTypes";
-// import { get } from "lodash";
-// import { Renderer } from "morpheus-asia/Renderer";
-// import ClientSlugHandler from "morpheus-asia/components/ClientSlugHandler";
+import { get } from "lodash";
+import { Renderer } from "morpheus-asia/Renderer";
+import ClientSlugHandler from "morpheus-asia/components/ClientSlugHandler";
 import { Metadata } from "next";
 import { generateMetadataObject } from "morpheus-asia/utils/strapi";
-import { TestLoading } from "morpheus-asia/components/Test";
 
 /**
  * ===========================
@@ -15,7 +14,6 @@ import { TestLoading } from "morpheus-asia/components/Test";
 
 export async function generateMetadata({ params }: any): Promise<Metadata> {
   const { locale, slug } = await params;
-
   const pageData = await fetchContentType(
     "pages",
     {
@@ -37,36 +35,40 @@ export default async function HomePage({ params }: any) {
   // =============== VARIABLES
   const { locale } = await params;
   // =============== API
-  // const pageData = await fetchContentType(
-  //   "pages",
-  //   {
-  //     filters: {
-  //       slug: "homepage",
-  //       locale,
-  //     },
-  //     pLevel: 5,
-  //   },
-  //   true
-  // );
+  const pageData = await fetchContentType(
+    "pages",
+    {
+      filters: {
+        slug: "homepage",
+        locale,
+      },
+      pLevel: 4,
+    },
+    true
+  );
 
-  // console.log("page--------->", pageData);
-  // // =============== VARIABLES
-  // const sections = get(pageData, "sections", []);
+  // =============== VARIABLES
+  const sections = get(pageData, "sections", []);
 
-  // // =============== UTILS
-  // // get localized slugs from strapi
-  // const localizedSlugs = pageData?.localizations?.reduce(
-  //   (acc: Record<string, string>, localization: any) => {
-  //     if (localization.locale === "zh-Hans") {
-  //       acc["cn"] = "";
-  //       return acc;
-  //     }
-  //     acc[localization.locale] = "";
-  //     return acc;
-  //   },
-  //   { [locale]: "" }
-  // );
+  // =============== UTILS
+  // get localized slugs from strapi
+  const localizedSlugs = pageData?.localizations?.reduce(
+    (acc: Record<string, string>, localization: any) => {
+      if (localization.locale === "zh-Hans") {
+        acc["cn"] = "";
+        return acc;
+      }
+      acc[localization.locale] = "";
+      return acc;
+    },
+    { [locale]: "" }
+  );
 
   // =============== VIEWS
-  return <TestLoading locale={locale} />;
+  return (
+    <VStack pt={"4rem"}>
+      <ClientSlugHandler localizedSlugs={localizedSlugs} />
+      <Renderer items={sections} locale={locale} />
+    </VStack>
+  );
 }

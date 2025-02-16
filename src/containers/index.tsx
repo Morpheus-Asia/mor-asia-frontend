@@ -1,7 +1,7 @@
 import { Box, HStack, Text } from "@chakra-ui/react";
 import ContainerWrapper from "morpheus-asia/containers/ContainerWrapper";
-import { Props } from "./props";
-import CustomImage from "../Image";
+import { Props } from "../components/Footer/props";
+import CustomImage from "../components/Image";
 import { map } from "lodash";
 
 /**
