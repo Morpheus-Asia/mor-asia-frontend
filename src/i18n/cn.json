@@ -12,6 +12,10 @@
     "lastNameRequired": "姓氏为必填项",
     "messageRequired": "留言为必填项",
     "wentWrong": "出现错误，请稍后再试",
-    "success": "感谢您联系我们！"
+    "success": "感谢您联系我们！",
+    "firstNamePlaceholder": "志明",
+    "lastNamePlaceholder": "刘",
+    "emailPlaceholder": "me@example.com",
+    "messagePlaceholder": "输入您的留言..."
   }
 }

@@ -130,7 +130,7 @@ export const ContactForm: React.FC<Props> = (props) => {
                 {config?.firstNameLabel}
               </Field.Label>
               <Input
-                placeholder="John"
+                placeholder={localeDictionary?.firstNamePlaceholder || "John"}
                 {...register("firstName")}
                 borderColor="primary.600"
                 _placeholder={{ color: "secondaryText.500" }}
@@ -147,7 +147,7 @@ export const ContactForm: React.FC<Props> = (props) => {
                 {config?.lastNameLabel}
               </Field.Label>
               <Input
-                placeholder="Doe"
+                placeholder={localeDictionary?.lastNamePlaceholder || "Doe"}
                 {...register("lastName")}
                 borderColor="primary.600"
                 _placeholder={{ color: "secondaryText.500" }}
@@ -166,7 +166,9 @@ export const ContactForm: React.FC<Props> = (props) => {
                 {config?.emailLabel}
               </Field.Label>
               <Input
-                placeholder="me@example.com"
+                placeholder={
+                  localeDictionary?.emailPlaceholder || "me@example.com"
+                }
                 {...register("email")}
                 borderColor="primary.600"
                 _placeholder={{ color: "secondaryText.500" }}
@@ -183,7 +185,9 @@ export const ContactForm: React.FC<Props> = (props) => {
                 {config?.messageLabel}
               </Field.Label>
               <Textarea
-                placeholder="Type your message..."
+                placeholder={
+                  localeDictionary?.messagePlaceholder || "Your message here"
+                }
                 {...register("message")}
                 borderColor="primary.600"
                 _placeholder={{ color: "secondaryText.500" }}

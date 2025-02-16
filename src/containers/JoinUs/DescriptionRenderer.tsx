@@ -123,7 +123,7 @@ export const DescriptionRenderer: React.FC<any> = (props) => {
             mt={{ base: 2, md: 3 }}
             w="full"
             flexDir={{ base: "column", md: "row" }}
-            gap={{ base: 4, md: 0 }}
+            gap={4}
             alignItems={"flex-start"}
           >
             {buttonListConfiguration &&
