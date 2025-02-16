@@ -3,8 +3,8 @@ import { Heading, HStack, Icon, Text, VStack } from "@chakra-ui/react";
 import ContainerWrapper from "../ContainerWrapper";
 import DescriptionRenderer from "./DescriptionRenderer";
 import { FaHashtag } from "react-icons/fa6";
-import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import { usePathname, useRouter } from "next/navigation";
 
 /**
  * ===========================
@@ -15,6 +15,7 @@ export const JoinUsSection: React.FC<any> = (props) => {
   const { locale, title, description, body, href } = props;
   // =============== HOOKS
   const router = useRouter();
+  const pathname = usePathname();
 
   // =============== STATE
   const [isHovered, setIsHovered] = useState(false);
@@ -26,6 +27,15 @@ export const JoinUsSection: React.FC<any> = (props) => {
     router.push(`#${href ?? ""}`, { scroll: true }); // Updates the URL with hash
   };
 
+  // =============== EFFECTS
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const hash = window.location.hash.substring(1);
+      if (hash === href) {
+        document.getElementById(href)?.scrollIntoView({ behavior: "smooth" });
+      }
+    }
+  }, [pathname, href]);
   // =============== VARIABLES
 
   // =============== RENDER FUNCTIONS

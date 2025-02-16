@@ -41,7 +41,6 @@ export const DesktopNavBar: React.FC<DesktopNavBarProps> = (props) => {
 
   // =============== VARIABLES
   const logo = get(data, "navBarLogo.image", {});
-  const href = get(data, "navBarLogo.href.url", "");
 
   // =============== VIEWS
   return (
@@ -79,7 +78,12 @@ export const DesktopNavBar: React.FC<DesktopNavBarProps> = (props) => {
       </AnimatePresence>
       <HStack justifyContent={"space-between"} width="100%" zIndex={1}>
         <HStack gapX={6}>
-          <CustomImage data={logo} width={70} height={70} href={href} />
+          <CustomImage
+            data={logo}
+            width={70}
+            height={70}
+            href={`/${locale || "en"}`}
+          />
           <Renderer
             items={data?.leftNavBarItems}
             locale={locale}
@@ -87,7 +91,7 @@ export const DesktopNavBar: React.FC<DesktopNavBarProps> = (props) => {
               if (type === "shared.link") {
                 return {
                   children: component?.text,
-                  href: component?.url,
+                  href: `${locale}/${component?.url}`,
                   target: component?.target,
                   textProps: {
                     fontWeight: "medium",
@@ -102,7 +106,7 @@ export const DesktopNavBar: React.FC<DesktopNavBarProps> = (props) => {
                 return {
                   children: component?.text,
                   variant: component?.variant,
-                  href: component?.url,
+                  href: `${locale}/${component?.url}`,
                   target: component?.target,
                   pressableButton: true,
                 };
@@ -118,7 +122,7 @@ export const DesktopNavBar: React.FC<DesktopNavBarProps> = (props) => {
               if (type === "shared.link") {
                 return {
                   children: component?.text,
-                  href: component?.url,
+                  href: `${locale}/${component?.url}`,
                   target: component?.target,
                   textProps: {
                     fontWeight: "medium",
@@ -133,7 +137,7 @@ export const DesktopNavBar: React.FC<DesktopNavBarProps> = (props) => {
                 return {
                   children: component?.text,
                   variant: component?.variant,
-                  href: component?.url,
+                  href: `${locale}/${component?.url}`,
                   target: component?.target,
                   pressableButton: true,
                 };

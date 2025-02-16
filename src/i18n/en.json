@@ -12,6 +12,10 @@
     "lastNameRequired": "Last Name is required",
     "messageRequired": "Message is required",
     "wentWrong": "Something went wrong, please try again later",
-    "success": "Thank you for contacting us!"
+    "success": "Thank you for contacting us!",
+    "firstNamePlaceholder": "John",
+    "lastNamePlaceholder": "Doe",
+    "emailPlaceholder": "me@example.com",
+    "messagePlaceholder": "Type your message..."
   }
 }

@@ -32,6 +32,7 @@ export const Hero: React.FC<Props> = (props) => {
         <Button
           variant={ctaButtonList?.[0]?.variant}
           href={ctaButtonList?.[0]?.url}
+          pressableButton
         >
           {ctaButtonList?.[0]?.text}
         </Button>
@@ -48,7 +49,9 @@ export const Hero: React.FC<Props> = (props) => {
               textProps={{
                 fontSize: { base: "sm", lg: "lg" },
               }}
+              pressableButton
               href={ctaButton?.url}
+              width={"full"}
             >
               {ctaButton?.text}
             </Button>

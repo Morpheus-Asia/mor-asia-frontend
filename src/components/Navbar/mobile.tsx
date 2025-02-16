@@ -36,7 +36,6 @@ export const MobileNavbar: React.FC<MobileNavBarProps> = (props) => {
 
   // =============== VARIABLES
   const logo = get(data, "navBarLogo.image", {});
-  const href = get(data, "navBarLogo.href.url", "");
 
   // =============== VIEWS
   return (
@@ -51,7 +50,12 @@ export const MobileNavbar: React.FC<MobileNavBarProps> = (props) => {
         px={2}
       >
         <HStack justifyContent={"space-between"} width="100%">
-          <CustomImage data={logo} width={60} height={60} href={href} />
+          <CustomImage
+            data={logo}
+            width={60}
+            height={60}
+            href={`/${locale || "en"}`}
+          />
           <HStack>
             <LanguageSwitcher
               currentLocale={locale}
@@ -85,7 +89,7 @@ export const MobileNavbar: React.FC<MobileNavBarProps> = (props) => {
                 if (type === "shared.link") {
                   return {
                     children: component?.text,
-                    href: component?.url,
+                    href: `${locale}/${component?.url}`,
                     target: component?.target,
                     textProps: {
                       fontWeight: "medium",
@@ -97,7 +101,7 @@ export const MobileNavbar: React.FC<MobileNavBarProps> = (props) => {
                   return {
                     children: component?.text,
                     variant: component?.variant,
-                    href: component?.url,
+                    href: `${locale}/${component?.url}`,
                     target: component?.target,
                     pressableButton: true,
                   };
@@ -111,7 +115,7 @@ export const MobileNavbar: React.FC<MobileNavBarProps> = (props) => {
                 if (type === "shared.link") {
                   return {
                     children: component?.text,
-                    href: component?.url,
+                    href: `${locale}/${component?.url}`,
                     target: component?.target,
                     textProps: {
                       fontWeight: "medium",
@@ -123,7 +127,7 @@ export const MobileNavbar: React.FC<MobileNavBarProps> = (props) => {
                   return {
                     children: component?.text,
                     variant: component?.variant,
-                    href: component?.url,
+                    href: `${locale}/${component?.url}`,
                     target: component?.target,
                     pressableButton: true,
                   };
