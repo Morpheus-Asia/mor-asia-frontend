@@ -1,4 +1,4 @@
-import { draftMode } from "next/headers";
+// import { draftMode } from "next/headers";
 import qs from "qs";
 import { sanitizeLocal } from ".";
 /**
@@ -28,31 +28,79 @@ export function spreadStrapiData(data: StrapiResponse): StrapiData | null {
   return null;
 }
 
+// export default async function fetchContentType(
+//   contentType: string,
+//   params: Record<string, any> = {},
+//   spreadData?: boolean
+// ): Promise<any> {
+//   const { isEnabled } = await draftMode();
+
+//   try {
+//     const locale = params?.filters?.locale;
+//     if (locale) {
+//       params.filters.locale = sanitizeLocal(locale as string);
+//     }
+//     const queryParams = { ...params };
+
+//     if (isEnabled) {
+//       queryParams.status = "draft";
+//     }
+
+//     // Construct the full URL for the API request
+//     const url = new URL(`api/${contentType}`, process.env.NEXT_PUBLIC_API_URL);
+
+//     console.log(`url------> ${url.href}?${qs.stringify(queryParams)}`);
+//     // Perform the fetch request with the provided query parameters
+//     const response = await fetch(`${url.href}?${qs.stringify(queryParams)}`, {
+//       method: "GET",
+//       cache: "no-store",
+//     });
+
+//     if (!response.ok) {
+//       throw new Error(
+//         `Failed to fetch data from Strapi (url=${url.toString()}, status=${
+//           response.status
+//         })`
+//       );
+//     }
+//     const jsonData: StrapiResponse = await response.json();
+//     return spreadData ? spreadStrapiData(jsonData) : jsonData;
+//   } catch (error) {
+//     // Log any errors that occur during the fetch process
+//     console.error("FetchContentTypeError", error);
+//   }
+// }
+
+/**
+ * Fetch data for a given content type from the API.
+ * Adjusted for client-side usage.
+ */
 export default async function fetchContentType(
   contentType: string,
   params: Record<string, any> = {},
   spreadData?: boolean
 ): Promise<any> {
-  const { isEnabled } = await draftMode();
-
   try {
+    // Remove any server-only draft mode logic since we're on the client
     const locale = params?.filters?.locale;
     if (locale) {
       params.filters.locale = sanitizeLocal(locale as string);
     }
     const queryParams = { ...params };
 
-    if (isEnabled) {
-      queryParams.status = "draft";
-    }
+    // If you need to modify queryParams based on some client-side logic,
+    // do it here. For example, you might want to set a status or other flags:
+    // queryParams.status = "published"; // or any other logic
 
-    // Construct the full URL for the API request
+    // Construct the full URL for the API request using the NEXT_PUBLIC_API_URL env variable.
     const url = new URL(`api/${contentType}`, process.env.NEXT_PUBLIC_API_URL);
+    const queryString = qs.stringify(queryParams);
+    console.log(`url------> ${url.href}?${queryString}`);
 
     // Perform the fetch request with the provided query parameters
-    const response = await fetch(`${url.href}?${qs.stringify(queryParams)}`, {
+    const response = await fetch(`${url.href}?${queryString}`, {
       method: "GET",
-      next: { revalidate: 120 },
+      cache: "no-store",
     });
 
     if (!response.ok) {
@@ -62,10 +110,11 @@ export default async function fetchContentType(
         })`
       );
     }
-    const jsonData: StrapiResponse = await response.json();
+
+    const jsonData = await response.json();
     return spreadData ? spreadStrapiData(jsonData) : jsonData;
   } catch (error) {
-    // Log any errors that occur during the fetch process
     console.error("FetchContentTypeError", error);
+    throw error;
   }
 }

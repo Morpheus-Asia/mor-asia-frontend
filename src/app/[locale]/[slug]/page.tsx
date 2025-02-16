@@ -36,6 +36,8 @@ export default async function Page({ params }: any) {
   // =============== VARIABLES
   const { locale, slug } = await params;
   // =============== API
+  const start = Date.now(); // Start time
+
   const pageData = await fetchContentType(
     "pages",
     {
@@ -47,6 +49,10 @@ export default async function Page({ params }: any) {
     },
     true
   );
+  const end = Date.now(); // End time
+  console.log(`generateMetadata: fetchContentType took ${end - start}ms`);
+
+  console.log("page in join--------->", pageData);
 
   // =============== VARIABLES
   const sections = get(pageData, "sections", []);
