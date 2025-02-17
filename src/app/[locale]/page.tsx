@@ -13,21 +13,21 @@ import { generateMetadataObject } from "morpheus-asia/utils/strapi";
  */
 
 export async function generateMetadata({ params }: any): Promise<Metadata> {
-  const { locale, slug } = await params;
+  const { locale } = await params;
   const pageData = await fetchContentType(
     "pages",
     {
       filters: {
-        slug: slug,
-        locale: locale,
+        slug: "homepage",
+        locale,
       },
-      populate: "seo.metaImage",
+      pLevel: 4,
     },
     true
   );
 
   const seo = pageData?.seo;
-  const metadata = generateMetadataObject(seo);
+  const metadata = generateMetadataObject(seo, locale);
   return metadata;
 }
 

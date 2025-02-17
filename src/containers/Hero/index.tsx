@@ -73,14 +73,14 @@ export const Hero: React.FC<Props> = (props) => {
       <div>
         <ContainerWrapper pt={"1rem"} pb={"2rem"}>
           <VStack justifyContent={"center"} alignItems={"center"}>
-            <VStack gap={6}>
+            <VStack gap={6} textAlign={"center"}>
               <MarkdownRender
                 text={headingText}
                 components={{
                   p: (props: any) => {
                     return (
                       <Heading
-                        fontSize={{ base: "4xl", md: "5xl" }}
+                        fontSize={{ base: "3xl", md: "5xl" }}
                         color={headingTextColor}
                       >
                         {props.children}
