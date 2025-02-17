@@ -15,16 +15,16 @@ export async function generateMetadata({ params }: any): Promise<Metadata> {
     "pages",
     {
       filters: {
-        slug: slug,
-        locale: locale,
+        slug,
+        locale,
       },
-      populate: "seo.metaImage",
+      pLevel: 4,
     },
     true
   );
 
   const seo = pageData?.seo;
-  const metadata = generateMetadataObject(seo);
+  const metadata = generateMetadataObject(seo, locale);
   return metadata;
 }
 

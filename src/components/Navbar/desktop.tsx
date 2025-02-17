@@ -11,6 +11,7 @@ import { Renderer } from "morpheus-asia/Renderer";
 import LanguageSwitcher from "../LanguageSwitcher";
 import { get } from "lodash";
 import { DesktopNavBarProps } from "./props";
+import { constructUrl } from "morpheus-asia/utils/strapi";
 
 const MotionVStack = motion(VStack);
 const MotionBox = motion(Box);
@@ -91,7 +92,7 @@ export const DesktopNavBar: React.FC<DesktopNavBarProps> = (props) => {
               if (type === "shared.link") {
                 return {
                   children: component?.text,
-                  href: `${locale}/${component?.url}`,
+                  href: constructUrl(locale, component?.url),
                   target: component?.target,
                   textProps: {
                     fontWeight: "medium",
@@ -106,7 +107,7 @@ export const DesktopNavBar: React.FC<DesktopNavBarProps> = (props) => {
                 return {
                   children: component?.text,
                   variant: component?.variant,
-                  href: `${locale}/${component?.url}`,
+                  href: constructUrl(locale, component?.url),
                   target: component?.target,
                   pressableButton: true,
                 };
@@ -122,7 +123,7 @@ export const DesktopNavBar: React.FC<DesktopNavBarProps> = (props) => {
               if (type === "shared.link") {
                 return {
                   children: component?.text,
-                  href: `${locale}/${component?.url}`,
+                  href: constructUrl(locale, component?.url),
                   target: component?.target,
                   textProps: {
                     fontWeight: "medium",
@@ -137,7 +138,7 @@ export const DesktopNavBar: React.FC<DesktopNavBarProps> = (props) => {
                 return {
                   children: component?.text,
                   variant: component?.variant,
-                  href: `${locale}/${component?.url}`,
+                  href: constructUrl(locale, component?.url),
                   target: component?.target,
                   pressableButton: true,
                 };

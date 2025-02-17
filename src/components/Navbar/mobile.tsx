@@ -9,6 +9,7 @@ import { IoIosClose } from "react-icons/io";
 
 import { Renderer } from "morpheus-asia/Renderer";
 import { MobileNavBarProps } from "./props";
+import { constructUrl } from "morpheus-asia/utils/strapi";
 
 /**
  * ===========================
@@ -89,7 +90,7 @@ export const MobileNavbar: React.FC<MobileNavBarProps> = (props) => {
                 if (type === "shared.link") {
                   return {
                     children: component?.text,
-                    href: `${locale}/${component?.url}`,
+                    href: constructUrl(locale, component?.url),
                     target: component?.target,
                     textProps: {
                       fontWeight: "medium",
@@ -101,7 +102,7 @@ export const MobileNavbar: React.FC<MobileNavBarProps> = (props) => {
                   return {
                     children: component?.text,
                     variant: component?.variant,
-                    href: `${locale}/${component?.url}`,
+                    href: constructUrl(locale, component?.url),
                     target: component?.target,
                     pressableButton: true,
                   };
@@ -115,7 +116,7 @@ export const MobileNavbar: React.FC<MobileNavBarProps> = (props) => {
                 if (type === "shared.link") {
                   return {
                     children: component?.text,
-                    href: `${locale}/${component?.url}`,
+                    href: constructUrl(locale, component?.url),
                     target: component?.target,
                     textProps: {
                       fontWeight: "medium",
@@ -127,7 +128,7 @@ export const MobileNavbar: React.FC<MobileNavBarProps> = (props) => {
                   return {
                     children: component?.text,
                     variant: component?.variant,
-                    href: `${locale}/${component?.url}`,
+                    href: constructUrl(locale, component?.url),
                     target: component?.target,
                     pressableButton: true,
                   };
