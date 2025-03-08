@@ -2,6 +2,7 @@
 import { Box, HStack, Text } from "@chakra-ui/react";
 import NextLink from "next/link";
 import { Props } from "./props";
+import { getDictionary } from "morpheus-asia/i18n";
 
 /**
  * ===========================
@@ -15,8 +16,12 @@ export const Link: React.FC<Props> = (props) => {
     textProps,
     target,
     comingSoonFlag = false,
+    locale,
     ...restProps
   } = props;
+
+  // =============== VARIABLES
+  const comingSoonLocale = getDictionary(locale)?.comingSoon;
 
   // =============== RENDER
   const renderLink = () => {
@@ -52,7 +57,7 @@ export const Link: React.FC<Props> = (props) => {
             color: "#20DC8E",
           }}
         >
-          Coming Soon
+          {comingSoonLocale}
         </Box>
       </HStack>
     );
