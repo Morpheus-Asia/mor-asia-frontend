@@ -96,6 +96,7 @@ export const MobileNavbar: React.FC<MobileNavBarProps> = (props) => {
                       fontWeight: "medium",
                       fontSize: "lg",
                     },
+                    comingSoonFlag: component?.comingSoonFlag,
                   };
                 }
                 if (type === "shared.button") {
@@ -122,6 +123,7 @@ export const MobileNavbar: React.FC<MobileNavBarProps> = (props) => {
                       fontWeight: "medium",
                       fontSize: "lg",
                     },
+                    comingSoonFlag: component?.comingSoonFlag,
                   };
                 }
                 if (type === "shared.button") {

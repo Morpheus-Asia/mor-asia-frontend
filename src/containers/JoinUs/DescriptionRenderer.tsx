@@ -1,10 +1,7 @@
-import { Heading, HStack, Icon, Text, VStack } from "@chakra-ui/react";
-import { isEmpty, map } from "lodash";
+import { Heading, HStack, Text, VStack } from "@chakra-ui/react";
+import { map } from "lodash";
 import Button from "morpheus-asia/components/Button";
-import CustomImage from "morpheus-asia/components/Image";
 import NewsletterButton from "morpheus-asia/components/NewsletterButton";
-import { useState } from "react";
-import { LuArrowRight } from "react-icons/lu";
 import { ContactForm } from "../ContactForm";
 
 /**
@@ -15,9 +12,6 @@ import { ContactForm } from "../ContactForm";
 export const DescriptionRenderer: React.FC<any> = (props) => {
   const { body, locale } = props;
   // =============== HOOKS
-
-  // =============== STATE
-  const [isHovered, setIsHovered] = useState(false);
 
   // =============== API
 
@@ -35,77 +29,25 @@ export const DescriptionRenderer: React.FC<any> = (props) => {
       const hasArrow = button?.hasArrow;
       const icon = button?.icon;
       const iconHoverState = button?.iconHoverState;
-      if (variant === "plain") {
-        return (
-          <Button
-            key={index}
-            size={"lg"}
-            pressableButton
-            href={button?.url}
-            target={button?.target}
-            wrappedText={false}
-            border="none"
-            style={{
-              textDecoration: "none",
-              transition: "all 0.3s ease-in-out",
-            }}
-            focusRing={"none"}
-            background={"transparent"}
-            variant={variant}
-            py={2}
-            _hover={{
-              background: "primary.600",
-              color: "buttonText.500",
-              px: 4,
-              borderRadius: 6,
-            }}
-            px={0}
-            color="primary.600"
-            fontWeight={"bold"}
-            onMouseEnter={() => setIsHovered(true)}
-            onMouseLeave={() => setIsHovered(false)}
-          >
-            <HStack>
-              {!isEmpty(icon) && icon && (
-                <CustomImage data={isHovered ? iconHoverState : icon} />
-              )}
-              {button?.text}
-              {hasArrow && (
-                <Icon>
-                  <LuArrowRight />
-                </Icon>
-              )}
-            </HStack>
-          </Button>
-        );
-      }
+
       return (
         <Button
           key={index}
           size={"lg"}
-          pressableButton
           href={button?.url}
           target={button?.target}
-          color="primary.600"
-          variant={variant}
-          wrappedText={false}
-          _hover={{
-            background: "transparent",
-          }}
+          visual={variant}
+          icon={icon}
+          iconHoverState={iconHoverState}
+          hasArrow={hasArrow}
+          disabled={button?.isDisabled}
         >
-          <HStack>
-            {!isEmpty(icon) && icon && <CustomImage data={icon} />}
-            {button?.text}
-            {hasArrow && (
-              <Icon>
-                <LuArrowRight />
-              </Icon>
-            )}
-          </HStack>
+          {button?.text}
         </Button>
       );
     });
   };
+
   const renderDescriptionBody = () => {
     return map(descriptionBody, (item, index) => {
       const title = item?.title;

@@ -5,7 +5,6 @@ import {
   Textarea,
   SimpleGrid,
   Box,
-  HStack,
   Icon,
 } from "@chakra-ui/react";
 import { useForm } from "react-hook-form";
@@ -99,19 +98,16 @@ export const ContactForm: React.FC<Props> = (props) => {
     return (
       <Button
         type="submit"
-        variant="outline"
-        wrappedText={false}
-        color="primary.600"
+        visual="outline-secondary"
         px={6}
         loading={loading}
         disabled={loading || isSent}
+        contentProps={{ gap: 3 }}
       >
-        <HStack gap={3}>
-          <Icon size={"sm"}>
-            <FaPaperPlane />
-          </Icon>
-          {config?.buttonText || "SEND"}
-        </HStack>
+        <Icon w={4} h={4}>
+          <FaPaperPlane />
+        </Icon>
+        {config?.buttonText || "SEND"}
       </Button>
     );
   };

@@ -2,7 +2,7 @@ import Navbar from "morpheus-asia/components/Navbar";
 import fetchContentType from "morpheus-asia/utils/strapi/fetchContentTypes";
 // import { ReactNode } from "react";
 import "../globals.css";
-import Footer from "morpheus-asia/containers";
+import Footer from "morpheus-asia/components/Footer";
 
 // type LocaleLayoutProps = {
 //   children: ReactNode;

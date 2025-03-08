@@ -1,7 +1,17 @@
 "use client";
-import { Button as ChakraButton, Text } from "@chakra-ui/react";
+import {
+  Button as ChakraButton,
+  Icon,
+  useRecipe,
+  HStack,
+} from "@chakra-ui/react";
 import { Props } from "./props";
 import Link from "next/link";
+import { buttonRecipe } from "morpheus-asia/containers/ChakraProvider/theme";
+import { useState } from "react";
+import { isEmpty } from "lodash";
+import CustomImage from "../Image";
+import { LuArrowRight } from "react-icons/lu";
 
 /**
  * ===========================
@@ -10,67 +20,48 @@ import Link from "next/link";
  */
 export const Button: React.FC<Props> = (props) => {
   const {
-    variant,
-    children,
-    textProps,
+    icon,
     href,
-    target,
-    pressableButton = false,
     onClick,
+    hasArrow,
+    children,
+    contentProps,
     linkStyleProps,
-    wrappedText = true,
+    iconHoverState,
+    visual = "solid",
+    target = "_self",
     ...restProps
   } = props;
 
+  // =============== STATE
+  const [isHovered, setIsHovered] = useState(false);
+
+  // =============== VARIABLES
+  const recipe = useRecipe({ recipe: buttonRecipe });
+  const styles = recipe({ visual });
+  const pressableButton = !isEmpty(href);
+
   // =============== RENDER
-  const renderChildren = (defaultProps: any) => {
-    return wrappedText ? (
-      <Text {...defaultProps} {...textProps}>
-        {children}
-      </Text>
-    ) : (
-      children
-    );
-  };
   const renderButton = () => {
-    if (variant === "outline") {
-      return (
-        <ChakraButton
-          {...restProps}
-          variant={variant}
-          onClick={onClick}
-          _hover={{
-            background: "#179c65",
-            transition: "all 0.3s ease-in-out",
-            boxShadow: "0 8px 24px rgba(72, 187, 120, 0.2)",
-            border: "1px solid #9AE6B4",
-            ...restProps?._hover,
-          }}
-          borderColor="primary.600"
-          borderRadius={8}
-        >
-          {renderChildren({
-            color: "white",
-            fontWeight: "bold",
-          })}
-        </ChakraButton>
-      );
-    }
     return (
       <ChakraButton
-        background="primary.600"
-        variant={variant}
+        css={styles}
         onClick={onClick}
-        _hover={{
-          background: "#179c65",
-          transition: "all 0.3s ease-in-out",
-        }}
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
         {...restProps}
       >
-        {renderChildren({
-          color: "buttonText.500",
-          fontWeight: "bold",
-        })}
+        <HStack {...contentProps}>
+          {!isEmpty(icon) && icon && (
+            <CustomImage data={isHovered ? iconHoverState : icon} />
+          )}
+          {children}
+          {hasArrow && (
+            <Icon>
+              <LuArrowRight />
+            </Icon>
+          )}
+        </HStack>
       </ChakraButton>
     );
   };

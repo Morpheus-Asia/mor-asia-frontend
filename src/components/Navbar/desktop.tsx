@@ -101,6 +101,7 @@ export const DesktopNavBar: React.FC<DesktopNavBarProps> = (props) => {
                       transition: "textDecoration 0.3s ease",
                     },
                   },
+                  comingSoonFlag: component?.comingSoonFlag,
                 };
               }
               if (type === "shared.button") {
@@ -120,6 +121,9 @@ export const DesktopNavBar: React.FC<DesktopNavBarProps> = (props) => {
             items={data?.rightNavBarItems}
             locale={locale}
             propsMapper={(type, component) => {
+              {
+                /** TODO: refactor this part, with mobile one, too repetitive */
+              }
               if (type === "shared.link") {
                 return {
                   children: component?.text,
@@ -132,6 +136,7 @@ export const DesktopNavBar: React.FC<DesktopNavBarProps> = (props) => {
                       transition: "textDecoration 0.3s ease",
                     },
                   },
+                  comingSoonFlag: component?.comingSoonFlag,
                 };
               }
               if (type === "shared.button") {

@@ -7,4 +7,5 @@ export type Props = LinkProps & {
   textProps?: TextProps;
   active?: string;
   target?: string;
+  comingSoonFlag?: boolean;
 };
