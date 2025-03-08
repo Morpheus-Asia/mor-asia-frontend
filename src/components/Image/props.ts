@@ -8,4 +8,5 @@ export type Props = {
   height?: number;
   style?: ImageProps["style"];
   href?: string;
+  target?: string;
 };

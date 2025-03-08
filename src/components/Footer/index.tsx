@@ -1,7 +1,7 @@
 import { Box, HStack, Text } from "@chakra-ui/react";
 import ContainerWrapper from "morpheus-asia/containers/ContainerWrapper";
-import { Props } from "../components/Footer/props";
-import CustomImage from "../components/Image";
+import { Props } from "./props";
+import CustomImage from "../Image";
 import { map } from "lodash";
 
 /**
@@ -21,16 +21,21 @@ export const Footer: React.FC<Props> = (props) => {
 
   // =============== VARIABLES
   const footerLogo = data?.footerLogo?.image;
-  const footerHref = data?.footerLogo?.href;
+  const footerHrefObj = data?.footerLogo?.href;
+  const footerHref = footerHrefObj?.url;
+  const footerTarget = footerHrefObj?.target;
 
   // =============== RENDER FUNCTIONS
   const renderFooterIcon = () => {
     return map(data?.socialIcon, (icon) => {
-      const href = icon?.icon?.href;
+      const hrefObj = icon?.icon?.href;
+      const href = hrefObj?.url;
+      const target = hrefObj?.target;
       return (
         <CustomImage
           key={icon?.title}
           href={href}
+          target={target}
           data={icon?.icon?.image}
           width={20}
           height={20}
@@ -66,6 +71,7 @@ export const Footer: React.FC<Props> = (props) => {
               width={50}
               height={50}
               href={footerHref}
+              target={footerTarget}
             />
           </Box>
           {/**Desktop */}

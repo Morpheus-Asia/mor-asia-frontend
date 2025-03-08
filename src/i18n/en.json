@@ -17,5 +17,10 @@
     "lastNamePlaceholder": "Doe",
     "emailPlaceholder": "me@example.com",
     "messagePlaceholder": "Type your message..."
+  },
+  "notFound": {
+    "title": "404",
+    "description": "Sorry, the page you are looking for could not be found",
+    "backToHome": "Back to Home"
   }
 }

@@ -5,13 +5,19 @@ export type Props = {
       image: {
         url: string;
       };
-      href: string;
+      href: {
+        url: string;
+        target: string;
+      };
     };
     footerText: string;
     socialIcon: {
       title: string;
       icon: {
-        href: string;
+        href: {
+          url: string;
+          target: string;
+        };
         image: {
           url: string;
         };

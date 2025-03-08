@@ -17,5 +17,10 @@
     "lastNamePlaceholder": "刘",
     "emailPlaceholder": "me@example.com",
     "messagePlaceholder": "输入您的留言..."
+  },
+  "notFound": {
+    "title": "404",
+    "description": "抱歉，找不到您要找的页面",
+    "backToHome": "回到首页"
   }
 }

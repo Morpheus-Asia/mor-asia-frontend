@@ -45,9 +45,9 @@ export const CTA: React.FC<Props> = (props) => {
       <Box pt={5}>
         <Button
           size={"lg"}
-          pressableButton
           href={ctaButton?.url}
           target={ctaButton?.target}
+          disabled={ctaButton?.isDisabled}
         >
           {ctaButton?.text}
         </Button>

@@ -45,12 +45,17 @@ export const Metrics: React.FC<Props> = (props) => {
             <Text color="rgba(255, 255, 255, 0.64)">{subTitle}</Text>
           </VStack>
           <Button
-            pressableButton
             href={metricsButton?.url}
+            target={metricsButton?.target}
+            visual={metricsButton?.variant}
             width={{ base: "100%", md: "auto" }}
             linkStyleProps={{
               width: linkWidth,
             }}
+            icon={metricsButton?.icon}
+            hasArrow={metricsButton?.hasArrow}
+            iconHoverState={metricsButton?.iconHoverState}
+            disabled={metricsButton?.isDisabled}
           >
             {metricsButton?.text}
           </Button>

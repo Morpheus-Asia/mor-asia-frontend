@@ -8,6 +8,7 @@ export type Props = {
       text: string;
       url: string;
       target: string;
+      isDisabled: boolean;
     };
   };
 };

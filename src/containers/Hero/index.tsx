@@ -30,9 +30,13 @@ export const Hero: React.FC<Props> = (props) => {
     if (size(ctaButtonList) === 1) {
       return (
         <Button
-          variant={ctaButtonList?.[0]?.variant}
+          visual={ctaButtonList?.[0]?.variant}
           href={ctaButtonList?.[0]?.url}
-          pressableButton
+          target={ctaButtonList?.[0]?.target}
+          icon={ctaButtonList?.[0]?.icon}
+          hasArrow={ctaButtonList?.[0]?.hasArrow}
+          iconHoverState={ctaButtonList?.[0]?.iconHoverState}
+          disabled={ctaButtonList?.[0]?.isDisabled}
         >
           {ctaButtonList?.[0]?.text}
         </Button>
@@ -44,14 +48,16 @@ export const Hero: React.FC<Props> = (props) => {
           return (
             <Button
               key={index}
-              variant={ctaButton?.variant}
+              visual={ctaButton?.variant}
               size={{ base: "xl", lg: "2xl" }}
-              textProps={{
-                fontSize: { base: "sm", lg: "lg" },
-              }}
-              pressableButton
+              fontSize={{ base: "sm", lg: "lg" }}
               href={ctaButton?.url}
               width={"full"}
+              target={ctaButton?.target}
+              icon={ctaButton?.icon}
+              hasArrow={ctaButton?.hasArrow}
+              iconHoverState={ctaButton?.iconHoverState}
+              disabled={ctaButton?.isDisabled}
             >
               {ctaButton?.text}
             </Button>

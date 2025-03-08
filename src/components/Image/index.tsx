@@ -10,7 +10,15 @@ import Link from "next/link";
  * ===========================
  */
 export const CustomImage: React.FC<Props> = (props) => {
-  const { data, href, width, height, style, ...restProps } = props;
+  const {
+    data,
+    href,
+    width,
+    height,
+    style,
+    target = "_self",
+    ...restProps
+  } = props;
 
   // =============== VARIABLES
   const logoImage = get(data, "url", "");
@@ -22,7 +30,7 @@ export const CustomImage: React.FC<Props> = (props) => {
   const renderImage = () => {
     if (href) {
       return (
-        <Link href={href}>
+        <Link href={href} target={target}>
           <NextImage
             {...restProps}
             priority={true}
