@@ -50,7 +50,7 @@ export default async function Page({ params }: any) {
     { [locale]: "" }
   );
 
-  // =============== VIEWS
+  // ================ VIEWS
   return (
     <>
       <ClientSlugHandler localizedSlugs={localizedSlugs} />
