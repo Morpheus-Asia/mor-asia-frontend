@@ -56,11 +56,11 @@ export const MetricsTopMetrics: React.FC = () => {
       value: `${metricsAsset?.maxSupply} MOR`,
     },
     {
-      title: "Circulating Supply market cap",
+      title: "Circulating market cap",
       value: `$ ${metricsAsset?.circulatingSupply}`,
     },
     {
-      title: "total supply market cap",
+      title: "total market cap",
       value: `$ ${metricsAsset?.totalSupply}`,
     },
   ];

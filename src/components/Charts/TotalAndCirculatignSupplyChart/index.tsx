@@ -29,6 +29,7 @@ export const TotalAndCirculatingSupplyChart = memo((props: ChartProps) => {
     legend: {
       show: false,
     },
+    colors: data.map((i) => i.color),
     xaxis: {
       tickAmount: 8,
       offsetY: 8,
