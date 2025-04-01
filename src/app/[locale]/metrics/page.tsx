@@ -27,7 +27,7 @@ export async function generateMetadata({ params }: any): Promise<Metadata> {
 }
 
 export default async function Page({ params }: any) {
-  // =============== VARIABLES
+  // ============== VARIABLES
   const { locale } = await params;
   const metricsPage = await fetchContentType(
     "metrics-page",
