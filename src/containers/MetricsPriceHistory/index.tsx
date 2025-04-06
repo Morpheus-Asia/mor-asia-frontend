@@ -6,31 +6,16 @@ import MetricsBox from "morpheus-asia/components/MetricsBox";
 import { useEffect, useState } from "react";
 import { MdOutlineInsertChart } from "react-icons/md";
 import { PriceHistoryMetrics, TabMapping, TabValue } from "./props";
+import { getDictionary } from "morpheus-asia/i18n";
 
-const tabs = [
-  {
-    label: "1D",
-    value: "day",
-  },
-  {
-    label: "1W",
-    value: "week",
-  },
-  {
-    label: "1M",
-    value: "month",
-  },
-  {
-    label: "1Y",
-    value: "year",
-  },
-  {
-    label: "ALL",
-    value: "all",
-  },
-];
+type Props = {
+  locale?: string;
+};
+export const MetricsPriceHistory: React.FC<Props> = (props) => {
+  const { locale } = props;
+  // =============== LOCALE
+  const metricsPageLocale = getDictionary(locale)?.metricsPage;
 
-export const MetricsPriceHistory = () => {
   // =============== STATE
   const [loading, setLoading] = useState(true);
   const [metrics, setMetrics] = useState<PriceHistoryMetrics>(
@@ -39,6 +24,28 @@ export const MetricsPriceHistory = () => {
   const [value, setValue] = useState<TabMapping>("day");
 
   // =============== VARIABLES
+  const tabs = [
+    {
+      label: metricsPageLocale?.["1D"],
+      value: "day",
+    },
+    {
+      label: metricsPageLocale?.["1W"],
+      value: "week",
+    },
+    {
+      label: metricsPageLocale?.["1M"],
+      value: "month",
+    },
+    {
+      label: metricsPageLocale?.["1Y"],
+      value: "year",
+    },
+    {
+      label: metricsPageLocale?.["all"],
+      value: "all",
+    },
+  ];
   const tabMapping: Record<TabMapping, TabValue> = {
     day: "oneDay",
     week: "oneWeek",
@@ -101,7 +108,7 @@ export const MetricsPriceHistory = () => {
           <HStack justifyContent={"flex-start"} gap={3}>
             <MdOutlineInsertChart size={30} color="#00DC8D" />
             <Text color="#FFF" fontWeight={"bold"} fontSize={"1.25rem"}>
-              Price History
+              {metricsPageLocale?.priceHistory}
             </Text>
           </HStack>
           <Tabs.Root
@@ -136,6 +143,7 @@ export const MetricsPriceHistory = () => {
         </HStack>
         <Box width={"100%"} height={"100%"}>
           <PriceHistoryLineChart
+            locale={metricsPageLocale}
             type={value}
             data={formatData(metrics?.[tabMapping[value]])}
           />

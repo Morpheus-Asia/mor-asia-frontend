@@ -12,10 +12,11 @@ type ChartProps = {
     }[];
     name: string;
   }[];
+  locale?: any;
 };
 
 export const TotalAndCirculatingSupplyChart = memo((props: ChartProps) => {
-  const { data } = props;
+  const { data, locale } = props;
   const textColor = "rgb(102, 102, 102)";
 
   const options: ApexOptions = {
@@ -50,7 +51,7 @@ export const TotalAndCirculatingSupplyChart = memo((props: ChartProps) => {
         color: textColor,
       },
       title: {
-        text: "Date",
+        text: locale?.date,
         style: { color: "#ddd" },
       },
     },
@@ -64,7 +65,7 @@ export const TotalAndCirculatingSupplyChart = memo((props: ChartProps) => {
         },
       },
       tickAmount: 5,
-      title: { text: "Supply", style: { color: "#ddd" } },
+      title: { text: locale.supply, style: { color: "#ddd" } },
       axisBorder: { show: true, color: textColor },
     },
     stroke: {

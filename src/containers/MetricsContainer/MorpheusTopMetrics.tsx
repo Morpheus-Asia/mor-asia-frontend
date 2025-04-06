@@ -16,13 +16,22 @@ import MetricsDisplay from "morpheus-asia/components/MetricsDisplay";
 import { useEffect, useState } from "react";
 import MORLogo from "morpheus-asia/Image/MOR.png";
 import PercentageChip from "./Chip";
+import moment from "moment";
+import { getDictionary } from "morpheus-asia/i18n";
+
+type Props = {
+  locale?: string;
+};
 
 /**
  * ===========================
  * MAIN
  * ===========================
  */
-export const MetricsTopMetrics: React.FC = () => {
+export const MetricsTopMetrics: React.FC<Props> = (props) => {
+  const { locale } = props;
+  // =============== LOCALE
+  const metricsPageLocale = getDictionary(locale)?.metricsPage;
   // =============== STATE
   const [loading, setLoading] = useState(true);
   const [metrics, setMetrics] = useState({} as any);
@@ -50,17 +59,20 @@ export const MetricsTopMetrics: React.FC = () => {
   const metricsAsset = metrics?.asset;
   const metricsHistory = metrics?.history;
   const metricsBoxData = [
-    { title: "Circulating Supply", value: `${metricsAsset?.supply} MOR` },
     {
-      title: "Total Supply",
+      title: metricsPageLocale?.circulatingSupply,
+      value: `${metricsAsset?.supply} MOR`,
+    },
+    {
+      title: metricsPageLocale?.totalSupply,
       value: `${metricsAsset?.maxSupply} MOR`,
     },
     {
-      title: "Circulating market cap",
+      title: metricsPageLocale?.circulatingMarketCap,
       value: `$ ${metricsAsset?.circulatingSupply}`,
     },
     {
-      title: "total market cap",
+      title: metricsPageLocale?.totalMarketCap,
       value: `$ ${metricsAsset?.totalSupply}`,
     },
   ];
@@ -71,16 +83,10 @@ export const MetricsTopMetrics: React.FC = () => {
       parseFloat(item.priceUsd).toFixed(2), // Y-axis: Rounded price
     ]),
   };
-  const now = new Date();
-  const pad = (num: number) => num.toString().padStart(2, "0"); // Ensures two-digit format
+  const now = moment.utc();
 
-  const day = pad(now.getDate());
-  const month = pad(now.getMonth() + 1); // Months are zero-based
-  const year = now.getFullYear();
-  const hours = pad(now.getHours());
-  const minutes = pad(now.getMinutes());
-
-  const formattedDate = `${day}-${month}-${year} ${hours}:${minutes}`;
+  // Format: DD MMM YYYY (e.g., 06 APR 2025)
+  const formattedDate = `${now.format("DD MMM YYYY HH:mm").toUpperCase()} UTC`;
 
   // =============== RENDER FUNCTIONS
   const renderContent = () => {
@@ -108,7 +114,7 @@ export const MetricsTopMetrics: React.FC = () => {
                 <VStack alignItems={"flex-start"} gap={0}>
                   <HStack alignItems={"center"}>
                     <Text color="#FFF" fontWeight={"bold"} fontSize={"1.25rem"}>
-                      Morpheus AI
+                      {metricsPageLocale?.morpheusAI}
                     </Text>
                     <Text color={"#A2A3A6"} fontSize={".875rem"}>
                       MOR/USD
@@ -140,8 +146,10 @@ export const MetricsTopMetrics: React.FC = () => {
                 gap={0}
                 fontSize={".8rem"}
               >
-                <Text>Last 7 Days Price History</Text>
-                <Text>Last Updated: {formattedDate}</Text>
+                <Text>{metricsPageLocale?.past7Days}</Text>
+                <Text>
+                  {metricsPageLocale?.lastUpdated}: {formattedDate}
+                </Text>
               </VStack>
             </VStack>
           </MetricsBox>

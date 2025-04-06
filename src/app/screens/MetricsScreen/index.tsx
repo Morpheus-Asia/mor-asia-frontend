@@ -18,7 +18,7 @@ export type MetricsPageProps = {
  * ===========================
  */
 export const MetricsPage: React.FC<MetricsPageProps> = (props) => {
-  const { metricsPage } = props;
+  const { locale, metricsPage } = props;
 
   // =============== VIEWS
   return (
@@ -34,12 +34,12 @@ export const MetricsPage: React.FC<MetricsPageProps> = (props) => {
               {metricsPage.subHeading}
             </Text>
           </VStack>
-          <MetricsTopMetrics />
+          <MetricsTopMetrics locale={locale} />
           <Box width={"100%"}>
-            <MetricsPriceHistory />
+            <MetricsPriceHistory locale={locale} />
           </Box>
           <Box width="100%">
-            <MetricsCirculatingSupply />
+            <MetricsCirculatingSupply locale={locale} />
           </Box>
         </VStack>
       </ContainerWrapper>

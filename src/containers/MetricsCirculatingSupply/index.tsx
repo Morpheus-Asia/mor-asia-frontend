@@ -1,29 +1,39 @@
 "use client";
 import { Box, HStack, Tabs, Text, VStack } from "@chakra-ui/react";
-import { map } from "lodash";
+import { map, upperCase } from "lodash";
 import moment from "moment";
 import TotalAndCirculatingSupplyChart from "morpheus-asia/components/Charts/TotalAndCirculatignSupplyChart";
 import MetricsBox from "morpheus-asia/components/MetricsBox";
 import { useEffect, useState } from "react";
 import { FaChartArea } from "react-icons/fa";
 import { CirculatingMetrics, TabMapping, TabValue } from "./props";
+import { getDictionary } from "morpheus-asia/i18n";
 
-const tabs = [
-  {
-    label: "ALL",
-    value: "all",
-  },
-  {
-    label: "TOTAL SUPPLY",
-    value: "total_supply",
-  },
-  {
-    label: "CIRCULATING SUPPLY",
-    value: "circulating_supply",
-  },
-];
+type Props = {
+  locale?: string;
+};
 
-export const MetricsCirculatingSupply = () => {
+export const MetricsCirculatingSupply: React.FC<Props> = (props) => {
+  const { locale } = props;
+  // =============== LOCALE
+  const metricsPageLocale = getDictionary(locale)?.metricsPage;
+
+  // =============== VARIABLES
+  const tabs = [
+    {
+      label: metricsPageLocale?.["all"],
+      value: "all",
+    },
+    {
+      label: upperCase(metricsPageLocale?.totalSupply),
+      value: "total_supply",
+    },
+    {
+      label: upperCase(metricsPageLocale?.circulatingSupply),
+      value: "circulating_supply",
+    },
+  ];
+
   // =============== STATE
   const [loading, setLoading] = useState(true);
   const [metrics, setMetrics] = useState<CirculatingMetrics>([]);
@@ -49,7 +59,7 @@ export const MetricsCirculatingSupply = () => {
 
   const trend = [
     {
-      name: "Total Supply",
+      name: metricsPageLocale?.totalSupply,
       data: metrics.map((item) => ({
         x: moment(item.date, "DD/MM/YYYY").toISOString(), // Convert to ISO format
         y: item.totalSupply,
@@ -57,7 +67,7 @@ export const MetricsCirculatingSupply = () => {
       color: "#82CA9D",
     },
     {
-      name: "Circulating Supply",
+      name: metricsPageLocale?.circulatingSupply,
       data: metrics.map((item) => ({
         x: moment(item.date, "DD/MM/YYYY").toISOString(),
         y: item.circulatingSupply,
@@ -98,7 +108,7 @@ export const MetricsCirculatingSupply = () => {
           <HStack justifyContent={"flex-start"} gap={3}>
             <FaChartArea size={25} color="#00DC8D" />
             <Text color="#FFF" fontWeight={"bold"} fontSize={"1.25rem"}>
-              Market Cap
+              {metricsPageLocale?.marketCap}
             </Text>
           </HStack>
           <Tabs.Root
@@ -151,7 +161,7 @@ export const MetricsCirculatingSupply = () => {
                   h={15}
                 ></Box>
                 <Text color="#FFF" textTransform={"uppercase"}>
-                  Total Supply
+                  {metricsPageLocale?.totalSupply}
                 </Text>
               </HStack>
               <HStack justifyContent={"center"} alignItems={"center"}>
@@ -162,12 +172,15 @@ export const MetricsCirculatingSupply = () => {
                   h={15}
                 ></Box>
                 <Text color="#FFF" textTransform={"uppercase"}>
-                  Circulating supply
+                  {metricsPageLocale?.circulatingSupply}
                 </Text>
               </HStack>
             </HStack>
           )}
-          <TotalAndCirculatingSupplyChart data={tabMapping[value]} />
+          <TotalAndCirculatingSupplyChart
+            data={tabMapping[value]}
+            locale={metricsPageLocale}
+          />
         </Box>
       </VStack>
     </MetricsBox>

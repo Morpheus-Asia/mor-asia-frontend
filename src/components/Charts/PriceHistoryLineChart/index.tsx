@@ -7,11 +7,12 @@ import { TabMapping } from "morpheus-asia/containers/MetricsPriceHistory/props";
 
 type PriceHistoryLineChartProps = ChartProps & {
   type?: TabMapping;
+  locale?: any;
 };
 
 export const PriceHistoryLineChart = memo(
   (props: PriceHistoryLineChartProps) => {
-    const { data, type } = props;
+    const { data, type, locale } = props;
     const textColor = "rgb(102, 102, 102)";
     const options: ApexOptions = {
       chart: {
@@ -44,7 +45,7 @@ export const PriceHistoryLineChart = memo(
           },
         },
         title: {
-          text: type === "day" ? "Time" : "Date",
+          text: type === "day" ? locale?.time : locale?.date,
           style: { color: "#ddd" },
         },
         axisBorder: { show: true, color: textColor },
@@ -52,7 +53,7 @@ export const PriceHistoryLineChart = memo(
       },
       yaxis: {
         labels: { style: { colors: "#ddd" } },
-        title: { text: "Price (USD)", style: { color: "#ddd" } },
+        title: { text: locale.price, style: { color: "#ddd" } },
         axisBorder: { show: true, color: textColor },
       },
       tooltip: {
@@ -81,7 +82,7 @@ export const PriceHistoryLineChart = memo(
           },
           title: {
             formatter: () => {
-              return "Price (USD)";
+              return locale.price;
             },
           },
         },
