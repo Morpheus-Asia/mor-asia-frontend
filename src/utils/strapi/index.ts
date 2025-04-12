@@ -95,5 +95,5 @@ export const getStrapiMedia = (url: string): string => {
 
 export const constructUrl = (locale: string, url: string) => {
   if (url === "/") return `/${locale || "en"}`;
-  return `${locale}/${url}`;
+  return `/${locale}/${url}`;
 };
