@@ -82,6 +82,9 @@ const config = defineConfig({
     tokens: {
       colors: {
         primary: {
+          300: {
+            value: "#00DC8D",
+          },
           400: {
             value: "#1C4532",
           },

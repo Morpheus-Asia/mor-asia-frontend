@@ -23,5 +23,25 @@
     "description": "Sorry, the page you are looking for could not be found",
     "backToHome": "Back to Home"
   },
-  "comingSoon": "Coming Soon"
+  "comingSoon": "Coming Soon",
+  "metricsPage": {
+    "morpheusAI": "Morpheus AI",
+    "past7Days": "Last 7 Days Price History",
+    "lastUpdated": "Last Updated",
+    "circulatingSupply": "Circulating Supply",
+    "totalSupply": "Total Supply",
+    "circulatingMarketCap": "Circulating Market Cap",
+    "totalMarketCap": "Total Market Cap",
+    "priceHistory": "Price History",
+    "1D": "1D",
+    "1W": "1W",
+    "1M": "1M",
+    "1Y": "1Y",
+    "all": "ALL",
+    "price": "Price (USD)",
+    "time": "Time",
+    "marketCap": "Market Cap",
+    "supply": "Supply",
+    "date": "Date"
+  }
 }

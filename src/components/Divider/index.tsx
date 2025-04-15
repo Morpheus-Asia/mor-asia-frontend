@@ -10,7 +10,7 @@ export const Divider: React.FC<Props> = (props) => {
   const {
     size = "sm",
     variant = "solid",
-    color = "rgba(255, 255, 255, 0.06",
+    color = "rgba(255, 255, 255, 0.06)",
   } = props;
 
   // =============== VIEWS

@@ -23,5 +23,25 @@
     "description": "抱歉，找不到您要找的页面",
     "backToHome": "回到首页"
   },
-  "comingSoon": "即将推出"
+  "comingSoon": "即将推出",
+  "metricsPage": {
+    "morpheusAI": "Morpheus AI",
+    "past7Days": "过去7天价格历史",
+    "lastUpdated": "最后更新",
+    "circulatingSupply": "流通供应量",
+    "totalSupply": "总供应量",
+    "circulatingMarketCap": "流通代币市值",
+    "totalMarketCap": "完整代币发行市值",
+    "priceHistory": "价格历史",
+    "1D": "1天",
+    "1W": "1周",
+    "1M": "1月",
+    "1Y": "1年",
+    "all": "全部",
+    "price": "价格 (美元)",
+    "time": "时间",
+    "marketCap": "市值",
+    "supply": "供应量",
+    "date": "日期"
+  }
 }
