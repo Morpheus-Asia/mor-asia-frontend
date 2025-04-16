@@ -42,7 +42,7 @@ export const JoinUsSection: React.FC<any> = (props) => {
 
   // =============== VIEWS
   return (
-    <section id={href} style={{ scrollMarginTop: "10rem" }}>
+    <section id={href} style={{ scrollMarginTop: "10rem", width: "100%" }}>
       <ContainerWrapper pt={"1rem"}>
         <VStack alignItems={"flex-start"} width={{ base: "100%", lg: "85%" }}>
           <VStack gap={6} alignItems={"flex-start"} width={"100%"}>
