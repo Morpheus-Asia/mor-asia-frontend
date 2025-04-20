@@ -60,7 +60,7 @@ export const MetricsPriceHistory: React.FC<Props> = (props) => {
       try {
         const currentTime = Date.now();
         const metrics = await fetch(
-          `${process.env.NEXT_PUBLIC_API_URL}/api/price/history?currentTime=${currentTime}`
+          `${process.env.NEXT_PUBLIC_FRONTEND_URL}/api/morpheus-api/priceData?currentTime=${currentTime}`
         );
         const metricsData = await metrics.json();
         setMetrics(metricsData?.data);

@@ -85,12 +85,14 @@ export function generateMetadataObject(seo: any, locale: any) {
   };
 }
 
-export const getStrapiURL = (path = "") => {
-  return `${process.env.NEXT_PUBLIC_API_URL}${path}`;
-};
+// Temporarily commented out
+// export const getStrapiURL = (path = "") => {
+//   return `${process.env.NEXT_PUBLIC_API_URL}${path}`;
+// };
 
 export const getStrapiMedia = (url: string): string => {
-  return url?.startsWith("/") ? getStrapiURL(url) : url;
+  return url;
+  // return url?.startsWith("/") ? getStrapiURL(url) : url;
 };
 
 export const constructUrl = (locale: string, url: string) => {

@@ -47,7 +47,7 @@ export const NewsletterButton: React.FC<Props> = (props) => {
 
     try {
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/engagement/subscriber/add`,
+        `${process.env.NEXT_PUBLIC_FRONTEND_URL}/api/morpheus-api/addSubscriber`,
         {
           method: "POST",
           body: JSON.stringify({ email: data.email, token }),

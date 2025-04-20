@@ -44,7 +44,7 @@ export const MetricsCirculatingSupply: React.FC<Props> = (props) => {
     const fetchMetrics = async () => {
       try {
         const metrics = await fetch(
-          `${process.env.NEXT_PUBLIC_API_URL}/api/total_and_circ_supply`
+          `${process.env.NEXT_PUBLIC_FRONTEND_URL}/api/morpheus-api/supply`
         );
         const metricsData = await metrics.json();
         setMetrics(metricsData?.data);
