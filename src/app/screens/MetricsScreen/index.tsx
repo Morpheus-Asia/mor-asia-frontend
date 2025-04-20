@@ -26,7 +26,6 @@ export const MetricsPage: React.FC<MetricsPageProps> = (props) => {
       <ContainerWrapper pt={"8rem"} width={"100%"} pb={"3.5rem"}>
         <VStack gap={5} width="100%">
           <VStack justifyContent={"center"} alignItems={"center"}>
-            {/** TODO: coming from strapi */}
             <Text color="#FFF" fontWeight={"bold"} fontSize={"4xl"}>
               {metricsPage.heading}
             </Text>

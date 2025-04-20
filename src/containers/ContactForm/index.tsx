@@ -59,7 +59,7 @@ export const ContactForm: React.FC<Props> = (props) => {
     const token = await executeRecaptcha("form_submit");
     try {
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/engagement/email/send`,
+        `${process.env.NEXT_PUBLIC_FRONTEND_URL}/api/morpheus-api/sendEmail`,
         {
           method: "POST",
           body: JSON.stringify({ ...data, token }),
