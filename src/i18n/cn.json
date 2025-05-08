@@ -42,6 +42,10 @@
     "time": "时间",
     "marketCap": "市值",
     "supply": "供应量",
-    "date": "日期"
+    "date": "日期",
+    "capitalContributionMetrics": "资本贡献指标",
+    "dailyEmission": "每日发行量",
+    "stakedSeth": "质押SETH",
+    "virtualSeth": "虚拟SETH"
   }
 }

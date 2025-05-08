@@ -13,9 +13,9 @@ import { map } from "lodash";
 import QuickView24HrLineChart from "morpheus-asia/components/Charts/QuickViewLineChart";
 import MetricsBox from "morpheus-asia/components/MetricsBox";
 import MetricsDisplay from "morpheus-asia/components/MetricsDisplay";
+import PercentageChip from "morpheus-asia/components/PercentageChip";
 import { useEffect, useState } from "react";
 import MORLogo from "morpheus-asia/Image/MOR.png";
-import PercentageChip from "./Chip";
 import moment from "moment";
 import { getDictionary } from "morpheus-asia/i18n";
 
