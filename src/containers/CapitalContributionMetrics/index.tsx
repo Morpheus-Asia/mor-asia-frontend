@@ -112,10 +112,9 @@ export const CapitalContributionMetrics: React.FC<Props> = ({ locale }) => {
               label="Total MOR tokens emitted to all groups" 
               placement="top"
               hasArrow
-              bg="gray.700"
+              bg="rgba(0, 30, 20, 0.85)"
               color="white"
-              p={3}
-              borderRadius="md"
+              borderRadius="8px"
               isOpen={activeTooltip === 'dailyEmissions'}
               onOpen={() => handleTooltipToggle('dailyEmissions')}
               onClose={() => handleTooltipToggle('dailyEmissions')}
@@ -135,14 +134,14 @@ export const CapitalContributionMetrics: React.FC<Props> = ({ locale }) => {
           borderRadius={8}
           background="rgba(255,255,255,0.05)"
           px={{ base: 4, md: 10 }}
-          py={{ base: 6, md: 10 }}
+          py={{ base: 6, md: 8 }}
           display="flex"
           flexDirection="column"
           gap={6}
         >
           <HStack gap={3}>
-            <FaLandmark color="#00DC8D" size={26} />
-            <Text color="#FFF" fontWeight="bold" fontSize="3xl">
+            <FaLandmark color="#00DC8D" size={20} />
+            <Text color="#FFF" fontWeight="bold" fontSize="2xl">
               Capital Pool
             </Text>
           </HStack>
@@ -162,10 +161,11 @@ export const CapitalContributionMetrics: React.FC<Props> = ({ locale }) => {
                   label="Total amount of MOR tokens held in the Capital Pool" 
                   placement="top"
                   hasArrow
-                  bg="gray.700"
+                  bg="rgba(0, 30, 20, 0.85)"
                   color="white"
-                  p={3}
-                  borderRadius="md"
+                  px={4}
+                  py={3}
+                  borderRadius="8px"
                   isOpen={activeTooltip === 'balance'}
                   onOpen={() => handleTooltipToggle('balance')}
                   onClose={() => handleTooltipToggle('balance')}
@@ -188,10 +188,11 @@ export const CapitalContributionMetrics: React.FC<Props> = ({ locale }) => {
                   label="Amount of MOR tokens added to the pool from daily emissions" 
                   placement="top"
                   hasArrow
-                  bg="gray.700"
+                  bg="rgba(0, 30, 20, 0.85)"
                   color="white"
-                  p={3}
-                  borderRadius="md"
+                  px={4}
+                  py={3}
+                  borderRadius="8px"
                   isOpen={activeTooltip === 'dailyAccrual'}
                   onOpen={() => handleTooltipToggle('dailyAccrual')}
                   onClose={() => handleTooltipToggle('dailyAccrual')}
@@ -214,10 +215,11 @@ export const CapitalContributionMetrics: React.FC<Props> = ({ locale }) => {
                   label="Total amount of sETH locked in the capital pool" 
                   placement="top"
                   hasArrow
-                  bg="gray.700"
+                  bg="rgba(0, 30, 20, 0.85)"
                   color="white"
-                  p={3}
-                  borderRadius="md"
+                  px={4}
+                  py={3}
+                  borderRadius="8px"
                   isOpen={activeTooltip === 'totalLocked'}
                   onOpen={() => handleTooltipToggle('totalLocked')}
                   onClose={() => handleTooltipToggle('totalLocked')}
@@ -249,10 +251,11 @@ export const CapitalContributionMetrics: React.FC<Props> = ({ locale }) => {
                   label="Annual Percentage Yield: Annual return on sETH in Capital Pool" 
                   placement="top"
                   hasArrow
-                  bg="gray.700"
+                  bg="rgba(0, 30, 20, 0.85)"
                   color="white"
-                  p={3}
-                  borderRadius="md"
+                  px={4}
+                  py={3}
+                  borderRadius="8px"
                   isOpen={activeTooltip === 'apy'}
                   onOpen={() => handleTooltipToggle('apy')}
                   onClose={() => handleTooltipToggle('apy')}
@@ -275,10 +278,11 @@ export const CapitalContributionMetrics: React.FC<Props> = ({ locale }) => {
                   label="Return generated from Total Locked sETH based on APY" 
                   placement="top"
                   hasArrow
-                  bg="gray.700"
+                  bg="rgba(0, 30, 20, 0.85)"
                   color="white"
-                  p={3}
-                  borderRadius="md"
+                  px={4}
+                  py={3}
+                  borderRadius="8px"
                   isOpen={activeTooltip === 'annualYield'}
                   onOpen={() => handleTooltipToggle('annualYield')}
                   onClose={() => handleTooltipToggle('annualYield')}
@@ -301,10 +305,11 @@ export const CapitalContributionMetrics: React.FC<Props> = ({ locale }) => {
                   label="Accrued stETH yield unclaimed by capital providers" 
                   placement="top"
                   hasArrow
-                  bg="gray.700"
+                  bg="rgba(0, 30, 20, 0.85)"
                   color="white"
-                  p={3}
-                  borderRadius="md"
+                  px={4}
+                  py={3}
+                  borderRadius="8px"
                   isOpen={activeTooltip === 'unclaimedYield'}
                   onOpen={() => handleTooltipToggle('unclaimedYield')}
                   onClose={() => handleTooltipToggle('unclaimedYield')}
@@ -346,7 +351,6 @@ export const CapitalContributionMetrics: React.FC<Props> = ({ locale }) => {
                 value={inputValue}
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => setInputValue(Number(e.target.value))}
                 min={0}
-                bg="rgba(255,255,255,0.02)"
                 color="#FFF"
                 borderRadius={8}
                 width="100%"
@@ -371,7 +375,6 @@ export const CapitalContributionMetrics: React.FC<Props> = ({ locale }) => {
                 }}
                 min={2}
                 max={10}
-                bg="rgba(255,255,255,0.02)"
                 color="#FFF"
                 borderRadius={8}
                 width="100%"
