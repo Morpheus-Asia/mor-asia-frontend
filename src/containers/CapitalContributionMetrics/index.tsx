@@ -32,27 +32,15 @@ export const CapitalContributionMetrics: React.FC<Props> = ({ locale }) => {
     setActiveTooltip(activeTooltip === tooltipName ? null : tooltipName);
   };
 
-  const calculateYield = (year: number, baseValue: number) => {
-    // Using compound interest formula: A = P(1 + r)^t
-    // where P = principal, r = rate (5% = 0.05), t = time in years
-    const rate = 0.05; // 5% APY
-    return (baseValue * Math.pow(1 + rate, year)).toFixed(2);
-  };
-
-  const calculateCapitalInsight = (initialValue: number, finalValue: number) => {
-    return ((finalValue - initialValue) / initialValue * 100).toFixed(2);
-  };
-
   const generateTableRows = () => {
-    return Array.from({ length: timeLength }, (_, i) => ({
-      year: `${i + 1} Year`,
-      yield: `${(i + 1) * 5}%`,
-      value: calculateYield(i + 1, inputValue)
-    }));
+    return [
+      { days: '7 Days', multiplier: '5x', value: '$5,000' },
+      { days: '30 Days', multiplier: '10x', value: '$10,000' },
+      { days: '180 Days', multiplier: '15x', value: '$15,000' },
+      { days: '365 Days', multiplier: '20x', value: '$20,000' },
+      { days: '2190 Days', multiplier: '25x', value: '$25,000' }
+    ];
   };
-
-  const finalValue = calculateYield(timeLength, inputValue);
-  const capitalInsight = calculateCapitalInsight(inputValue, parseFloat(finalValue));
 
   return (
     <VStack width="100%" alignItems="flex-start" gap={6}>
@@ -337,15 +325,36 @@ export const CapitalContributionMetrics: React.FC<Props> = ({ locale }) => {
         <HStack gap={2} mb={4}>
           <MdOutlineAutoGraph color="#00DC8D" size={24} />
           <Text color="#FFF" fontWeight="bold" fontSize="xl">
-            APY Forecast In USD
+            Staking MOR Rewards Forecast
           </Text>
         </HStack>
 
         <VStack gap={6} alignItems="flex-start" width="100%">
+          {/* Total Virtual Staked stETH Section */}
+          <Grid templateColumns={{ base: "1fr", md: "1fr 1fr" }} gap={4} width="100%">
+            <VStack alignItems="flex-start" gap={0}>
+              <Text color="#FFF" fontWeight="semibold" fontSize="sm" opacity={0.8} textTransform="uppercase">
+                Total Virtual Staked stETH as of Today
+              </Text>
+              <Text color="#FFF" fontWeight="bold" fontSize="3xl">
+                15,230.45 stETH
+              </Text>
+            </VStack>
+
+            <VStack alignItems="flex-start" gap={0}>
+              <Text color="#FFF" fontWeight="semibold" fontSize="sm" opacity={0.8} textTransform="uppercase">
+                Percentage of Total Virtual Staked stETH
+              </Text>
+              <Text color="#FFF" fontWeight="bold" fontSize="3xl">
+                2.5%
+              </Text>
+            </VStack>
+          </Grid>
+
           {/* Inputs Section */}
           <Grid templateColumns={{ base: "1fr", md: "1fr 1fr" }} gap={4} width="100%">
             <VStack alignItems="flex-start" gap={2}>
-              <Text color="#FFF" fontSize="xl" fontWeight="bold">Initial Value (USD)</Text>
+              <Text color="#FFF" fontSize="xl" fontWeight="bold">Staked stETH (USD)</Text>
               <Input
                 type="number"
                 value={inputValue}
@@ -363,7 +372,7 @@ export const CapitalContributionMetrics: React.FC<Props> = ({ locale }) => {
             </VStack>
 
             <VStack alignItems="flex-start" gap={2}>
-              <Text color="#FFF" fontSize="xl" fontWeight="bold">Lockup Time (Years)</Text>
+              <Text color="#FFF" fontSize="xl" fontWeight="bold">Lock-in Length (Days from today)</Text>
               <Input
                 type="number"
                 value={timeLength}
@@ -387,6 +396,7 @@ export const CapitalContributionMetrics: React.FC<Props> = ({ locale }) => {
             </VStack>
           </Grid>
 
+          {/* Table Section */}
           <Box
             borderRadius={8}
             background="rgba(255,255,255,0.02)"
@@ -402,10 +412,10 @@ export const CapitalContributionMetrics: React.FC<Props> = ({ locale }) => {
               textAlign="left"
             >
               <Text color="#FFF" fontWeight="bold" fontSize="lg" py={2} pl={4}>
-                YEAR
+                LOCK PERIOD
               </Text>
               <Text color="#FFF" fontWeight="bold" fontSize="lg" py={2} pl={4}>
-                YIELD %
+                MULTIPLIER
               </Text>
               <Text color="#FFF" fontWeight="bold" fontSize="lg" py={2} pl={4}>
                 VALUE (USD)
@@ -413,41 +423,23 @@ export const CapitalContributionMetrics: React.FC<Props> = ({ locale }) => {
             </Grid>
             {generateTableRows().map((row, idx) => (
               <Grid
-                key={row.year}
+                key={row.days}
                 templateColumns={{ base: '1fr 1fr 1fr' }}
-                borderBottom={idx < timeLength - 1 ? '1px solid rgba(255,255,255,0.08)' : 'none'}
+                borderBottom={idx < 4 ? '1px solid rgba(255,255,255,0.08)' : 'none'}
                 alignItems="center"
                 textAlign="left"
               >
                 <Text color="#FFF" fontSize="lg" py={2} pl={4}>
-                  {row.year}
+                  {row.days}
                 </Text>
                 <Text color="#FFF" fontSize="lg" py={2} pl={4}>
-                  {(idx + 1) * 5}%
+                  {row.multiplier}
                 </Text>
                 <Text color="#FFF" fontSize="lg" py={2} pl={4}>
-                  ${row.value}
+                  {row.value}
                 </Text>
               </Grid>
             ))}
-          </Box>
-
-          {/* Capital Insight Section */}
-          <Box
-            borderRadius={8}
-            background="rgba(255,255,255,0.02)"
-            p={4}
-            width="100%"
-          >
-            <Text color="#FFF" fontSize="sm" fontWeight="semibold" textTransform="uppercase" mb={2} opacity={0.8}>
-              Capital Insight
-            </Text>
-            <Text color="#FFF" fontSize="2xl" fontWeight="bold">
-              {capitalInsight}% Total Return
-            </Text>
-            <Text color="#A2A3A6" fontSize="sm" mt={1}>
-              From ${inputValue} to ${finalValue} over {timeLength} years
-            </Text>
           </Box>
         </VStack>
       </Box>
