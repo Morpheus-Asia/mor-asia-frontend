@@ -1,6 +1,6 @@
 "use client";
 import { Box, Grid, HStack, Image, Stack, Text, VStack, Input } from "@chakra-ui/react";
-import { Tooltip } from "@chakra-ui/tooltip";
+import { Tooltip } from "morpheus-asia/components/ui/tooltip";
 import { getDictionary } from "morpheus-asia/i18n";
 import PercentageChip from "morpheus-asia/components/PercentageChip";
 import { MdOutlineAutoGraph } from "react-icons/md";
@@ -97,15 +97,13 @@ export const CapitalContributionMetrics: React.FC<Props> = ({ locale }) => {
               Daily Emissions
             </Text>
             <Tooltip 
-              label="Total MOR tokens emitted to all groups" 
-              placement="top"
-              hasArrow
-              bg="rgba(0, 30, 20, 0.85)"
-              color="white"
-              borderRadius="8px"
-              isOpen={activeTooltip === 'dailyEmissions'}
-              onOpen={() => handleTooltipToggle('dailyEmissions')}
-              onClose={() => handleTooltipToggle('dailyEmissions')}
+              content="Total MOR tokens emitted to all groups" 
+              positioning={{ placement: "top" }}
+              showArrow
+              open={activeTooltip === 'dailyEmissions'}
+              onOpenChange={(e) => handleTooltipToggle('dailyEmissions')}
+              openDelay={100}
+              closeDelay={0}
             >
               <Box cursor="pointer">
                 <IoHelpCircleOutline color="#A2A3A6" size={16} />
@@ -146,17 +144,13 @@ export const CapitalContributionMetrics: React.FC<Props> = ({ locale }) => {
                   Balance
                 </Text>
                 <Tooltip 
-                  label="Total amount of MOR tokens held in the Capital Pool" 
-                  placement="top"
-                  hasArrow
-                  bg="rgba(0, 30, 20, 0.85)"
-                  color="white"
-                  px={4}
-                  py={3}
-                  borderRadius="8px"
-                  isOpen={activeTooltip === 'balance'}
-                  onOpen={() => handleTooltipToggle('balance')}
-                  onClose={() => handleTooltipToggle('balance')}
+                  content="Total amount of MOR tokens held in the Capital Pool" 
+                  positioning={{ placement: "top" }}
+                  showArrow
+                  open={activeTooltip === 'balance'}
+                  onOpenChange={(e) => handleTooltipToggle('balance')}
+                  openDelay={100}
+                  closeDelay={0}
                 >
                   <Box cursor="pointer">
                     <IoHelpCircleOutline color="#A2A3A6" size={16} />
@@ -173,17 +167,13 @@ export const CapitalContributionMetrics: React.FC<Props> = ({ locale }) => {
                   Daily Accrual
                 </Text>
                 <Tooltip 
-                  label="Amount of MOR tokens added to the pool from daily emissions" 
-                  placement="top"
-                  hasArrow
-                  bg="rgba(0, 30, 20, 0.85)"
-                  color="white"
-                  px={4}
-                  py={3}
-                  borderRadius="8px"
-                  isOpen={activeTooltip === 'dailyAccrual'}
-                  onOpen={() => handleTooltipToggle('dailyAccrual')}
-                  onClose={() => handleTooltipToggle('dailyAccrual')}
+                  content="Amount of MOR tokens added to the pool from daily emissions" 
+                  positioning={{ placement: "top" }}
+                  showArrow
+                  open={activeTooltip === 'dailyAccrual'}
+                  onOpenChange={(e) => handleTooltipToggle('dailyAccrual')}
+                  openDelay={100}
+                  closeDelay={0}
                 >
                   <Box cursor="pointer">
                     <IoHelpCircleOutline color="#A2A3A6" size={16} />
@@ -200,17 +190,13 @@ export const CapitalContributionMetrics: React.FC<Props> = ({ locale }) => {
                   Total Locked
                 </Text>
                 <Tooltip 
-                  label="Total amount of sETH locked in the capital pool" 
-                  placement="top"
-                  hasArrow
-                  bg="rgba(0, 30, 20, 0.85)"
-                  color="white"
-                  px={4}
-                  py={3}
-                  borderRadius="8px"
-                  isOpen={activeTooltip === 'totalLocked'}
-                  onOpen={() => handleTooltipToggle('totalLocked')}
-                  onClose={() => handleTooltipToggle('totalLocked')}
+                  content="Total amount of sETH locked in the capital pool" 
+                  positioning={{ placement: "top" }}
+                  showArrow
+                  open={activeTooltip === 'totalLocked'}
+                  onOpenChange={(e) => handleTooltipToggle('totalLocked')}
+                  openDelay={100}
+                  closeDelay={0}
                 >
                   <Box cursor="pointer">
                     <IoHelpCircleOutline color="#A2A3A6" size={16} />
@@ -236,17 +222,13 @@ export const CapitalContributionMetrics: React.FC<Props> = ({ locale }) => {
                   APY
                 </Text>
                 <Tooltip 
-                  label="Annual Percentage Yield: Annual return on sETH in Capital Pool" 
-                  placement="top"
-                  hasArrow
-                  bg="rgba(0, 30, 20, 0.85)"
-                  color="white"
-                  px={4}
-                  py={3}
-                  borderRadius="8px"
-                  isOpen={activeTooltip === 'apy'}
-                  onOpen={() => handleTooltipToggle('apy')}
-                  onClose={() => handleTooltipToggle('apy')}
+                  content="Annual Percentage Yield: Annual return on sETH in Capital Pool" 
+                  positioning={{ placement: "top" }}
+                  showArrow
+                  open={activeTooltip === 'apy'}
+                  onOpenChange={(e) => handleTooltipToggle('apy')}
+                  openDelay={100}
+                  closeDelay={0}
                 >
                   <Box cursor="pointer">
                     <IoHelpCircleOutline color="#A2A3A6" size={16} />
@@ -263,17 +245,13 @@ export const CapitalContributionMetrics: React.FC<Props> = ({ locale }) => {
                   Annual Yield
                 </Text>
                 <Tooltip 
-                  label="Return generated from Total Locked sETH based on APY" 
-                  placement="top"
-                  hasArrow
-                  bg="rgba(0, 30, 20, 0.85)"
-                  color="white"
-                  px={4}
-                  py={3}
-                  borderRadius="8px"
-                  isOpen={activeTooltip === 'annualYield'}
-                  onOpen={() => handleTooltipToggle('annualYield')}
-                  onClose={() => handleTooltipToggle('annualYield')}
+                  content="Return generated from Total Locked sETH based on APY" 
+                  positioning={{ placement: "top" }}
+                  showArrow
+                  open={activeTooltip === 'annualYield'}
+                  onOpenChange={(e) => handleTooltipToggle('annualYield')}
+                  openDelay={100}
+                  closeDelay={0}
                 >
                   <Box cursor="pointer">
                     <IoHelpCircleOutline color="#A2A3A6" size={16} />
@@ -290,17 +268,13 @@ export const CapitalContributionMetrics: React.FC<Props> = ({ locale }) => {
                   Unclaimed Yield
                 </Text>
                 <Tooltip 
-                  label="Accrued stETH yield unclaimed by capital providers" 
-                  placement="top"
-                  hasArrow
-                  bg="rgba(0, 30, 20, 0.85)"
-                  color="white"
-                  px={4}
-                  py={3}
-                  borderRadius="8px"
-                  isOpen={activeTooltip === 'unclaimedYield'}
-                  onOpen={() => handleTooltipToggle('unclaimedYield')}
-                  onClose={() => handleTooltipToggle('unclaimedYield')}
+                  content="Accrued stETH yield unclaimed by capital providers" 
+                  positioning={{ placement: "top" }}
+                  showArrow
+                  open={activeTooltip === 'unclaimedYield'}
+                  onOpenChange={(e) => handleTooltipToggle('unclaimedYield')}
+                  openDelay={100}
+                  closeDelay={0}
                 >
                   <Box cursor="pointer">
                     <IoHelpCircleOutline color="#A2A3A6" size={16} />
