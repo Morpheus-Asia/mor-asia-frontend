@@ -6,8 +6,10 @@ import PercentageChip from "morpheus-asia/components/PercentageChip";
 import { MdOutlineAutoGraph } from "react-icons/md";
 import { IoHelpCircleOutline } from "react-icons/io5";
 import { FaLandmark } from "react-icons/fa";
-import React from "react";
+import React, { useState, ChangeEvent } from "react";
 import ETHLogo from "morpheus-asia/Image/ETH.png";
+import ReactApexcharts from "morpheus-asia/components/Charts/apex-charts";
+import { ApexOptions } from "apexcharts";
 
 type Props = {
   locale?: string;
@@ -24,11 +26,11 @@ export const CapitalContributionMetrics: React.FC<Props> = ({ locale }) => {
   const dailyAccrual = "3,266.0471 MOR";
   const totalLocked = "15,230.45 stETH";
 
-  const [inputValue, setInputValue] = React.useState<number>(1000);
-  const [timeLength, setTimeLength] = React.useState<number>(5);
-  const [activeTooltip, setActiveTooltip] = React.useState<string | null>(null);
+  const [inputValue, setInputValue] = useState<number>(1000);
+  const [timeLength, setTimeLength] = useState<number>(5);
+  const [activeTooltip, setActiveTooltip] = useState<string | null>(null);
 
-  const handleTooltipToggle = (tooltipName: string) => {
+  const onHandleTooltipToggle = (tooltipName: string) => {
     setActiveTooltip(activeTooltip === tooltipName ? null : tooltipName);
   };
 
@@ -77,15 +79,40 @@ export const CapitalContributionMetrics: React.FC<Props> = ({ locale }) => {
           </HStack>
           {/* Placeholder chart */}
           <Box minW={{ base: "120px", md: "240px" }} h="80px" display="flex" alignItems="center" justifyContent="flex-end">
-            {/* Simple SVG line as placeholder */}
-            <svg width="100%" height="80" viewBox="0 0 240 80">
-              <polyline
-                fill="none"
-                stroke="#00DC8D"
-                strokeWidth="3"
-                points="0,60 30,40 60,50 90,20 120,40 150,10 180,50 210,30 240,60"
-              />
-            </svg>
+            <ReactApexcharts
+              options={{
+                chart: {
+                  type: "line",
+                  background: "transparent",
+                  zoom: { enabled: false },
+                  toolbar: { show: false },
+                  sparkline: { enabled: true },
+                },
+                colors: ["#00DC8D"],
+                stroke: { curve: "monotoneCubic", width: 2 },
+                markers: {
+                  size: 0,
+                },
+                tooltip: {
+                  enabled: false,
+                },
+                grid: {
+                  show: false,
+                },
+                xaxis: {
+                  axisBorder: { show: false },
+                  axisTicks: { show: false },
+                  labels: { show: false },
+                },
+                yaxis: {
+                  show: false,
+                },
+              }}
+              series={[{ data: [60, 40, 50, 20, 40, 10, 50, 30, 60] }]}
+              type="line"
+              height={80}
+              width="100%"
+            />
           </Box>
         </HStack>
         {/* Divider replacement */}
@@ -101,7 +128,7 @@ export const CapitalContributionMetrics: React.FC<Props> = ({ locale }) => {
               positioning={{ placement: "top" }}
               showArrow
               open={activeTooltip === 'dailyEmissions'}
-              onOpenChange={(e) => handleTooltipToggle('dailyEmissions')}
+              onOpenChange={(e) => onHandleTooltipToggle('dailyEmissions')}
               openDelay={100}
               closeDelay={0}
             >
@@ -148,7 +175,7 @@ export const CapitalContributionMetrics: React.FC<Props> = ({ locale }) => {
                   positioning={{ placement: "top" }}
                   showArrow
                   open={activeTooltip === 'balance'}
-                  onOpenChange={(e) => handleTooltipToggle('balance')}
+                  onOpenChange={(e) => onHandleTooltipToggle('balance')}
                   openDelay={100}
                   closeDelay={0}
                 >
@@ -171,7 +198,7 @@ export const CapitalContributionMetrics: React.FC<Props> = ({ locale }) => {
                   positioning={{ placement: "top" }}
                   showArrow
                   open={activeTooltip === 'dailyAccrual'}
-                  onOpenChange={(e) => handleTooltipToggle('dailyAccrual')}
+                  onOpenChange={(e) => onHandleTooltipToggle('dailyAccrual')}
                   openDelay={100}
                   closeDelay={0}
                 >
@@ -194,7 +221,7 @@ export const CapitalContributionMetrics: React.FC<Props> = ({ locale }) => {
                   positioning={{ placement: "top" }}
                   showArrow
                   open={activeTooltip === 'totalLocked'}
-                  onOpenChange={(e) => handleTooltipToggle('totalLocked')}
+                  onOpenChange={(e) => onHandleTooltipToggle('totalLocked')}
                   openDelay={100}
                   closeDelay={0}
                 >
@@ -226,7 +253,7 @@ export const CapitalContributionMetrics: React.FC<Props> = ({ locale }) => {
                   positioning={{ placement: "top" }}
                   showArrow
                   open={activeTooltip === 'apy'}
-                  onOpenChange={(e) => handleTooltipToggle('apy')}
+                  onOpenChange={(e) => onHandleTooltipToggle('apy')}
                   openDelay={100}
                   closeDelay={0}
                 >
@@ -249,7 +276,7 @@ export const CapitalContributionMetrics: React.FC<Props> = ({ locale }) => {
                   positioning={{ placement: "top" }}
                   showArrow
                   open={activeTooltip === 'annualYield'}
-                  onOpenChange={(e) => handleTooltipToggle('annualYield')}
+                  onOpenChange={(e) => onHandleTooltipToggle('annualYield')}
                   openDelay={100}
                   closeDelay={0}
                 >
@@ -272,7 +299,7 @@ export const CapitalContributionMetrics: React.FC<Props> = ({ locale }) => {
                   positioning={{ placement: "top" }}
                   showArrow
                   open={activeTooltip === 'unclaimedYield'}
-                  onOpenChange={(e) => handleTooltipToggle('unclaimedYield')}
+                  onOpenChange={(e) => onHandleTooltipToggle('unclaimedYield')}
                   openDelay={100}
                   closeDelay={0}
                 >
@@ -332,7 +359,7 @@ export const CapitalContributionMetrics: React.FC<Props> = ({ locale }) => {
               <Input
                 type="number"
                 value={inputValue}
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setInputValue(Number(e.target.value))}
+                onChange={(e: ChangeEvent<HTMLInputElement>) => setInputValue(Number(e.target.value))}
                 min={0}
                 color="#FFF"
                 borderRadius={8}
@@ -350,7 +377,7 @@ export const CapitalContributionMetrics: React.FC<Props> = ({ locale }) => {
               <Input
                 type="number"
                 value={timeLength}
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                onChange={(e: ChangeEvent<HTMLInputElement>) => {
                   const value = Number(e.target.value);
                   if (value >= 2 && value <= 10) {
                     setTimeLength(value);
