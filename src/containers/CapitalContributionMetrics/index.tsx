@@ -6,7 +6,7 @@ import PercentageChip from "morpheus-asia/components/PercentageChip";
 import { MdOutlineAutoGraph } from "react-icons/md";
 import { IoHelpCircleOutline } from "react-icons/io5";
 import { FaLandmark } from "react-icons/fa";
-import React, { useState, ChangeEvent } from "react";
+import React, { useState, ChangeEvent, useMemo } from "react";
 import ETHLogo from "morpheus-asia/Image/ETH.png";
 import ReactApexcharts from "morpheus-asia/components/Charts/apex-charts";
 import { ApexOptions } from "apexcharts";
@@ -19,15 +19,30 @@ export const CapitalContributionMetrics: React.FC<Props> = ({ locale }) => {
   // =============== LOCALE
   const metricsPageLocale = getDictionary(locale)?.metricsPage;
 
+  // Calculate daily emissions
+  const calculateDailyEmissions = useMemo(() => {
+    const startDate = new Date('2024-02-08');
+    const today = new Date();
+    const daysSinceStart = Math.floor((today.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24));
+    const initialEmissions = 14400;
+    const dailyDecline = 2.468994701;
+    const currentEmissions = initialEmissions - (daysSinceStart * dailyDecline);
+    return currentEmissions.toFixed(4);
+  }, []);
+
+  // Calculate daily accrual (24% of daily emissions)
+  const dailyAccrualValue = useMemo(() => {
+    return (Number(calculateDailyEmissions) * 0.24).toFixed(4);
+  }, [calculateDailyEmissions]);
+
   // Placeholder values
   const price = "$3252.23";
   const percent = 5.0;
   const balance = "1,516,056.8173 MOR";
-  const dailyAccrual = "3,266.0471 MOR";
+  const dailyAccrual = `${dailyAccrualValue} MOR`;
   const totalLocked = "15,230.45 stETH";
 
   const [inputValue, setInputValue] = useState<number>(1000);
-  const [timeLength, setTimeLength] = useState<number>(5);
   const [activeTooltip, setActiveTooltip] = useState<string | null>(null);
 
   const onHandleTooltipToggle = (tooltipName: string) => {
@@ -35,12 +50,46 @@ export const CapitalContributionMetrics: React.FC<Props> = ({ locale }) => {
   };
 
   const generateTableRows = () => {
+    // Calculate total emissions up to a specific day
+    const calculateTotalEmissions = (daysFromStart: number) => {
+      let total = 0;
+      for (let i = 0; i < daysFromStart; i++) {
+        const dailyEmission = 14400 - (i * 2.468994701);
+        if (dailyEmission > 0) {
+          total += dailyEmission;
+        }
+      }
+      return total;
+    };
+
+    // Calculate multipliers based on dilution rates
+    const calculateMultiplier = (days: number) => {
+      const today = new Date();
+      const startDate = new Date('2024-02-08');
+      const daysSinceStart = Math.floor((today.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24));
+      
+      // Calculate total emissions at current date
+      const currentTotalEmissions = calculateTotalEmissions(daysSinceStart);
+      
+      // Calculate total emissions at future date
+      const futureTotalEmissions = calculateTotalEmissions(daysSinceStart + days);
+      
+      // Calculate dilution rate (as a percentage)
+      const dilutionRate = ((futureTotalEmissions - currentTotalEmissions) / currentTotalEmissions) * 100;
+      
+      // Multiplier is the dilution rate percentage divided by 100, minimum 1.0x
+      const multiplier = Math.max(1.0, dilutionRate / 100);
+      return multiplier.toFixed(1) + 'x';
+    };
+
     return [
-      { days: '7 Days', multiplier: '5x', value: '$5,000' },
-      { days: '30 Days', multiplier: '10x', value: '$10,000' },
-      { days: '180 Days', multiplier: '15x', value: '$15,000' },
-      { days: '365 Days', multiplier: '20x', value: '$20,000' },
-      { days: '2190 Days', multiplier: '25x', value: '$25,000' }
+      { days: '7 Days', multiplier: calculateMultiplier(7), newInitialValue: `$${(inputValue * Number(calculateMultiplier(7).replace('x', ''))).toLocaleString()}`, rewardEstimate: '$5,000' },
+      { days: '365 Days (1Y)', multiplier: calculateMultiplier(365), newInitialValue: `$${(inputValue * Number(calculateMultiplier(365).replace('x', ''))).toLocaleString()}`, rewardEstimate: '$20,000' },
+      { days: '730 Days (2Y)', multiplier: calculateMultiplier(730), newInitialValue: `$${(inputValue * Number(calculateMultiplier(730).replace('x', ''))).toLocaleString()}`, rewardEstimate: '$22,000' },
+      { days: '1095 Days (3Y)', multiplier: calculateMultiplier(1095), newInitialValue: `$${(inputValue * Number(calculateMultiplier(1095).replace('x', ''))).toLocaleString()}`, rewardEstimate: '$24,000' },
+      { days: '1460 Days (4Y)', multiplier: calculateMultiplier(1460), newInitialValue: `$${(inputValue * Number(calculateMultiplier(1460).replace('x', ''))).toLocaleString()}`, rewardEstimate: '$24,400' },
+      { days: '1825 Days (5Y)', multiplier: calculateMultiplier(1825), newInitialValue: `$${(inputValue * Number(calculateMultiplier(1825).replace('x', ''))).toLocaleString()}`, rewardEstimate: '$24,800' },
+      { days: '2190 Days (6Y)', multiplier: calculateMultiplier(2190), newInitialValue: `$${(inputValue * Number(calculateMultiplier(2190).replace('x', ''))).toLocaleString()}`, rewardEstimate: '$25,000' }
     ];
   };
 
@@ -118,29 +167,55 @@ export const CapitalContributionMetrics: React.FC<Props> = ({ locale }) => {
         {/* Divider replacement */}
         <Box width="100%" height="1px" background="rgba(255,255,255,0.12)" my={2} />
         {/* Daily Emissions Heading */}
-        <VStack alignItems="flex-start" gap={0}>
-          <HStack>
-            <Text color="#FFF" fontWeight="semibold" fontSize="sm" opacity={0.8} textTransform="uppercase">
-              Daily Emissions
+        <Grid templateColumns={{ base: "1fr", md: "1fr 1fr" }}>
+          <VStack alignItems="flex-start" gap={0}>
+            <HStack>
+              <Text color="#FFF" fontWeight="semibold" fontSize="sm" opacity={0.8} textTransform="uppercase">
+                Initial Daily Emissions
+              </Text>
+              <Tooltip 
+                content="Total MOR tokens emitted to all groups initially" 
+                positioning={{ placement: "top" }}
+                showArrow
+                open={activeTooltip === 'dailyEmissions'}
+                onOpenChange={(e) => onHandleTooltipToggle('dailyEmissions')}
+                openDelay={100}
+                closeDelay={0}
+              >
+                <Box cursor="pointer">
+                  <IoHelpCircleOutline color="#A2A3A6" size={16} />
+                </Box>
+              </Tooltip>
+            </HStack>
+            <Text color="#FFF" fontWeight="bold" fontSize="3xl">
+              14,400 MOR
             </Text>
-            <Tooltip 
-              content="Total MOR tokens emitted to all groups" 
-              positioning={{ placement: "top" }}
-              showArrow
-              open={activeTooltip === 'dailyEmissions'}
-              onOpenChange={(e) => onHandleTooltipToggle('dailyEmissions')}
-              openDelay={100}
-              closeDelay={0}
-            >
-              <Box cursor="pointer">
-                <IoHelpCircleOutline color="#A2A3A6" size={16} />
-              </Box>
-            </Tooltip>
-          </HStack>
-          <Text color="#FFF" fontWeight="bold" fontSize="3xl">
-            3,266.0471 MOR
-          </Text>
-        </VStack>
+          </VStack>
+
+          <VStack alignItems="flex-start" gap={0}>
+            <HStack>
+              <Text color="#FFF" fontWeight="semibold" fontSize="sm" opacity={0.8} textTransform="uppercase">
+                Daily Emissions Today
+              </Text>
+              <Tooltip 
+                content="Current daily MOR token emissions" 
+                positioning={{ placement: "top" }}
+                showArrow
+                open={activeTooltip === 'dailyEmissionsToday'}
+                onOpenChange={(e) => onHandleTooltipToggle('dailyEmissionsToday')}
+                openDelay={100}
+                closeDelay={0}
+              >
+                <Box cursor="pointer">
+                  <IoHelpCircleOutline color="#A2A3A6" size={16} />
+                </Box>
+              </Tooltip>
+            </HStack>
+            <Text color="#FFF" fontWeight="bold" fontSize="3xl">
+              {calculateDailyEmissions} MOR
+            </Text>
+          </VStack>
+        </Grid>
         {/* Capital Pool Section */}
         <Box
           width="100%"
@@ -155,7 +230,7 @@ export const CapitalContributionMetrics: React.FC<Props> = ({ locale }) => {
           <HStack gap={3}>
             <FaLandmark color="#00DC8D" size={20} />
             <Text color="#FFF" fontWeight="bold" fontSize="2xl">
-              Capital Pool
+              Capital Pool (ID: 0)
             </Text>
           </HStack>
           {/* Bottom section: 3 metrics */}
@@ -334,9 +409,24 @@ export const CapitalContributionMetrics: React.FC<Props> = ({ locale }) => {
           {/* Total Virtual Staked stETH Section */}
           <Grid templateColumns={{ base: "1fr", md: "1fr 1fr" }} gap={4} width="100%">
             <VStack alignItems="flex-start" gap={0}>
-              <Text color="#FFF" fontWeight="semibold" fontSize="sm" opacity={0.8} textTransform="uppercase">
-                Total Virtual Staked stETH as of Today
-              </Text>
+              <HStack>
+                <Text color="#FFF" fontWeight="semibold" fontSize="sm" opacity={0.8} textTransform="uppercase">
+                  Total Virtual Staked stETH as of Today
+                </Text>
+                <Tooltip 
+                  content="Total Staked stETH in Capital Pool with multiplier counted" 
+                  positioning={{ placement: "top" }}
+                  showArrow
+                  open={activeTooltip === 'totalVirtualStaked'}
+                  onOpenChange={(e) => onHandleTooltipToggle('totalVirtualStaked')}
+                  openDelay={100}
+                  closeDelay={0}
+                >
+                  <Box cursor="pointer">
+                    <IoHelpCircleOutline color="#A2A3A6" size={16} />
+                  </Box>
+                </Tooltip>
+              </HStack>
               <Text color="#FFF" fontWeight="bold" fontSize="3xl">
                 15,230.45 stETH
               </Text>
@@ -353,38 +443,14 @@ export const CapitalContributionMetrics: React.FC<Props> = ({ locale }) => {
           </Grid>
 
           {/* Inputs Section */}
-          <Grid templateColumns={{ base: "1fr", md: "1fr 1fr" }} gap={4} width="100%">
+          <Grid templateColumns={{ base: "1fr", md: "1fr" }} gap={4} width="100%">
             <VStack alignItems="flex-start" gap={2}>
-              <Text color="#FFF" fontSize="xl" fontWeight="bold">Staked stETH (USD)</Text>
+              <Text color="#FFF" fontSize="xl" fontWeight="bold">Staked stETH (USD) Lock-In</Text>
               <Input
                 type="number"
                 value={inputValue}
                 onChange={(e: ChangeEvent<HTMLInputElement>) => setInputValue(Number(e.target.value))}
                 min={0}
-                color="#FFF"
-                borderRadius={8}
-                width="100%"
-                textAlign="left"
-                fontSize="xl"
-                fontWeight="bold"
-                border="none"
-                _focus={{ border: "none", boxShadow: "none" }}
-              />
-            </VStack>
-
-            <VStack alignItems="flex-start" gap={2}>
-              <Text color="#FFF" fontSize="xl" fontWeight="bold">Lock-in Length (Days from today)</Text>
-              <Input
-                type="number"
-                value={timeLength}
-                onChange={(e: ChangeEvent<HTMLInputElement>) => {
-                  const value = Number(e.target.value);
-                  if (value >= 2 && value <= 10) {
-                    setTimeLength(value);
-                  }
-                }}
-                min={2}
-                max={10}
                 color="#FFF"
                 borderRadius={8}
                 width="100%"
@@ -407,7 +473,7 @@ export const CapitalContributionMetrics: React.FC<Props> = ({ locale }) => {
             width="100%"
           >
             <Grid
-              templateColumns={{ base: '1fr 1fr 1fr' }}
+              templateColumns={{ base: '1fr 1fr 1fr 1fr' }}
               borderBottom="1px solid rgba(255,255,255,0.12)"
               mb={2}
               textAlign="left"
@@ -419,13 +485,16 @@ export const CapitalContributionMetrics: React.FC<Props> = ({ locale }) => {
                 MULTIPLIER
               </Text>
               <Text color="#FFF" fontWeight="bold" fontSize="lg" py={2} pl={4}>
-                VALUE (USD)
+                NEW INITIAL VALUE
+              </Text>
+              <Text color="#FFF" fontWeight="bold" fontSize="lg" py={2} pl={4}>
+                REWARD ESTIMATE
               </Text>
             </Grid>
             {generateTableRows().map((row, idx) => (
               <Grid
                 key={row.days}
-                templateColumns={{ base: '1fr 1fr 1fr' }}
+                templateColumns={{ base: '1fr 1fr 1fr 1fr' }}
                 borderBottom={idx < 4 ? '1px solid rgba(255,255,255,0.08)' : 'none'}
                 alignItems="center"
                 textAlign="left"
@@ -437,7 +506,10 @@ export const CapitalContributionMetrics: React.FC<Props> = ({ locale }) => {
                   {row.multiplier}
                 </Text>
                 <Text color="#FFF" fontSize="lg" py={2} pl={4}>
-                  {row.value}
+                  {row.newInitialValue}
+                </Text>
+                <Text color="#FFF" fontSize="lg" py={2} pl={4}>
+                  {row.rewardEstimate}
                 </Text>
               </Grid>
             ))}
