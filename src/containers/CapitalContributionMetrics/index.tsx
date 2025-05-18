@@ -6,10 +6,11 @@ import PercentageChip from "morpheus-asia/components/PercentageChip";
 import { MdOutlineAutoGraph } from "react-icons/md";
 import { IoHelpCircleOutline } from "react-icons/io5";
 import { FaLandmark } from "react-icons/fa";
-import React, { useState, ChangeEvent, useMemo } from "react";
+import React, { useState, ChangeEvent, useMemo, useEffect } from "react";
 import ETHLogo from "morpheus-asia/Image/ETH.png";
-import ReactApexcharts from "morpheus-asia/components/Charts/apex-charts";
+import QuickView24HrLineChart from "morpheus-asia/components/Charts/QuickViewLineChart";
 import { ApexOptions } from "apexcharts";
+import ReactApexcharts from "morpheus-asia/components/Charts/apex-charts";
 
 type Props = {
   locale?: string;
@@ -18,6 +19,63 @@ type Props = {
 export const CapitalContributionMetrics: React.FC<Props> = ({ locale }) => {
   // =============== LOCALE
   const metricsPageLocale = getDictionary(locale)?.metricsPage;
+
+  // =============== STATE
+  const [loading, setLoading] = useState(true);
+  const [totalVirtualStaked, setTotalVirtualStaked] = useState<string>("");
+  const [metrics, setMetrics] = useState({} as any);
+
+  // =============== EFFECTS
+  useEffect(() => {
+    const fetchTotalVirtualStaked = async () => {
+      try {
+        const response = await fetch(
+          `${process.env.NEXT_PUBLIC_API_URL}/api/cap_virtual_deposited`
+        );
+        const data = await response.json();
+        console.log('API Response:', data); // Debug log
+        if (data && data.data && data.data.totalVirtualDeposited) {
+          const formattedValue = (Number(data.data.totalVirtualDeposited) / 1e18).toFixed(4);
+          setTotalVirtualStaked(`${formattedValue} stETH`);
+        } else {
+          console.error('Unexpected API response structure:', data);
+          setTotalVirtualStaked('Error: Invalid response format');
+        }
+      } catch (error) {
+        console.error("Error fetching total virtual staked:", error);
+        setTotalVirtualStaked('Error: Failed to fetch data');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    const fetchEthMetrics = async () => {
+      try {
+        const currentTime = Date.now();
+        const response = await fetch(
+          `${process.env.NEXT_PUBLIC_API_URL}/api/eth/metrics`
+        );
+        const data = await response.json();
+        setMetrics(data?.data);
+      } catch (error) {
+        console.error("Error fetching ETH metrics:", error);
+      }
+    };
+
+    fetchTotalVirtualStaked();
+    fetchEthMetrics();
+  }, []);
+
+  // =============== VARIABLES
+  const metricsAsset = metrics?.asset;
+  const metricsHistory = metrics?.history;
+
+  const formattedData = {
+    series: metricsHistory?.map((item: any) => [
+      item.time, // X-axis: Timestamp
+      parseFloat(item.priceUsd).toFixed(2), // Y-axis: Rounded price
+    ]),
+  };
 
   // Calculate daily emissions
   const calculateDailyEmissions = useMemo(() => {
@@ -407,7 +465,7 @@ export const CapitalContributionMetrics: React.FC<Props> = ({ locale }) => {
 
         <VStack gap={6} alignItems="flex-start" width="100%">
           {/* Total Virtual Staked stETH Section */}
-          <Grid templateColumns={{ base: "1fr", md: "1fr 1fr" }} gap={4} width="100%">
+          <Grid templateColumns={{ base: "1fr", md: "1fr" }} gap={4} width="100%">
             <VStack alignItems="flex-start" gap={0}>
               <HStack>
                 <Text color="#FFF" fontWeight="semibold" fontSize="sm" opacity={0.8} textTransform="uppercase">
@@ -428,16 +486,7 @@ export const CapitalContributionMetrics: React.FC<Props> = ({ locale }) => {
                 </Tooltip>
               </HStack>
               <Text color="#FFF" fontWeight="bold" fontSize="3xl">
-                15,230.45 stETH
-              </Text>
-            </VStack>
-
-            <VStack alignItems="flex-start" gap={0}>
-              <Text color="#FFF" fontWeight="semibold" fontSize="sm" opacity={0.8} textTransform="uppercase">
-                Percentage of Total Virtual Staked stETH
-              </Text>
-              <Text color="#FFF" fontWeight="bold" fontSize="3xl">
-                2.5%
+                {loading ? "Loading..." : totalVirtualStaked}
               </Text>
             </VStack>
           </Grid>
