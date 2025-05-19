@@ -27,11 +27,32 @@ export const CapitalContributionMetrics: React.FC<Props> = ({ locale }) => {
   const [metrics, setMetrics] = useState({} as any);
   const [ethPrice, setEthPrice] = useState<string>("");
   const [morPrice, setMorPrice] = useState<number>(0);
+  const [totalLocked, setTotalLocked] = useState<string>("");
+  const [balance, setBalance] = useState<string>("");
+  const [ethPriceHistory, setEthPriceHistory] = useState<Array<{priceUsd: string, time: number}>>([]);
+  const [priceChangePercent, setPriceChangePercent] = useState<number>(0);
 
   // =============== EFFECTS
   useEffect(() => {
     const fetchData = async () => {
       try {
+        // Fetch ETH price history
+        const ethHistoryResponse = await fetch(
+          `${process.env.NEXT_PUBLIC_API_URL}/api/eth/history`
+        );
+        const ethHistoryData = await ethHistoryResponse.json();
+        if (ethHistoryData && ethHistoryData.data) {
+          setEthPriceHistory(ethHistoryData.data);
+          
+          // Calculate price change percentage
+          if (ethHistoryData.data.length >= 2) {
+            const latestPrice = parseFloat(ethHistoryData.data[ethHistoryData.data.length - 1].priceUsd);
+            const previousPrice = parseFloat(ethHistoryData.data[ethHistoryData.data.length - 2].priceUsd);
+            const percentChange = ((latestPrice - previousPrice) / previousPrice) * 100;
+            setPriceChangePercent(Number(percentChange.toFixed(2)));
+          }
+        }
+
         // Fetch total virtual staked
         const virtualStakedResponse = await fetch(
           `${process.env.NEXT_PUBLIC_API_URL}/api/cap_virtual_deposited`
@@ -39,7 +60,7 @@ export const CapitalContributionMetrics: React.FC<Props> = ({ locale }) => {
         const virtualStakedData = await virtualStakedResponse.json();
         if (virtualStakedData && virtualStakedData.data && virtualStakedData.data.totalVirtualDeposited) {
           const formattedValue = (Number(virtualStakedData.data.totalVirtualDeposited) / 1e18).toFixed(4);
-          setTotalVirtualStaked(`${formattedValue} ETH`);
+          setTotalVirtualStaked(`${formattedValue} stETH`);
           
           // Calculate USD value if ETH price is available
           const ethPriceResponse = await fetch(
@@ -59,6 +80,19 @@ export const CapitalContributionMetrics: React.FC<Props> = ({ locale }) => {
           setTotalVirtualStaked('Error: Invalid response format');
         }
 
+        // Fetch total locked
+        const totalLockedResponse = await fetch(
+          `${process.env.NEXT_PUBLIC_API_URL}/api/total_deposited`
+        );
+        const totalLockedData = await totalLockedResponse.json();
+        if (totalLockedData && totalLockedData.data && totalLockedData.data.totalDeposited) {
+          const formattedValue = (Number(totalLockedData.data.totalDeposited) / 1e18).toFixed(4);
+          setTotalLocked(`${formattedValue} ETH`);
+        } else {
+          console.error('Unexpected total locked API response structure:', totalLockedData);
+          setTotalLocked('Error: Invalid response format');
+        }
+
         // Fetch ETH price
         const ethPriceResponse = await fetch(
           `${process.env.NEXT_PUBLIC_API_URL}/api/eth/price`
@@ -71,14 +105,38 @@ export const CapitalContributionMetrics: React.FC<Props> = ({ locale }) => {
           setEthPrice('Error: Invalid price format');
         }
 
-        // Fetch MOR price
+        // Fetch MOR price and total supply
         const currentTime = Date.now();
         const morMetricsResponse = await fetch(
           `${process.env.NEXT_PUBLIC_FRONTEND_URL}/api/morpheus-api/data?currentTime=${currentTime}`
         );
         const morMetricsData = await morMetricsResponse.json();
-        if (morMetricsData?.data?.asset?.priceUsd) {
+        console.log('MOR Metrics Data:', morMetricsData?.data?.asset);
+        if (morMetricsData?.data?.asset) {
           setMorPrice(Number(morMetricsData.data.asset.priceUsd));
+          
+          // Calculate balance (24% of total supply)
+          if (morMetricsData.data.asset.maxSupply) {
+            console.log('Max Supply:', morMetricsData.data.asset.maxSupply);
+            // Remove commas before converting to number
+            const cleanSupply = morMetricsData.data.asset.maxSupply.replace(/,/g, '');
+            const totalSupply = Number(cleanSupply);
+            console.log('Total Supply (Number):', totalSupply);
+            if (!isNaN(totalSupply)) {
+              const balanceValue = (totalSupply * 0.24).toLocaleString('en-US', {
+                maximumFractionDigits: 4,
+                minimumFractionDigits: 4
+              });
+              console.log('Balance Value:', balanceValue);
+              setBalance(`${balanceValue} MOR`);
+            } else {
+              console.error('Invalid total supply value:', morMetricsData.data.asset.maxSupply);
+              setBalance('Error: Invalid supply data');
+            }
+          } else {
+            console.error('Missing maxSupply in API response:', morMetricsData.data.asset);
+            setBalance('Error: Missing supply data');
+          }
         }
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -95,12 +153,14 @@ export const CapitalContributionMetrics: React.FC<Props> = ({ locale }) => {
   const metricsAsset = metrics?.asset;
   const metricsHistory = metrics?.history;
 
-  const formattedData = {
-    series: metricsHistory?.map((item: any) => [
-      item.time, // X-axis: Timestamp
-      parseFloat(item.priceUsd).toFixed(2), // Y-axis: Rounded price
-    ]),
-  };
+  const chartData = useMemo(() => {
+    if (!ethPriceHistory.length) return [];
+    
+    return ethPriceHistory.map(item => ({
+      x: item.time,
+      y: parseFloat(item.priceUsd)
+    }));
+  }, [ethPriceHistory]);
 
   // Calculate daily emissions
   const calculateDailyEmissions = useMemo(() => {
@@ -120,10 +180,10 @@ export const CapitalContributionMetrics: React.FC<Props> = ({ locale }) => {
 
   // Placeholder values
   const price = ethPrice || "$3252.23";
-  const percent = 5.0;
-  const balance = "1,516,056.8173 MOR";
+  const percent = priceChangePercent;
   const dailyAccrual = `${dailyAccrualValue} MOR`;
-  const totalLocked = "15,230.45 ETH";
+  const totalLockedValue = loading ? "Loading..." : totalLocked;
+  const balanceValue = loading ? "Loading..." : balance;
 
   const [inputValue, setInputValue] = useState<number>(1000);
   const [activeTooltip, setActiveTooltip] = useState<string | null>(null);
@@ -152,10 +212,22 @@ export const CapitalContributionMetrics: React.FC<Props> = ({ locale }) => {
       const daysSinceStart = Math.floor((today.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24));
       
       // Calculate total emissions at current date
-      const currentTotalEmissions = calculateTotalEmissions(daysSinceStart);
+      let currentTotalEmissions = 0;
+      for (let i = 0; i < daysSinceStart; i++) {
+        const dailyEmission = 14400 - (i * 2.468994701);
+        if (dailyEmission > 0) {
+          currentTotalEmissions += dailyEmission;
+        }
+      }
       
       // Calculate total emissions at future date
-      const futureTotalEmissions = calculateTotalEmissions(daysSinceStart + days);
+      let futureTotalEmissions = 0;
+      for (let i = 0; i < (daysSinceStart + days); i++) {
+        const dailyEmission = 14400 - (i * 2.468994701);
+        if (dailyEmission > 0) {
+          futureTotalEmissions += dailyEmission;
+        }
+      }
       
       // Calculate dilution rate (as a percentage)
       const dilutionRate = ((futureTotalEmissions - currentTotalEmissions) / currentTotalEmissions) * 100;
@@ -302,6 +374,7 @@ export const CapitalContributionMetrics: React.FC<Props> = ({ locale }) => {
                   show: false,
                 },
                 xaxis: {
+                  type: 'datetime',
                   axisBorder: { show: false },
                   axisTicks: { show: false },
                   labels: { show: false },
@@ -310,7 +383,7 @@ export const CapitalContributionMetrics: React.FC<Props> = ({ locale }) => {
                   show: false,
                 },
               }}
-              series={[{ data: [60, 40, 50, 20, 40, 10, 50, 30, 60] }]}
+              series={[{ data: chartData }]}
               type="line"
               height={80}
               width="100%"
@@ -413,7 +486,7 @@ export const CapitalContributionMetrics: React.FC<Props> = ({ locale }) => {
                 </Tooltip>
               </HStack>
               <Text color="#FFF" fontWeight="bold" fontSize="3xl">
-                {balance}
+                {balanceValue}
               </Text>
             </VStack>
             <VStack alignItems="flex-start" gap={0}>
@@ -459,85 +532,7 @@ export const CapitalContributionMetrics: React.FC<Props> = ({ locale }) => {
                 </Tooltip>
               </HStack>
               <Text color="#FFF" fontWeight="bold" fontSize="3xl">
-                {totalLocked}
-              </Text>
-            </VStack>
-          </Grid>
-
-          {/* Additional Metrics */}
-          <Grid 
-            templateColumns={{ base: "1fr", md: "repeat(3, 1fr)" }} 
-            gap="5%" 
-            width="100%"
-            justifyContent="space-between"
-          >
-            <VStack alignItems="flex-start" gap={0}>
-              <HStack>
-                <Text color="#FFF" fontWeight="semibold" fontSize="sm" opacity={0.8} textTransform="uppercase">
-                  APY
-                </Text>
-                <Tooltip 
-                  content="Annual Percentage Yield: Annual return on sETH in Capital Pool" 
-                  positioning={{ placement: "top" }}
-                  showArrow
-                  open={activeTooltip === 'apy'}
-                  onOpenChange={(e) => onHandleTooltipToggle('apy')}
-                  openDelay={100}
-                  closeDelay={0}
-                >
-                  <Box cursor="pointer">
-                    <IoHelpCircleOutline color="#A2A3A6" size={16} />
-                  </Box>
-                </Tooltip>
-              </HStack>
-              <Text color="#FFF" fontWeight="bold" fontSize="3xl">
-                2.70%
-              </Text>
-            </VStack>
-            <VStack alignItems="flex-start" gap={0}>
-              <HStack>
-                <Text color="#FFF" fontWeight="semibold" fontSize="sm" opacity={0.8} textTransform="uppercase">
-                  Annual Yield
-                </Text>
-                <Tooltip 
-                  content="Return generated from Total Locked sETH based on APY" 
-                  positioning={{ placement: "top" }}
-                  showArrow
-                  open={activeTooltip === 'annualYield'}
-                  onOpenChange={(e) => onHandleTooltipToggle('annualYield')}
-                  openDelay={100}
-                  closeDelay={0}
-                >
-                  <Box cursor="pointer">
-                    <IoHelpCircleOutline color="#A2A3A6" size={16} />
-                  </Box>
-                </Tooltip>
-              </HStack>
-              <Text color="#FFF" fontWeight="bold" fontSize="3xl">
-                $1,687,358.28
-              </Text>
-            </VStack>
-            <VStack alignItems="flex-start" gap={0}>
-              <HStack>
-                <Text color="#FFF" fontWeight="semibold" fontSize="sm" opacity={0.8} textTransform="uppercase">
-                  Unclaimed Yield
-                </Text>
-                <Tooltip 
-                  content="Accrued staked ETH yield unclaimed by capital providers" 
-                  positioning={{ placement: "top" }}
-                  showArrow
-                  open={activeTooltip === 'unclaimedYield'}
-                  onOpenChange={(e) => onHandleTooltipToggle('unclaimedYield')}
-                  openDelay={100}
-                  closeDelay={0}
-                >
-                  <Box cursor="pointer">
-                    <IoHelpCircleOutline color="#A2A3A6" size={16} />
-                  </Box>
-                </Tooltip>
-              </HStack>
-              <Text color="#FFF" fontWeight="bold" fontSize="3xl">
-                259.45 ETH
+                {totalLockedValue}
               </Text>
             </VStack>
           </Grid>
@@ -565,10 +560,10 @@ export const CapitalContributionMetrics: React.FC<Props> = ({ locale }) => {
             <VStack alignItems="flex-start" gap={0}>
               <HStack>
                 <Text color="#FFF" fontWeight="semibold" fontSize="sm" opacity={0.8} textTransform="uppercase">
-                  Total Virtual Staked ETH
+                  Total Virtual Staked stETH
                 </Text>
                 <Tooltip 
-                  content="Total Staked ETH in Capital Pool with multiplier accounted for as of today" 
+                  content="Total Staked stETH in Capital Pool with multiplier accounted for as of today" 
                   positioning={{ placement: "top" }}
                   showArrow
                   open={activeTooltip === 'totalVirtualStaked'}
@@ -601,7 +596,7 @@ export const CapitalContributionMetrics: React.FC<Props> = ({ locale }) => {
             {/* Input Section */}
             <VStack alignItems="flex-start" gap={0}>
               <Text color="#FFF" fontWeight="semibold" fontSize="sm" opacity={0.8} textTransform="uppercase">
-                Staked ETH (USD) Lock-In
+                stETH (USD) Lock-In
               </Text>
               <Input
                 type="text"
