@@ -23,47 +23,72 @@ export const CapitalContributionMetrics: React.FC<Props> = ({ locale }) => {
   // =============== STATE
   const [loading, setLoading] = useState(true);
   const [totalVirtualStaked, setTotalVirtualStaked] = useState<string>("");
+  const [totalVirtualStakedUSD, setTotalVirtualStakedUSD] = useState<string>("");
   const [metrics, setMetrics] = useState({} as any);
+  const [ethPrice, setEthPrice] = useState<string>("");
+  const [morPrice, setMorPrice] = useState<number>(0);
 
   // =============== EFFECTS
   useEffect(() => {
-    const fetchTotalVirtualStaked = async () => {
+    const fetchData = async () => {
       try {
-        const response = await fetch(
+        // Fetch total virtual staked
+        const virtualStakedResponse = await fetch(
           `${process.env.NEXT_PUBLIC_API_URL}/api/cap_virtual_deposited`
         );
-        const data = await response.json();
-        console.log('API Response:', data); // Debug log
-        if (data && data.data && data.data.totalVirtualDeposited) {
-          const formattedValue = (Number(data.data.totalVirtualDeposited) / 1e18).toFixed(4);
-          setTotalVirtualStaked(`${formattedValue} stETH`);
+        const virtualStakedData = await virtualStakedResponse.json();
+        if (virtualStakedData && virtualStakedData.data && virtualStakedData.data.totalVirtualDeposited) {
+          const formattedValue = (Number(virtualStakedData.data.totalVirtualDeposited) / 1e18).toFixed(4);
+          setTotalVirtualStaked(`${formattedValue} ETH`);
+          
+          // Calculate USD value if ETH price is available
+          const ethPriceResponse = await fetch(
+            `${process.env.NEXT_PUBLIC_API_URL}/api/eth/price`
+          );
+          const ethPriceData = await ethPriceResponse.json();
+          if (ethPriceData && ethPriceData.data && ethPriceData.data.priceUsd) {
+            const ethPriceUsd = Number(ethPriceData.data.priceUsd);
+            const usdValue = (Number(formattedValue) * ethPriceUsd).toLocaleString('en-US', {
+              style: 'currency',
+              currency: 'USD'
+            });
+            setTotalVirtualStakedUSD(usdValue);
+          }
         } else {
-          console.error('Unexpected API response structure:', data);
+          console.error('Unexpected API response structure:', virtualStakedData);
           setTotalVirtualStaked('Error: Invalid response format');
         }
+
+        // Fetch ETH price
+        const ethPriceResponse = await fetch(
+          `${process.env.NEXT_PUBLIC_API_URL}/api/eth/price`
+        );
+        const ethPriceData = await ethPriceResponse.json();
+        if (ethPriceData && ethPriceData.data && ethPriceData.data.priceUsd) {
+          setEthPrice(`$${Number(ethPriceData.data.priceUsd).toFixed(2)}`);
+        } else {
+          console.error('Unexpected ETH price API response structure:', ethPriceData);
+          setEthPrice('Error: Invalid price format');
+        }
+
+        // Fetch MOR price
+        const currentTime = Date.now();
+        const morMetricsResponse = await fetch(
+          `${process.env.NEXT_PUBLIC_FRONTEND_URL}/api/morpheus-api/data?currentTime=${currentTime}`
+        );
+        const morMetricsData = await morMetricsResponse.json();
+        if (morMetricsData?.data?.asset?.priceUsd) {
+          setMorPrice(Number(morMetricsData.data.asset.priceUsd));
+        }
       } catch (error) {
-        console.error("Error fetching total virtual staked:", error);
+        console.error("Error fetching data:", error);
         setTotalVirtualStaked('Error: Failed to fetch data');
+        setEthPrice('Error: Failed to fetch price');
       } finally {
         setLoading(false);
       }
     };
-
-    const fetchEthMetrics = async () => {
-      try {
-        const currentTime = Date.now();
-        const response = await fetch(
-          `${process.env.NEXT_PUBLIC_API_URL}/api/eth/metrics`
-        );
-        const data = await response.json();
-        setMetrics(data?.data);
-      } catch (error) {
-        console.error("Error fetching ETH metrics:", error);
-      }
-    };
-
-    fetchTotalVirtualStaked();
-    fetchEthMetrics();
+    fetchData();
   }, []);
 
   // =============== VARIABLES
@@ -94,11 +119,11 @@ export const CapitalContributionMetrics: React.FC<Props> = ({ locale }) => {
   }, [calculateDailyEmissions]);
 
   // Placeholder values
-  const price = "$3252.23";
+  const price = ethPrice || "$3252.23";
   const percent = 5.0;
   const balance = "1,516,056.8173 MOR";
   const dailyAccrual = `${dailyAccrualValue} MOR`;
-  const totalLocked = "15,230.45 stETH";
+  const totalLocked = "15,230.45 ETH";
 
   const [inputValue, setInputValue] = useState<number>(1000);
   const [activeTooltip, setActiveTooltip] = useState<string | null>(null);
@@ -140,14 +165,84 @@ export const CapitalContributionMetrics: React.FC<Props> = ({ locale }) => {
       return multiplier.toFixed(1) + 'x';
     };
 
+    // Convert daily accrual from "X MOR" to number
+    const dailyAccrualNumber = parseFloat(dailyAccrualValue);
+    
+    // Convert totalVirtualStakedUSD from currency string to number
+    const totalStakedUSD = parseFloat(totalVirtualStakedUSD.replace(/[^0-9.-]+/g, ''));
+
+    const calculateRewardEstimate = (days: number, newInitialValue: number) => {
+      // Calculate portion of daily accrual
+      const portion = newInitialValue / totalStakedUSD;
+      
+      // Calculate total accrual for the period in MOR
+      let totalAccrualMOR = 0;
+      const startDate = new Date('2024-02-08');
+      const today = new Date();
+      const daysSinceStart = Math.floor((today.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24));
+      
+      // Calculate accrual for each day in the lock period
+      for (let i = 0; i < days; i++) {
+        // Calculate daily emissions for this specific day
+        const dailyEmission = 14400 - ((daysSinceStart + i) * 2.468994701);
+        if (dailyEmission > 0) {
+          // Calculate daily accrual (24% of daily emissions)
+          const dailyAccrual = dailyEmission * 0.24;
+          // Add this day's portion of accrual to total
+          totalAccrualMOR += dailyAccrual * portion;
+        }
+      }
+      
+      // Convert MOR accrual to USD using current MOR price
+      const totalAccrualUSD = totalAccrualMOR * morPrice;
+      
+      // Add to initial value
+      return newInitialValue + totalAccrualUSD;
+    };
+
     return [
-      { days: '7 Days', multiplier: calculateMultiplier(7), newInitialValue: `$${(inputValue * Number(calculateMultiplier(7).replace('x', ''))).toLocaleString()}`, rewardEstimate: '$5,000' },
-      { days: '365 Days (1Y)', multiplier: calculateMultiplier(365), newInitialValue: `$${(inputValue * Number(calculateMultiplier(365).replace('x', ''))).toLocaleString()}`, rewardEstimate: '$20,000' },
-      { days: '730 Days (2Y)', multiplier: calculateMultiplier(730), newInitialValue: `$${(inputValue * Number(calculateMultiplier(730).replace('x', ''))).toLocaleString()}`, rewardEstimate: '$22,000' },
-      { days: '1095 Days (3Y)', multiplier: calculateMultiplier(1095), newInitialValue: `$${(inputValue * Number(calculateMultiplier(1095).replace('x', ''))).toLocaleString()}`, rewardEstimate: '$24,000' },
-      { days: '1460 Days (4Y)', multiplier: calculateMultiplier(1460), newInitialValue: `$${(inputValue * Number(calculateMultiplier(1460).replace('x', ''))).toLocaleString()}`, rewardEstimate: '$24,400' },
-      { days: '1825 Days (5Y)', multiplier: calculateMultiplier(1825), newInitialValue: `$${(inputValue * Number(calculateMultiplier(1825).replace('x', ''))).toLocaleString()}`, rewardEstimate: '$24,800' },
-      { days: '2190 Days (6Y)', multiplier: calculateMultiplier(2190), newInitialValue: `$${(inputValue * Number(calculateMultiplier(2190).replace('x', ''))).toLocaleString()}`, rewardEstimate: '$25,000' }
+      { 
+        days: '7 Days', 
+        multiplier: calculateMultiplier(7), 
+        newInitialValue: `$${(inputValue * Number(calculateMultiplier(7).replace('x', ''))).toLocaleString()}`,
+        rewardEstimate: `$${calculateRewardEstimate(7, inputValue * Number(calculateMultiplier(7).replace('x', ''))).toLocaleString()}`
+      },
+      { 
+        days: '365 Days (1Y)', 
+        multiplier: calculateMultiplier(365), 
+        newInitialValue: `$${(inputValue * Number(calculateMultiplier(365).replace('x', ''))).toLocaleString()}`,
+        rewardEstimate: `$${calculateRewardEstimate(365, inputValue * Number(calculateMultiplier(365).replace('x', ''))).toLocaleString()}`
+      },
+      { 
+        days: '730 Days (2Y)', 
+        multiplier: calculateMultiplier(730), 
+        newInitialValue: `$${(inputValue * Number(calculateMultiplier(730).replace('x', ''))).toLocaleString()}`,
+        rewardEstimate: `$${calculateRewardEstimate(730, inputValue * Number(calculateMultiplier(730).replace('x', ''))).toLocaleString()}`
+      },
+      { 
+        days: '1095 Days (3Y)', 
+        multiplier: calculateMultiplier(1095), 
+        newInitialValue: `$${(inputValue * Number(calculateMultiplier(1095).replace('x', ''))).toLocaleString()}`,
+        rewardEstimate: `$${calculateRewardEstimate(1095, inputValue * Number(calculateMultiplier(1095).replace('x', ''))).toLocaleString()}`
+      },
+      { 
+        days: '1460 Days (4Y)', 
+        multiplier: calculateMultiplier(1460), 
+        newInitialValue: `$${(inputValue * Number(calculateMultiplier(1460).replace('x', ''))).toLocaleString()}`,
+        rewardEstimate: `$${calculateRewardEstimate(1460, inputValue * Number(calculateMultiplier(1460).replace('x', ''))).toLocaleString()}`
+      },
+      { 
+        days: '1825 Days (5Y)', 
+        multiplier: calculateMultiplier(1825), 
+        newInitialValue: `$${(inputValue * Number(calculateMultiplier(1825).replace('x', ''))).toLocaleString()}`,
+        rewardEstimate: `$${calculateRewardEstimate(1825, inputValue * Number(calculateMultiplier(1825).replace('x', ''))).toLocaleString()}`
+      },
+      { 
+        days: '2190 Days (6Y)', 
+        multiplier: calculateMultiplier(2190), 
+        newInitialValue: `$${(inputValue * Number(calculateMultiplier(2190).replace('x', ''))).toLocaleString()}`,
+        rewardEstimate: `$${calculateRewardEstimate(2190, inputValue * Number(calculateMultiplier(2190).replace('x', ''))).toLocaleString()}`
+      }
     ];
   };
 
@@ -167,14 +262,14 @@ export const CapitalContributionMetrics: React.FC<Props> = ({ locale }) => {
         flexDirection="column"
         gap={6}
       >
-        {/* Top section: sETH info, price, percent, chart */}
+        {/* Top section: ETH info, price, percent, chart */}
         <HStack width="100%" alignItems="flex-start" justifyContent="space-between" gap={8}>
           <HStack alignItems="center" gap={5}>
-            <Image src={ETHLogo.src} alt="sETH" boxSize="56px" borderRadius="full" />
+            <Image src={ETHLogo.src} alt="ETH" boxSize="56px" borderRadius="full" />
             <VStack alignItems="flex-start" gap={0}>
               <HStack alignItems="center" gap={2}>
-                <Text color="#FFF" fontWeight="bold" fontSize="xl">sETH</Text>
-                <Text color="#A2A3A6" fontSize="sm">SETH/USD</Text>
+                <Text color="#FFF" fontWeight="bold" fontSize="xl">ETH</Text>
+                <Text color="#A2A3A6" fontSize="sm">ETH/USD</Text>
               </HStack>
               <HStack alignItems="center" gap={4}>
                 <Text color="#FFF" fontWeight="extrabold" fontSize="3xl">
@@ -428,7 +523,7 @@ export const CapitalContributionMetrics: React.FC<Props> = ({ locale }) => {
                   Unclaimed Yield
                 </Text>
                 <Tooltip 
-                  content="Accrued stETH yield unclaimed by capital providers" 
+                  content="Accrued staked ETH yield unclaimed by capital providers" 
                   positioning={{ placement: "top" }}
                   showArrow
                   open={activeTooltip === 'unclaimedYield'}
@@ -442,7 +537,7 @@ export const CapitalContributionMetrics: React.FC<Props> = ({ locale }) => {
                 </Tooltip>
               </HStack>
               <Text color="#FFF" fontWeight="bold" fontSize="3xl">
-                259.45 stETH
+                259.45 ETH
               </Text>
             </VStack>
           </Grid>
@@ -464,15 +559,16 @@ export const CapitalContributionMetrics: React.FC<Props> = ({ locale }) => {
         </HStack>
 
         <VStack gap={6} alignItems="flex-start" width="100%">
-          {/* Total Virtual Staked stETH Section */}
-          <Grid templateColumns={{ base: "1fr", md: "1fr" }} gap={4} width="100%">
+          {/* Total Virtual Staked ETH Section with Input */}
+          <Grid templateColumns={{ base: "1fr", md: "1fr 1fr 1fr" }} gap={8} width="100%">
+            {/* ETH Value Column */}
             <VStack alignItems="flex-start" gap={0}>
               <HStack>
                 <Text color="#FFF" fontWeight="semibold" fontSize="sm" opacity={0.8} textTransform="uppercase">
-                  Total Virtual Staked stETH as of Today
+                  Total Virtual Staked ETH
                 </Text>
                 <Tooltip 
-                  content="Total Staked stETH in Capital Pool with multiplier counted" 
+                  content="Total Staked ETH in Capital Pool with multiplier accounted for as of today" 
                   positioning={{ placement: "top" }}
                   showArrow
                   open={activeTooltip === 'totalVirtualStaked'}
@@ -489,16 +585,33 @@ export const CapitalContributionMetrics: React.FC<Props> = ({ locale }) => {
                 {loading ? "Loading..." : totalVirtualStaked}
               </Text>
             </VStack>
-          </Grid>
 
-          {/* Inputs Section */}
-          <Grid templateColumns={{ base: "1fr", md: "1fr" }} gap={4} width="100%">
-            <VStack alignItems="flex-start" gap={2}>
-              <Text color="#FFF" fontSize="xl" fontWeight="bold">Staked stETH (USD) Lock-In</Text>
+            {/* USD Value Column */}
+            <VStack alignItems="flex-start" gap={0}>
+              <Text color="#FFF" fontWeight="semibold" fontSize="sm" opacity={0.8} textTransform="uppercase">
+                Value in USD
+              </Text>
+              {!loading && totalVirtualStakedUSD && (
+                <Text color="#FFF" fontWeight="bold" fontSize="3xl">
+                  {totalVirtualStakedUSD}
+                </Text>
+              )}
+            </VStack>
+
+            {/* Input Section */}
+            <VStack alignItems="flex-start" gap={0}>
+              <Text color="#FFF" fontWeight="semibold" fontSize="sm" opacity={0.8} textTransform="uppercase">
+                Staked ETH (USD) Lock-In
+              </Text>
               <Input
-                type="number"
-                value={inputValue}
-                onChange={(e: ChangeEvent<HTMLInputElement>) => setInputValue(Number(e.target.value))}
+                type="text"
+                value={`$${inputValue}`}
+                onChange={(e: ChangeEvent<HTMLInputElement>) => {
+                  const value = e.target.value.replace('$', '');
+                  if (!isNaN(Number(value))) {
+                    setInputValue(Number(value));
+                  }
+                }}
                 min={0}
                 color="#FFF"
                 borderRadius={8}
@@ -507,6 +620,9 @@ export const CapitalContributionMetrics: React.FC<Props> = ({ locale }) => {
                 fontSize="xl"
                 fontWeight="bold"
                 border="none"
+                bg="rgba(255,255,255,0.05)"
+                py={2}
+                px={4}
                 _focus={{ border: "none", boxShadow: "none" }}
               />
             </VStack>
@@ -536,9 +652,24 @@ export const CapitalContributionMetrics: React.FC<Props> = ({ locale }) => {
               <Text color="#FFF" fontWeight="bold" fontSize="lg" py={2} pl={4}>
                 NEW INITIAL VALUE
               </Text>
-              <Text color="#FFF" fontWeight="bold" fontSize="lg" py={2} pl={4}>
-                REWARD ESTIMATE
-              </Text>
+              <HStack>
+                <Text color="#FFF" fontWeight="bold" fontSize="lg" py={2} pl={4}>
+                  REWARD ESTIMATE
+                </Text>
+                <Tooltip 
+                  content="This can change drastically depending on how much more ETH other people stake" 
+                  positioning={{ placement: "top" }}
+                  showArrow
+                  open={activeTooltip === 'rewardEstimate'}
+                  onOpenChange={(e) => onHandleTooltipToggle('rewardEstimate')}
+                  openDelay={100}
+                  closeDelay={0}
+                >
+                  <Box cursor="pointer">
+                    <IoHelpCircleOutline color="#A2A3A6" size={16} />
+                  </Box>
+                </Tooltip>
+              </HStack>
             </Grid>
             {generateTableRows().map((row, idx) => (
               <Grid
