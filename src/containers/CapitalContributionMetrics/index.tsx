@@ -325,7 +325,7 @@ export const CapitalContributionMetrics: React.FC<Props> = ({ locale }) => {
             <VStack alignItems="flex-start" gap={0}>
               <HStack alignItems="center" gap={2}>
                 <Text color="#FFF" fontWeight="bold" fontSize="xl">ETH</Text>
-                <Text color="#A2A3A6" fontSize="sm">ETH/USD</Text>
+                <Text color="#A2A3A6" fontSize="sm">{metricsPageLocale?.ethUsd}</Text>
               </HStack>
               <HStack alignItems="center" gap={4}>
                 <Text color="#FFF" fontWeight="extrabold" fontSize="3xl">
@@ -381,10 +381,10 @@ export const CapitalContributionMetrics: React.FC<Props> = ({ locale }) => {
           <VStack alignItems="flex-start" gap={0}>
             <HStack>
               <Text color="#FFF" fontWeight="semibold" fontSize="sm" opacity={0.8} textTransform="uppercase">
-                Initial Daily Emissions
+                {metricsPageLocale?.initialDailyEmissions}
               </Text>
               <Tooltip 
-                content="Total MOR tokens emitted to all groups initially" 
+                content={metricsPageLocale?.tooltips?.initialDailyEmissions} 
                 positioning={{ placement: "top" }}
                 showArrow
                 open={activeTooltip === 'dailyEmissions'}
@@ -405,10 +405,10 @@ export const CapitalContributionMetrics: React.FC<Props> = ({ locale }) => {
           <VStack alignItems="flex-start" gap={0}>
             <HStack>
               <Text color="#FFF" fontWeight="semibold" fontSize="sm" opacity={0.8} textTransform="uppercase">
-                Daily Emissions Today
+                {metricsPageLocale?.dailyEmissionsToday}
               </Text>
               <Tooltip 
-                content="Current daily MOR token emissions" 
+                content={metricsPageLocale?.tooltips?.dailyEmissionsToday} 
                 positioning={{ placement: "top" }}
                 showArrow
                 open={activeTooltip === 'dailyEmissionsToday'}
@@ -440,7 +440,7 @@ export const CapitalContributionMetrics: React.FC<Props> = ({ locale }) => {
           <HStack gap={3}>
             <FaLandmark color="#00DC8D" size={20} />
             <Text color="#FFF" fontWeight="bold" fontSize="2xl">
-              Capital Pool (ID: 0)
+              {metricsPageLocale?.capitalPool} (ID: 0)
             </Text>
           </HStack>
           {/* Bottom section: 3 metrics */}
@@ -453,10 +453,10 @@ export const CapitalContributionMetrics: React.FC<Props> = ({ locale }) => {
             <VStack alignItems="flex-start" gap={0}>
               <HStack>
                 <Text color="#FFF" fontWeight="semibold" fontSize="sm" opacity={0.8} textTransform="uppercase">
-                  Balance
+                  {metricsPageLocale?.balance}
                 </Text>
                 <Tooltip 
-                  content="Total amount of MOR tokens held in the Capital Pool" 
+                  content={metricsPageLocale?.tooltips?.balance} 
                   positioning={{ placement: "top" }}
                   showArrow
                   open={activeTooltip === 'balance'}
@@ -476,10 +476,10 @@ export const CapitalContributionMetrics: React.FC<Props> = ({ locale }) => {
             <VStack alignItems="flex-start" gap={0}>
               <HStack>
                 <Text color="#FFF" fontWeight="semibold" fontSize="sm" opacity={0.8} textTransform="uppercase">
-                  Daily Accrual
+                  {metricsPageLocale?.dailyAccrual}
                 </Text>
                 <Tooltip 
-                  content="Amount of MOR tokens added to the pool from daily emissions" 
+                  content={metricsPageLocale?.tooltips?.dailyAccrual} 
                   positioning={{ placement: "top" }}
                   showArrow
                   open={activeTooltip === 'dailyAccrual'}
@@ -499,10 +499,10 @@ export const CapitalContributionMetrics: React.FC<Props> = ({ locale }) => {
             <VStack alignItems="flex-start" gap={0}>
               <HStack>
                 <Text color="#FFF" fontWeight="semibold" fontSize="sm" opacity={0.8} textTransform="uppercase">
-                  Total Locked
+                  {metricsPageLocale?.totalLocked}
                 </Text>
                 <Tooltip 
-                  content="Total amount of sETH locked in the capital pool" 
+                  content={metricsPageLocale?.tooltips?.totalLocked} 
                   positioning={{ placement: "top" }}
                   showArrow
                   open={activeTooltip === 'totalLocked'}
@@ -533,7 +533,7 @@ export const CapitalContributionMetrics: React.FC<Props> = ({ locale }) => {
         <HStack gap={2} mb={4}>
           <MdOutlineAutoGraph color="#00DC8D" size={24} />
           <Text color="#FFF" fontWeight="bold" fontSize="xl">
-            Staking MOR Rewards Forecast
+            {metricsPageLocale?.stakingMorRewardsForecast}
           </Text>
         </HStack>
 
@@ -544,10 +544,10 @@ export const CapitalContributionMetrics: React.FC<Props> = ({ locale }) => {
             <VStack alignItems="flex-start" gap={0}>
               <HStack>
                 <Text color="#FFF" fontWeight="semibold" fontSize="sm" opacity={0.8} textTransform="uppercase">
-                  Total Virtual Staked stETH
+                  {metricsPageLocale?.totalVirtualStakedSeth}
                 </Text>
                 <Tooltip 
-                  content="Total Staked stETH in Capital Pool with multiplier accounted for as of today" 
+                  content={metricsPageLocale?.tooltips?.totalVirtualStaked} 
                   positioning={{ placement: "top" }}
                   showArrow
                   open={activeTooltip === 'totalVirtualStaked'}
@@ -568,7 +568,7 @@ export const CapitalContributionMetrics: React.FC<Props> = ({ locale }) => {
             {/* USD Value Column */}
             <VStack alignItems="flex-start" gap={0}>
               <Text color="#FFF" fontWeight="semibold" fontSize="sm" opacity={0.8} textTransform="uppercase">
-                Value in USD
+                {metricsPageLocale?.valueInUsd}
               </Text>
               {!loading && totalVirtualStakedUSD && (
                 <Text color="#FFF" fontWeight="bold" fontSize="3xl">
@@ -580,7 +580,7 @@ export const CapitalContributionMetrics: React.FC<Props> = ({ locale }) => {
             {/* Input Section */}
             <VStack alignItems="flex-start" gap={0}>
               <Text color="#FFF" fontWeight="semibold" fontSize="sm" opacity={0.8} textTransform="uppercase">
-                stETH (USD) Lock-In
+                {metricsPageLocale?.sethUsdLockIn}
               </Text>
               <Input
                 type="text"
@@ -623,20 +623,20 @@ export const CapitalContributionMetrics: React.FC<Props> = ({ locale }) => {
               textAlign="left"
             >
               <Text color="#FFF" fontWeight="bold" fontSize="lg" py={2} pl={4}>
-                LOCK PERIOD
+                {metricsPageLocale?.lockPeriod}
               </Text>
               <Text color="#FFF" fontWeight="bold" fontSize="lg" py={2} pl={4}>
-                MULTIPLIER
+                {metricsPageLocale?.multiplier}
               </Text>
               <Text color="#FFF" fontWeight="bold" fontSize="lg" py={2} pl={4}>
-                NEW INITIAL VALUE
+                {metricsPageLocale?.newInitialValue}
               </Text>
               <HStack>
                 <Text color="#FFF" fontWeight="bold" fontSize="lg" py={2} pl={4}>
-                  REWARD ESTIMATE
+                  {metricsPageLocale?.rewardEstimate}
                 </Text>
                 <Tooltip 
-                  content="This can change drastically depending on how much more ETH other people stake" 
+                  content={metricsPageLocale?.tooltips?.rewardEstimate} 
                   positioning={{ placement: "top" }}
                   showArrow
                   open={activeTooltip === 'rewardEstimate'}

@@ -46,6 +46,30 @@
     "capitalContributionMetrics": "Capital Metrics",
     "dailyEmission": "Daily Emission",
     "stakedSeth": "Staked SETH",
-    "virtualSeth": "Virtual SETH"
+    "virtualSeth": "Virtual SETH",
+    "ethUsd": "ETH/USD",
+    "initialDailyEmissions": "Initial Daily Emissions",
+    "dailyEmissionsToday": "Daily Emissions Today",
+    "capitalPool": "Capital Pool",
+    "balance": "Balance",
+    "dailyAccrual": "Daily Accrual",
+    "totalLocked": "Total Locked",
+    "stakingMorRewardsForecast": "Staking MOR Rewards Forecast",
+    "totalVirtualStakedSeth": "Total Virtual Staked stETH",
+    "valueInUsd": "Value in USD",
+    "sethUsdLockIn": "stETH (USD) Lock-In",
+    "lockPeriod": "LOCK PERIOD",
+    "multiplier": "MULTIPLIER",
+    "newInitialValue": "NEW INITIAL VALUE",
+    "rewardEstimate": "REWARD ESTIMATE",
+    "tooltips": {
+      "initialDailyEmissions": "Total MOR tokens emitted to all groups initially",
+      "dailyEmissionsToday": "Current daily MOR token emissions",
+      "balance": "Total amount of MOR tokens held in the Capital Pool",
+      "dailyAccrual": "Amount of MOR tokens added to the pool from daily emissions",
+      "totalLocked": "Total amount of sETH locked in the capital pool",
+      "totalVirtualStaked": "Total Staked stETH in Capital Pool with multiplier accounted for as of today",
+      "rewardEstimate": "This can change drastically depending on how much more ETH other people stake"
+    }
   }
 }
