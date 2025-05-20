@@ -207,33 +207,24 @@ export const CapitalContributionMetrics: React.FC<Props> = ({ locale }) => {
 
     // Calculate multipliers based on dilution rates
     const calculateMultiplier = (days: number) => {
-      const today = new Date();
-      const startDate = new Date('2024-02-08');
-      const daysSinceStart = Math.floor((today.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24));
+      const start = Math.floor(Date.now() / 1000); // Current time in unix timestamp
+      const end = start + (days * 24 * 60 * 60); // Add days converted to seconds
       
-      // Calculate total emissions at current date
-      let currentTotalEmissions = 0;
-      for (let i = 0; i < daysSinceStart; i++) {
-        const dailyEmission = 14400 - (i * 2.468994701);
-        if (dailyEmission > 0) {
-          currentTotalEmissions += dailyEmission;
-        }
-      }
+      // Constants from the formula
+      const constant = 16.61327546;
+      const epochStart = 1721908800;
+      const timeScale = 484272000;
       
-      // Calculate total emissions at future date
-      let futureTotalEmissions = 0;
-      for (let i = 0; i < (daysSinceStart + days); i++) {
-        const dailyEmission = 14400 - (i * 2.468994701);
-        if (dailyEmission > 0) {
-          futureTotalEmissions += dailyEmission;
-        }
-      }
+      // Calculate the tanh terms
+      const startTerm = Math.tanh(2 * ((start - epochStart) / timeScale));
+      const endTerm = Math.tanh(2 * ((end - epochStart) / timeScale));
       
-      // Calculate dilution rate (as a percentage)
-      const dilutionRate = ((futureTotalEmissions - currentTotalEmissions) / currentTotalEmissions) * 100;
+      // Calculate the multiplier
+      let multiplier = constant * (endTerm - startTerm);
       
-      // Multiplier is the dilution rate percentage divided by 100, minimum 1.0x
-      const multiplier = Math.max(1.0, dilutionRate / 100);
+      // Apply bounds
+      multiplier = Math.max(1.0, Math.min(10.7, multiplier));
+      
       return multiplier.toFixed(1) + 'x';
     };
 
@@ -244,8 +235,11 @@ export const CapitalContributionMetrics: React.FC<Props> = ({ locale }) => {
     const totalStakedUSD = parseFloat(totalVirtualStakedUSD.replace(/[^0-9.-]+/g, ''));
 
     const calculateRewardEstimate = (days: number, newInitialValue: number) => {
-      // Calculate portion of daily accrual
-      const portion = newInitialValue / totalStakedUSD;
+      // Calculate new total including the user's new stake
+      const newTotalStaked = totalStakedUSD + newInitialValue;
+      
+      // Calculate the user's share of the new total pool
+      const userShare = newInitialValue / newTotalStaked;
       
       // Calculate total accrual for the period in MOR
       let totalAccrualMOR = 0;
@@ -261,7 +255,7 @@ export const CapitalContributionMetrics: React.FC<Props> = ({ locale }) => {
           // Calculate daily accrual (24% of daily emissions)
           const dailyAccrual = dailyEmission * 0.24;
           // Add this day's portion of accrual to total
-          totalAccrualMOR += dailyAccrual * portion;
+          totalAccrualMOR += dailyAccrual * userShare;
         }
       }
       
