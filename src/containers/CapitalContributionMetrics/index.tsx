@@ -37,9 +37,7 @@ export const CapitalContributionMetrics: React.FC<Props> = ({ locale }) => {
     const fetchData = async () => {
       try {
         // Fetch ETH price history
-        const ethHistoryResponse = await fetch(
-          `${process.env.NEXT_PUBLIC_API_URL}/api/eth/history`
-        );
+        const ethHistoryResponse = await fetch(`/api/eth/history`);
         const ethHistoryData = await ethHistoryResponse.json();
         if (ethHistoryData && ethHistoryData.data) {
           setEthPriceHistory(ethHistoryData.data);
@@ -54,18 +52,14 @@ export const CapitalContributionMetrics: React.FC<Props> = ({ locale }) => {
         }
 
         // Fetch total virtual staked
-        const virtualStakedResponse = await fetch(
-          `${process.env.NEXT_PUBLIC_API_URL}/api/cap_virtual_deposited`
-        );
+        const virtualStakedResponse = await fetch(`/api/cap_virtual_deposited`);
         const virtualStakedData = await virtualStakedResponse.json();
         if (virtualStakedData && virtualStakedData.data && virtualStakedData.data.totalVirtualDeposited) {
           const formattedValue = (Number(virtualStakedData.data.totalVirtualDeposited) / 1e18).toFixed(4);
           setTotalVirtualStaked(`${formattedValue} stETH`);
           
           // Calculate USD value if ETH price is available
-          const ethPriceResponse = await fetch(
-            `${process.env.NEXT_PUBLIC_API_URL}/api/eth/price`
-          );
+          const ethPriceResponse = await fetch(`/api/eth/price`);
           const ethPriceData = await ethPriceResponse.json();
           if (ethPriceData && ethPriceData.data && ethPriceData.data.priceUsd) {
             const ethPriceUsd = Number(ethPriceData.data.priceUsd);
@@ -81,9 +75,7 @@ export const CapitalContributionMetrics: React.FC<Props> = ({ locale }) => {
         }
 
         // Fetch total locked
-        const totalLockedResponse = await fetch(
-          `${process.env.NEXT_PUBLIC_API_URL}/api/total_deposited`
-        );
+        const totalLockedResponse = await fetch(`/api/total_deposited`);
         const totalLockedData = await totalLockedResponse.json();
         if (totalLockedData && totalLockedData.data && totalLockedData.data.totalDeposited) {
           const formattedValue = (Number(totalLockedData.data.totalDeposited) / 1e18).toFixed(4);
@@ -94,9 +86,7 @@ export const CapitalContributionMetrics: React.FC<Props> = ({ locale }) => {
         }
 
         // Fetch ETH price
-        const ethPriceResponse = await fetch(
-          `${process.env.NEXT_PUBLIC_API_URL}/api/eth/price`
-        );
+        const ethPriceResponse = await fetch(`/api/eth/price`);
         const ethPriceData = await ethPriceResponse.json();
         if (ethPriceData && ethPriceData.data && ethPriceData.data.priceUsd) {
           setEthPrice(`$${Number(ethPriceData.data.priceUsd).toFixed(2)}`);
@@ -108,7 +98,7 @@ export const CapitalContributionMetrics: React.FC<Props> = ({ locale }) => {
         // Fetch MOR price and total supply
         const currentTime = Date.now();
         const morMetricsResponse = await fetch(
-          `${process.env.NEXT_PUBLIC_FRONTEND_URL}/api/morpheus-api/data?currentTime=${currentTime}`
+          `/api/morpheus-api/data?currentTime=${currentTime}`
         );
         const morMetricsData = await morMetricsResponse.json();
         console.log('MOR Metrics Data:', morMetricsData?.data?.asset);
