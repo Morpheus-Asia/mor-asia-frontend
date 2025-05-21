@@ -69,6 +69,7 @@
       "totalLocked": "Total amount of sETH locked in the capital pool",
       "totalVirtualStaked": "Total Staked stETH in Capital Pool with multiplier accounted for as of today",
       "rewardEstimate": "This can change drastically depending on how much more ETH other people stake"
-    }
+    },
+    "oneDayInterval": "1 Day Interval"
   }
 }

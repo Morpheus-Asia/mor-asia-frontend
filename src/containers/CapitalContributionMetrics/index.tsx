@@ -9,6 +9,7 @@ import { FaLandmark } from "react-icons/fa";
 import React, { useState, ChangeEvent, useMemo, useEffect } from "react";
 import ETHLogo from "morpheus-asia/Image/ETH.png";
 import ReactApexcharts from "morpheus-asia/components/Charts/apex-charts";
+import QuickView24HrLineChart from "morpheus-asia/components/Charts/QuickViewLineChart";
 
 type Props = {
   locale?: string;
@@ -138,12 +139,14 @@ export const CapitalContributionMetrics: React.FC<Props> = ({ locale }) => {
   const metricsHistory = metrics?.history;
 
   const chartData = useMemo(() => {
-    if (!ethPriceHistory.length) return [];
+    if (!ethPriceHistory.length) return { series: [] };
     
-    return ethPriceHistory.map(item => ({
-      x: item.time,
-      y: parseFloat(item.priceUsd)
-    }));
+    return {
+      series: ethPriceHistory.map(item => [
+        item.time,
+        parseFloat(item.priceUsd).toFixed(2)
+      ])
+    };
   }, [ethPriceHistory]);
 
   // Calculate daily emissions
@@ -318,15 +321,15 @@ export const CapitalContributionMetrics: React.FC<Props> = ({ locale }) => {
           flexDirection="column"
           gap={6}
         >
-          <HStack width="100%" alignItems="flex-start" justifyContent="space-between" gap={8}>
-            <HStack alignItems="center" gap={5}>
+          <HStack width="100%" alignItems="center" justifyContent="space-between" gap={8} flexDirection={{ base: "column", md: "row" }}>
+            <HStack alignItems="center" gap={5} flex={1}>
               <Image src={ETHLogo.src} alt="ETH" boxSize="56px" borderRadius="full" />
               <VStack alignItems="flex-start" gap={0}>
                 <HStack alignItems="center" gap={2}>
                   <Text color="#FFF" fontWeight="bold" fontSize="xl">ETH</Text>
                   <Text color="#A2A3A6" fontSize="sm">{metricsPageLocale?.ethUsd}</Text>
                 </HStack>
-                <HStack alignItems="center" gap={4}>
+                <HStack alignItems="end" gap={4}>
                   <Text color="#FFF" fontWeight="extrabold" fontSize="3xl">
                     {price}
                   </Text>
@@ -334,46 +337,18 @@ export const CapitalContributionMetrics: React.FC<Props> = ({ locale }) => {
                 </HStack>
               </VStack>
             </HStack>
-            <Box minW={{ base: "120px", md: "240px" }} h="80px" display="flex" alignItems="center" justifyContent="flex-end">
-              <ReactApexcharts
-                options={{
-                  chart: {
-                    type: "line",
-                    background: "transparent",
-                    zoom: { enabled: false },
-                    toolbar: { show: false },
-                    sparkline: { enabled: true },
-                  },
-                  colors: ["#00DC8D"],
-                  stroke: { curve: "monotoneCubic", width: 2 },
-                  markers: {
-                    size: 0,
-                  },
-                  tooltip: {
-                    enabled: false,
-                  },
-                  grid: {
-                    show: false,
-                  },
-                  xaxis: {
-                    type: 'datetime',
-                    axisBorder: { show: false },
-                    axisTicks: { show: false },
-                    labels: { show: false },
-                  },
-                  yaxis: {
-                    show: false,
-                  },
-                }}
-                series={[{ data: chartData }]}
-                type="line"
-                height={80}
-                width="100%"
+            <VStack gap={1} flex="end">
+              <QuickView24HrLineChart
+                colors={["#00DC8D"]}
+                data={chartData}
               />
-            </Box>
+              <Text color="#A2A3A6" fontSize="xs" textAlign="center" width="100%">
+                {metricsPageLocale?.oneDayInterval}
+              </Text>
+            </VStack>
           </HStack>
           <Box width="100%" height="1px" background="rgba(255,255,255,0.12)" my={2} />
-          <Grid templateColumns={{ base: "1fr", md: "1fr 1fr" }}>
+          <Grid templateColumns={{ base: "1fr", md: "1fr 1fr" }} gap={{ base: 6, md: 8 }}>
             <VStack alignItems="flex-start" gap={0}>
               <HStack>
                 <Text color="#FFF" fontWeight="semibold" fontSize="sm" opacity={0.8} textTransform="uppercase">
@@ -423,7 +398,7 @@ export const CapitalContributionMetrics: React.FC<Props> = ({ locale }) => {
             borderRadius={8}
             background="rgba(255,255,255,0.05)"
             px={{ base: 4, md: 10 }}
-            py={{ base: 6, md: 8 }}
+            py={{ base: 4, md: 8 }}
             display="flex"
             flexDirection="column"
             gap={6}
@@ -436,7 +411,7 @@ export const CapitalContributionMetrics: React.FC<Props> = ({ locale }) => {
             </HStack>
             <Grid 
               templateColumns={{ base: "1fr", md: "repeat(3, 1fr)" }} 
-              gap="5%" 
+              gap={{ base: 6, md: "5%" }} 
               width="100%"
               justifyContent="space-between"
             >
@@ -602,10 +577,11 @@ export const CapitalContributionMetrics: React.FC<Props> = ({ locale }) => {
               width="100%"
             >
               <Grid
-                templateColumns={{ base: '1fr 1fr 1fr 1fr' }}
+                templateColumns={{ base: 'repeat(4, minmax(120px, 1fr))', md: '1fr 1fr 1fr 1fr' }}
                 borderBottom="1px solid rgba(255,255,255,0.12)"
                 mb={2}
                 textAlign="left"
+                minWidth={{ base: '480px', md: 'auto' }}
               >
                 <Text color="#FFF" fontWeight="bold" fontSize="lg" py={2} pl={4}>
                   {metricsPageLocale?.lockPeriod}
@@ -636,10 +612,11 @@ export const CapitalContributionMetrics: React.FC<Props> = ({ locale }) => {
               {generateTableRows().map((row, idx) => (
                 <Grid
                   key={row.days}
-                  templateColumns={{ base: '1fr 1fr 1fr 1fr' }}
+                  templateColumns={{ base: 'repeat(4, minmax(120px, 1fr))', md: '1fr 1fr 1fr 1fr' }}
                   borderBottom={idx < 4 ? '1px solid rgba(255,255,255,0.08)' : 'none'}
                   alignItems="center"
                   textAlign="left"
+                  minWidth={{ base: '480px', md: 'auto' }}
                 >
                   <Text color="#FFF" fontSize="lg" py={2} pl={4}>
                     {row.days}
