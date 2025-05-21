@@ -1,5 +1,5 @@
 "use client";
-import { Box, Grid, HStack, Image, Stack, Text, VStack, Input } from "@chakra-ui/react";
+import { Box, Grid, HStack, Image, Stack, Text, VStack, Input, Skeleton } from "@chakra-ui/react";
 import { Tooltip } from "morpheus-asia/components/ui/tooltip";
 import { getDictionary } from "morpheus-asia/i18n";
 import PercentageChip from "morpheus-asia/components/PercentageChip";
@@ -8,8 +8,6 @@ import { IoHelpCircleOutline } from "react-icons/io5";
 import { FaLandmark } from "react-icons/fa";
 import React, { useState, ChangeEvent, useMemo, useEffect } from "react";
 import ETHLogo from "morpheus-asia/Image/ETH.png";
-import QuickView24HrLineChart from "morpheus-asia/components/Charts/QuickViewLineChart";
-import { ApexOptions } from "apexcharts";
 import ReactApexcharts from "morpheus-asia/components/Charts/apex-charts";
 
 type Props = {
@@ -71,7 +69,7 @@ export const CapitalContributionMetrics: React.FC<Props> = ({ locale }) => {
           }
         } else {
           console.error('Unexpected API response structure:', virtualStakedData);
-          setTotalVirtualStaked('Error: Invalid response format');
+          setTotalVirtualStaked('-');
         }
 
         // Fetch total locked
@@ -82,7 +80,7 @@ export const CapitalContributionMetrics: React.FC<Props> = ({ locale }) => {
           setTotalLocked(`${formattedValue} ETH`);
         } else {
           console.error('Unexpected total locked API response structure:', totalLockedData);
-          setTotalLocked('Error: Invalid response format');
+          setTotalLocked('-');
         }
 
         // Fetch ETH price
@@ -92,7 +90,7 @@ export const CapitalContributionMetrics: React.FC<Props> = ({ locale }) => {
           setEthPrice(`$${Number(ethPriceData.data.priceUsd).toFixed(2)}`);
         } else {
           console.error('Unexpected ETH price API response structure:', ethPriceData);
-          setEthPrice('Error: Invalid price format');
+          setEthPrice('-');
         }
 
         // Fetch MOR price and total supply
@@ -101,37 +99,33 @@ export const CapitalContributionMetrics: React.FC<Props> = ({ locale }) => {
           `/api/morpheus-api/data?currentTime=${currentTime}`
         );
         const morMetricsData = await morMetricsResponse.json();
-        console.log('MOR Metrics Data:', morMetricsData?.data?.asset);
         if (morMetricsData?.data?.asset) {
           setMorPrice(Number(morMetricsData.data.asset.priceUsd));
           
           // Calculate balance (24% of total supply)
           if (morMetricsData.data.asset.maxSupply) {
-            console.log('Max Supply:', morMetricsData.data.asset.maxSupply);
             // Remove commas before converting to number
             const cleanSupply = morMetricsData.data.asset.maxSupply.replace(/,/g, '');
             const totalSupply = Number(cleanSupply);
-            console.log('Total Supply (Number):', totalSupply);
             if (!isNaN(totalSupply)) {
               const balanceValue = (totalSupply * 0.24).toLocaleString('en-US', {
                 maximumFractionDigits: 4,
                 minimumFractionDigits: 4
               });
-              console.log('Balance Value:', balanceValue);
               setBalance(`${balanceValue} MOR`);
             } else {
               console.error('Invalid total supply value:', morMetricsData.data.asset.maxSupply);
-              setBalance('Error: Invalid supply data');
+              setBalance('-');
             }
           } else {
             console.error('Missing maxSupply in API response:', morMetricsData.data.asset);
-            setBalance('Error: Missing supply data');
+            setBalance('-');
           }
         }
       } catch (error) {
         console.error("Error fetching data:", error);
-        setTotalVirtualStaked('Error: Failed to fetch data');
-        setEthPrice('Error: Failed to fetch price');
+        setTotalVirtualStaked('-');
+        setEthPrice('-');
       } finally {
         setLoading(false);
       }
@@ -172,15 +166,18 @@ export const CapitalContributionMetrics: React.FC<Props> = ({ locale }) => {
   const price = ethPrice || "$3252.23";
   const percent = priceChangePercent;
   const dailyAccrual = `${dailyAccrualValue} MOR`;
-  const totalLockedValue = loading ? "Loading..." : totalLocked;
-  const balanceValue = loading ? "Loading..." : balance;
+  const totalLockedValue = loading ? (
+    <Skeleton height="40px" width="200px" />
+  ) : (
+    totalLocked
+  );
+  const balanceValue = loading ? (
+    <Skeleton height="40px" width="200px" />
+  ) : (
+    balance
+  );
 
   const [inputValue, setInputValue] = useState<number>(1000);
-  const [activeTooltip, setActiveTooltip] = useState<string | null>(null);
-
-  const onHandleTooltipToggle = (tooltipName: string) => {
-    setActiveTooltip(activeTooltip === tooltipName ? null : tooltipName);
-  };
 
   const generateTableRows = () => {
     // Calculate total emissions up to a specific day
@@ -303,378 +300,365 @@ export const CapitalContributionMetrics: React.FC<Props> = ({ locale }) => {
   };
 
   return (
-    <VStack width="100%" alignItems="flex-start" gap={6}>
-      {/* Heading outside the box */}
-      <Text color="#FFF" fontWeight="bold" fontSize="3xl">
-        {metricsPageLocale?.capitalContributionMetrics}
-      </Text>
-      <Box
-        width="100%"
-        borderRadius={8}
-        background="rgba(255,255,255,0.05)"
-        px={{ base: 4, md: 10 }}
-        py={{ base: 6, md: 10 }}
-        display="flex"
-        flexDirection="column"
-        gap={6}
-      >
-        {/* Top section: ETH info, price, percent, chart */}
-        <HStack width="100%" alignItems="flex-start" justifyContent="space-between" gap={8}>
-          <HStack alignItems="center" gap={5}>
-            <Image src={ETHLogo.src} alt="ETH" boxSize="56px" borderRadius="full" />
-            <VStack alignItems="flex-start" gap={0}>
-              <HStack alignItems="center" gap={2}>
-                <Text color="#FFF" fontWeight="bold" fontSize="xl">ETH</Text>
-                <Text color="#A2A3A6" fontSize="sm">{metricsPageLocale?.ethUsd}</Text>
-              </HStack>
-              <HStack alignItems="center" gap={4}>
-                <Text color="#FFF" fontWeight="extrabold" fontSize="3xl">
-                  {price}
-                </Text>
-                <PercentageChip value={percent} />
-              </HStack>
-            </VStack>
-          </HStack>
-          {/* Placeholder chart */}
-          <Box minW={{ base: "120px", md: "240px" }} h="80px" display="flex" alignItems="center" justifyContent="flex-end">
-            <ReactApexcharts
-              options={{
-                chart: {
-                  type: "line",
-                  background: "transparent",
-                  zoom: { enabled: false },
-                  toolbar: { show: false },
-                  sparkline: { enabled: true },
-                },
-                colors: ["#00DC8D"],
-                stroke: { curve: "monotoneCubic", width: 2 },
-                markers: {
-                  size: 0,
-                },
-                tooltip: {
-                  enabled: false,
-                },
-                grid: {
-                  show: false,
-                },
-                xaxis: {
-                  type: 'datetime',
-                  axisBorder: { show: false },
-                  axisTicks: { show: false },
-                  labels: { show: false },
-                },
-                yaxis: {
-                  show: false,
-                },
-              }}
-              series={[{ data: chartData }]}
-              type="line"
-              height={80}
-              width="100%"
-            />
-          </Box>
-        </HStack>
-        {/* Divider replacement */}
-        <Box width="100%" height="1px" background="rgba(255,255,255,0.12)" my={2} />
-        {/* Daily Emissions Heading */}
-        <Grid templateColumns={{ base: "1fr", md: "1fr 1fr" }}>
-          <VStack alignItems="flex-start" gap={0}>
-            <HStack>
-              <Text color="#FFF" fontWeight="semibold" fontSize="sm" opacity={0.8} textTransform="uppercase">
-                {metricsPageLocale?.initialDailyEmissions}
-              </Text>
-              <Tooltip 
-                content={metricsPageLocale?.tooltips?.initialDailyEmissions} 
-                positioning={{ placement: "top" }}
-                showArrow
-                open={activeTooltip === 'dailyEmissions'}
-                onOpenChange={(e) => onHandleTooltipToggle('dailyEmissions')}
-                openDelay={100}
-                closeDelay={0}
-              >
-                <Box cursor="pointer">
-                  <IoHelpCircleOutline color="#A2A3A6" size={16} />
-                </Box>
-              </Tooltip>
-            </HStack>
-            <Text color="#FFF" fontWeight="bold" fontSize="3xl">
-              14,400 MOR
-            </Text>
-          </VStack>
-
-          <VStack alignItems="flex-start" gap={0}>
-            <HStack>
-              <Text color="#FFF" fontWeight="semibold" fontSize="sm" opacity={0.8} textTransform="uppercase">
-                {metricsPageLocale?.dailyEmissionsToday}
-              </Text>
-              <Tooltip 
-                content={metricsPageLocale?.tooltips?.dailyEmissionsToday} 
-                positioning={{ placement: "top" }}
-                showArrow
-                open={activeTooltip === 'dailyEmissionsToday'}
-                onOpenChange={(e) => onHandleTooltipToggle('dailyEmissionsToday')}
-                openDelay={100}
-                closeDelay={0}
-              >
-                <Box cursor="pointer">
-                  <IoHelpCircleOutline color="#A2A3A6" size={16} />
-                </Box>
-              </Tooltip>
-            </HStack>
-            <Text color="#FFF" fontWeight="bold" fontSize="3xl">
-              {calculateDailyEmissions} MOR
-            </Text>
-          </VStack>
-        </Grid>
-        {/* Capital Pool Section */}
+    <VStack width="100%" alignItems="flex-start" gap={6}>  
+      {loading ? (
+        <Skeleton
+          width="100%"
+          height="400px"
+          borderRadius={8}
+        />
+      ) : (
         <Box
           width="100%"
           borderRadius={8}
           background="rgba(255,255,255,0.05)"
           px={{ base: 4, md: 10 }}
-          py={{ base: 6, md: 8 }}
+          py={{ base: 6, md: 10 }}
           display="flex"
           flexDirection="column"
           gap={6}
         >
-          <HStack gap={3}>
-            <FaLandmark color="#00DC8D" size={20} />
-            <Text color="#FFF" fontWeight="bold" fontSize="2xl">
-              {metricsPageLocale?.capitalPool} (ID: 0)
+          <HStack width="100%" alignItems="flex-start" justifyContent="space-between" gap={8}>
+            <HStack alignItems="center" gap={5}>
+              <Image src={ETHLogo.src} alt="ETH" boxSize="56px" borderRadius="full" />
+              <VStack alignItems="flex-start" gap={0}>
+                <HStack alignItems="center" gap={2}>
+                  <Text color="#FFF" fontWeight="bold" fontSize="xl">ETH</Text>
+                  <Text color="#A2A3A6" fontSize="sm">{metricsPageLocale?.ethUsd}</Text>
+                </HStack>
+                <HStack alignItems="center" gap={4}>
+                  <Text color="#FFF" fontWeight="extrabold" fontSize="3xl">
+                    {price}
+                  </Text>
+                  <PercentageChip value={percent} />
+                </HStack>
+              </VStack>
+            </HStack>
+            <Box minW={{ base: "120px", md: "240px" }} h="80px" display="flex" alignItems="center" justifyContent="flex-end">
+              <ReactApexcharts
+                options={{
+                  chart: {
+                    type: "line",
+                    background: "transparent",
+                    zoom: { enabled: false },
+                    toolbar: { show: false },
+                    sparkline: { enabled: true },
+                  },
+                  colors: ["#00DC8D"],
+                  stroke: { curve: "monotoneCubic", width: 2 },
+                  markers: {
+                    size: 0,
+                  },
+                  tooltip: {
+                    enabled: false,
+                  },
+                  grid: {
+                    show: false,
+                  },
+                  xaxis: {
+                    type: 'datetime',
+                    axisBorder: { show: false },
+                    axisTicks: { show: false },
+                    labels: { show: false },
+                  },
+                  yaxis: {
+                    show: false,
+                  },
+                }}
+                series={[{ data: chartData }]}
+                type="line"
+                height={80}
+                width="100%"
+              />
+            </Box>
+          </HStack>
+          <Box width="100%" height="1px" background="rgba(255,255,255,0.12)" my={2} />
+          <Grid templateColumns={{ base: "1fr", md: "1fr 1fr" }}>
+            <VStack alignItems="flex-start" gap={0}>
+              <HStack>
+                <Text color="#FFF" fontWeight="semibold" fontSize="sm" opacity={0.8} textTransform="uppercase">
+                  {metricsPageLocale?.initialDailyEmissions}
+                </Text>
+                <Tooltip 
+                  content={metricsPageLocale?.tooltips?.initialDailyEmissions} 
+                  positioning={{ placement: "top" }}
+                  showArrow
+                  openDelay={0}
+                  closeDelay={0}
+                >
+                  <Box cursor="pointer">
+                    <IoHelpCircleOutline color="#A2A3A6" size={16} />
+                  </Box>
+                </Tooltip>
+              </HStack>
+              <Text color="#FFF" fontWeight="bold" fontSize="3xl">
+                14,400 MOR
+              </Text>
+            </VStack>
+
+            <VStack alignItems="flex-start" gap={0}>
+              <HStack>
+                <Text color="#FFF" fontWeight="semibold" fontSize="sm" opacity={0.8} textTransform="uppercase">
+                  {metricsPageLocale?.dailyEmissionsToday}
+                </Text>
+                <Tooltip 
+                  content={metricsPageLocale?.tooltips?.dailyEmissionsToday} 
+                  positioning={{ placement: "top" }}
+                  showArrow
+                  openDelay={0}
+                  closeDelay={0}
+                >
+                  <Box cursor="pointer">
+                    <IoHelpCircleOutline color="#A2A3A6" size={16} />
+                  </Box>
+                </Tooltip>
+              </HStack>
+              <Text color="#FFF" fontWeight="bold" fontSize="3xl">
+                {calculateDailyEmissions} MOR
+              </Text>
+            </VStack>
+          </Grid>
+          <Box
+            width="100%"
+            borderRadius={8}
+            background="rgba(255,255,255,0.05)"
+            px={{ base: 4, md: 10 }}
+            py={{ base: 6, md: 8 }}
+            display="flex"
+            flexDirection="column"
+            gap={6}
+          >
+            <HStack gap={3}>
+              <FaLandmark color="#00DC8D" size={20} />
+              <Text color="#FFF" fontWeight="bold" fontSize="2xl">
+                {metricsPageLocale?.capitalPool} (ID: 0)
+              </Text>
+            </HStack>
+            <Grid 
+              templateColumns={{ base: "1fr", md: "repeat(3, 1fr)" }} 
+              gap="5%" 
+              width="100%"
+              justifyContent="space-between"
+            >
+              <VStack alignItems="flex-start" gap={0}>
+                <HStack>
+                  <Text color="#FFF" fontWeight="semibold" fontSize="sm" opacity={0.8} textTransform="uppercase">
+                    {metricsPageLocale?.balance}
+                  </Text>
+                  <Tooltip 
+                    content={metricsPageLocale?.tooltips?.balance} 
+                    positioning={{ placement: "top" }}
+                    showArrow
+                    openDelay={0}
+                    closeDelay={0}
+                  >
+                    <Box cursor="pointer">
+                      <IoHelpCircleOutline color="#A2A3A6" size={16} />
+                    </Box>
+                  </Tooltip>
+                </HStack>
+                <Text color="#FFF" fontWeight="bold" fontSize="3xl">
+                  {balanceValue}
+                </Text>
+              </VStack>
+              <VStack alignItems="flex-start" gap={0}>
+                <HStack>
+                  <Text color="#FFF" fontWeight="semibold" fontSize="sm" opacity={0.8} textTransform="uppercase">
+                    {metricsPageLocale?.dailyAccrual}
+                  </Text>
+                  <Tooltip 
+                    content={metricsPageLocale?.tooltips?.dailyAccrual} 
+                    positioning={{ placement: "top" }}
+                    showArrow
+                    openDelay={0}
+                    closeDelay={0}
+                  >
+                    <Box cursor="pointer">
+                      <IoHelpCircleOutline color="#A2A3A6" size={16} />
+                    </Box>
+                  </Tooltip>
+                </HStack>
+                <Text color="#FFF" fontWeight="bold" fontSize="3xl">
+                  {dailyAccrual}
+                </Text>
+              </VStack>
+              <VStack alignItems="flex-start" gap={0}>
+                <HStack>
+                  <Text color="#FFF" fontWeight="semibold" fontSize="sm" opacity={0.8} textTransform="uppercase">
+                    {metricsPageLocale?.totalLocked}
+                  </Text>
+                  <Tooltip 
+                    content={metricsPageLocale?.tooltips?.totalLocked} 
+                    positioning={{ placement: "top" }}
+                    showArrow
+                    openDelay={0}
+                    closeDelay={0}
+                  >
+                    <Box cursor="pointer">
+                      <IoHelpCircleOutline color="#A2A3A6" size={16} />
+                    </Box>
+                  </Tooltip>
+                </HStack>
+                <Text color="#FFF" fontWeight="bold" fontSize="3xl">
+                  {totalLockedValue}
+                </Text>
+              </VStack>
+            </Grid>
+          </Box>
+        </Box>
+      )}
+
+      {loading ? (
+        <Skeleton
+          width="100%"
+          height="500px"
+          borderRadius={8}
+        />
+      ) : (
+        <Box
+          width="100%"
+          borderRadius={8}
+          background="rgba(255,255,255,0.05)"
+          px={{ base: 4, md: 10 }}
+          py={{ base: 6, md: 10 }}
+        >
+          <HStack gap={2} mb={4}>
+            <MdOutlineAutoGraph color="#00DC8D" size={24} />
+            <Text color="#FFF" fontWeight="bold" fontSize="xl">
+              {metricsPageLocale?.stakingMorRewardsForecast}
             </Text>
           </HStack>
-          {/* Bottom section: 3 metrics */}
-          <Grid 
-            templateColumns={{ base: "1fr", md: "repeat(3, 1fr)" }} 
-            gap="5%" 
-            width="100%"
-            justifyContent="space-between"
-          >
-            <VStack alignItems="flex-start" gap={0}>
-              <HStack>
-                <Text color="#FFF" fontWeight="semibold" fontSize="sm" opacity={0.8} textTransform="uppercase">
-                  {metricsPageLocale?.balance}
-                </Text>
-                <Tooltip 
-                  content={metricsPageLocale?.tooltips?.balance} 
-                  positioning={{ placement: "top" }}
-                  showArrow
-                  open={activeTooltip === 'balance'}
-                  onOpenChange={(e) => onHandleTooltipToggle('balance')}
-                  openDelay={100}
-                  closeDelay={0}
-                >
-                  <Box cursor="pointer">
-                    <IoHelpCircleOutline color="#A2A3A6" size={16} />
-                  </Box>
-                </Tooltip>
-              </HStack>
-              <Text color="#FFF" fontWeight="bold" fontSize="3xl">
-                {balanceValue}
-              </Text>
-            </VStack>
-            <VStack alignItems="flex-start" gap={0}>
-              <HStack>
-                <Text color="#FFF" fontWeight="semibold" fontSize="sm" opacity={0.8} textTransform="uppercase">
-                  {metricsPageLocale?.dailyAccrual}
-                </Text>
-                <Tooltip 
-                  content={metricsPageLocale?.tooltips?.dailyAccrual} 
-                  positioning={{ placement: "top" }}
-                  showArrow
-                  open={activeTooltip === 'dailyAccrual'}
-                  onOpenChange={(e) => onHandleTooltipToggle('dailyAccrual')}
-                  openDelay={100}
-                  closeDelay={0}
-                >
-                  <Box cursor="pointer">
-                    <IoHelpCircleOutline color="#A2A3A6" size={16} />
-                  </Box>
-                </Tooltip>
-              </HStack>
-              <Text color="#FFF" fontWeight="bold" fontSize="3xl">
-                {dailyAccrual}
-              </Text>
-            </VStack>
-            <VStack alignItems="flex-start" gap={0}>
-              <HStack>
-                <Text color="#FFF" fontWeight="semibold" fontSize="sm" opacity={0.8} textTransform="uppercase">
-                  {metricsPageLocale?.totalLocked}
-                </Text>
-                <Tooltip 
-                  content={metricsPageLocale?.tooltips?.totalLocked} 
-                  positioning={{ placement: "top" }}
-                  showArrow
-                  open={activeTooltip === 'totalLocked'}
-                  onOpenChange={(e) => onHandleTooltipToggle('totalLocked')}
-                  openDelay={100}
-                  closeDelay={0}
-                >
-                  <Box cursor="pointer">
-                    <IoHelpCircleOutline color="#A2A3A6" size={16} />
-                  </Box>
-                </Tooltip>
-              </HStack>
-              <Text color="#FFF" fontWeight="bold" fontSize="3xl">
-                {totalLockedValue}
-              </Text>
-            </VStack>
-          </Grid>
-        </Box>
-      </Box>
-      {/* New APY Forecast Table as a separate section */}
-      <Box
-        width="100%"
-        borderRadius={8}
-        background="rgba(255,255,255,0.05)"
-        px={{ base: 4, md: 10 }}
-        py={{ base: 6, md: 10 }}
-      >
-        <HStack gap={2} mb={4}>
-          <MdOutlineAutoGraph color="#00DC8D" size={24} />
-          <Text color="#FFF" fontWeight="bold" fontSize="xl">
-            {metricsPageLocale?.stakingMorRewardsForecast}
-          </Text>
-        </HStack>
 
-        <VStack gap={6} alignItems="flex-start" width="100%">
-          {/* Total Virtual Staked ETH Section with Input */}
-          <Grid templateColumns={{ base: "1fr", md: "1fr 1fr 1fr" }} gap={8} width="100%">
-            {/* ETH Value Column */}
-            <VStack alignItems="flex-start" gap={0}>
-              <HStack>
-                <Text color="#FFF" fontWeight="semibold" fontSize="sm" opacity={0.8} textTransform="uppercase">
-                  {metricsPageLocale?.totalVirtualStakedSeth}
-                </Text>
-                <Tooltip 
-                  content={metricsPageLocale?.tooltips?.totalVirtualStaked} 
-                  positioning={{ placement: "top" }}
-                  showArrow
-                  open={activeTooltip === 'totalVirtualStaked'}
-                  onOpenChange={(e) => onHandleTooltipToggle('totalVirtualStaked')}
-                  openDelay={100}
-                  closeDelay={0}
-                >
-                  <Box cursor="pointer">
-                    <IoHelpCircleOutline color="#A2A3A6" size={16} />
-                  </Box>
-                </Tooltip>
-              </HStack>
-              <Text color="#FFF" fontWeight="bold" fontSize="3xl">
-                {loading ? "Loading..." : totalVirtualStaked}
-              </Text>
-            </VStack>
-
-            {/* USD Value Column */}
-            <VStack alignItems="flex-start" gap={0}>
-              <Text color="#FFF" fontWeight="semibold" fontSize="sm" opacity={0.8} textTransform="uppercase">
-                {metricsPageLocale?.valueInUsd}
-              </Text>
-              {!loading && totalVirtualStakedUSD && (
+          <VStack gap={6} alignItems="flex-start" width="100%">
+            <Grid templateColumns={{ base: "1fr", md: "1fr 1fr 1fr" }} gap={8} width="100%">
+              <VStack alignItems="flex-start" gap={0}>
+                <HStack>
+                  <Text color="#FFF" fontWeight="semibold" fontSize="sm" opacity={0.8} textTransform="uppercase">
+                    {metricsPageLocale?.totalVirtualStakedSeth}
+                  </Text>
+                  <Tooltip 
+                    content={metricsPageLocale?.tooltips?.totalVirtualStaked} 
+                    positioning={{ placement: "top" }}
+                    showArrow
+                    openDelay={0}
+                    closeDelay={0}
+                  >
+                    <Box cursor="pointer">
+                      <IoHelpCircleOutline color="#A2A3A6" size={16} />
+                    </Box>
+                  </Tooltip>
+                </HStack>
                 <Text color="#FFF" fontWeight="bold" fontSize="3xl">
-                  {totalVirtualStakedUSD}
+                  {totalVirtualStaked}
                 </Text>
-              )}
-            </VStack>
+              </VStack>
 
-            {/* Input Section */}
-            <VStack alignItems="flex-start" gap={0}>
-              <Text color="#FFF" fontWeight="semibold" fontSize="sm" opacity={0.8} textTransform="uppercase">
-                {metricsPageLocale?.sethUsdLockIn}
-              </Text>
-              <Input
-                type="text"
-                value={`$${inputValue}`}
-                onChange={(e: ChangeEvent<HTMLInputElement>) => {
-                  const value = e.target.value.replace('$', '');
-                  if (!isNaN(Number(value))) {
-                    setInputValue(Number(value));
-                  }
-                }}
-                min={0}
-                color="#FFF"
-                borderRadius={8}
-                width="100%"
-                textAlign="left"
-                fontSize="xl"
-                fontWeight="bold"
-                border="none"
-                bg="rgba(255,255,255,0.05)"
-                py={2}
-                px={4}
-                _focus={{ border: "none", boxShadow: "none" }}
-              />
-            </VStack>
-          </Grid>
-
-          {/* Table Section */}
-          <Box
-            borderRadius={8}
-            background="rgba(255,255,255,0.02)"
-            px={{ base: 2, md: 6 }}
-            py={{ base: 4, md: 6 }}
-            overflowX="auto"
-            width="100%"
-          >
-            <Grid
-              templateColumns={{ base: '1fr 1fr 1fr 1fr' }}
-              borderBottom="1px solid rgba(255,255,255,0.12)"
-              mb={2}
-              textAlign="left"
-            >
-              <Text color="#FFF" fontWeight="bold" fontSize="lg" py={2} pl={4}>
-                {metricsPageLocale?.lockPeriod}
-              </Text>
-              <Text color="#FFF" fontWeight="bold" fontSize="lg" py={2} pl={4}>
-                {metricsPageLocale?.multiplier}
-              </Text>
-              <Text color="#FFF" fontWeight="bold" fontSize="lg" py={2} pl={4}>
-                {metricsPageLocale?.newInitialValue}
-              </Text>
-              <HStack>
-                <Text color="#FFF" fontWeight="bold" fontSize="lg" py={2} pl={4}>
-                  {metricsPageLocale?.rewardEstimate}
+              <VStack alignItems="flex-start" gap={0}>
+                <Text color="#FFF" fontWeight="semibold" fontSize="sm" opacity={0.8} textTransform="uppercase">
+                  {metricsPageLocale?.valueInUsd}
                 </Text>
-                <Tooltip 
-                  content={metricsPageLocale?.tooltips?.rewardEstimate} 
-                  positioning={{ placement: "top" }}
-                  showArrow
-                  open={activeTooltip === 'rewardEstimate'}
-                  onOpenChange={(e) => onHandleTooltipToggle('rewardEstimate')}
-                  openDelay={100}
-                  closeDelay={0}
-                >
-                  <Box cursor="pointer">
-                    <IoHelpCircleOutline color="#A2A3A6" size={16} />
-                  </Box>
-                </Tooltip>
-              </HStack>
+                {totalVirtualStakedUSD && (
+                  <Text color="#FFF" fontWeight="bold" fontSize="3xl">
+                    {totalVirtualStakedUSD}
+                  </Text>
+                )}
+              </VStack>
+
+              <VStack alignItems="flex-start" gap={0}>
+                <Text color="#FFF" fontWeight="semibold" fontSize="sm" opacity={0.8} textTransform="uppercase">
+                  {metricsPageLocale?.sethUsdLockIn}
+                </Text>
+                <Input
+                  type="text"
+                  value={`$${inputValue}`}
+                  onChange={(e: ChangeEvent<HTMLInputElement>) => {
+                    const value = e.target.value.replace('$', '');
+                    if (!isNaN(Number(value))) {
+                      setInputValue(Number(value));
+                    }
+                  }}
+                  min={0}
+                  color="#FFF"
+                  borderRadius={8}
+                  width="100%"
+                  textAlign="left"
+                  fontSize="xl"
+                  fontWeight="bold"
+                  border="none"
+                  bg="rgba(255,255,255,0.05)"
+                  py={2}
+                  px={4}
+                  _focus={{ border: "none", boxShadow: "none" }}
+                />
+              </VStack>
             </Grid>
-            {generateTableRows().map((row, idx) => (
+
+            <Box
+              borderRadius={8}
+              background="rgba(255,255,255,0.02)"
+              px={{ base: 2, md: 6 }}
+              py={{ base: 4, md: 6 }}
+              overflowX="auto"
+              width="100%"
+            >
               <Grid
-                key={row.days}
                 templateColumns={{ base: '1fr 1fr 1fr 1fr' }}
-                borderBottom={idx < 4 ? '1px solid rgba(255,255,255,0.08)' : 'none'}
-                alignItems="center"
+                borderBottom="1px solid rgba(255,255,255,0.12)"
+                mb={2}
                 textAlign="left"
               >
-                <Text color="#FFF" fontSize="lg" py={2} pl={4}>
-                  {row.days}
+                <Text color="#FFF" fontWeight="bold" fontSize="lg" py={2} pl={4}>
+                  {metricsPageLocale?.lockPeriod}
                 </Text>
-                <Text color="#FFF" fontSize="lg" py={2} pl={4}>
-                  {row.multiplier}
+                <Text color="#FFF" fontWeight="bold" fontSize="lg" py={2} pl={4}>
+                  {metricsPageLocale?.multiplier}
                 </Text>
-                <Text color="#FFF" fontSize="lg" py={2} pl={4}>
-                  {row.newInitialValue}
+                <Text color="#FFF" fontWeight="bold" fontSize="lg" py={2} pl={4}>
+                  {metricsPageLocale?.newInitialValue}
                 </Text>
-                <Text color="#FFF" fontSize="lg" py={2} pl={4}>
-                  {row.rewardEstimate}
-                </Text>
+                <HStack>
+                  <Text color="#FFF" fontWeight="bold" fontSize="lg" py={2} pl={4}>
+                    {metricsPageLocale?.rewardEstimate}
+                  </Text>
+                  <Tooltip 
+                    content={metricsPageLocale?.tooltips?.rewardEstimate} 
+                    positioning={{ placement: "top" }}
+                    showArrow
+                    openDelay={0}
+                    closeDelay={0}
+                  >
+                    <Box cursor="pointer">
+                      <IoHelpCircleOutline color="#A2A3A6" size={16} />
+                    </Box>
+                  </Tooltip>
+                </HStack>
               </Grid>
-            ))}
-          </Box>
-        </VStack>
-      </Box>
+              {generateTableRows().map((row, idx) => (
+                <Grid
+                  key={row.days}
+                  templateColumns={{ base: '1fr 1fr 1fr 1fr' }}
+                  borderBottom={idx < 4 ? '1px solid rgba(255,255,255,0.08)' : 'none'}
+                  alignItems="center"
+                  textAlign="left"
+                >
+                  <Text color="#FFF" fontSize="lg" py={2} pl={4}>
+                    {row.days}
+                  </Text>
+                  <Text color="#FFF" fontSize="lg" py={2} pl={4}>
+                    {row.multiplier}
+                  </Text>
+                  <Text color="#FFF" fontSize="lg" py={2} pl={4}>
+                    {row.newInitialValue}
+                  </Text>
+                  <Text color="#FFF" fontSize="lg" py={2} pl={4}>
+                    {row.rewardEstimate}
+                  </Text>
+                </Grid>
+              ))}
+            </Box>
+          </VStack>
+        </Box>
+      )}
     </VStack>
   );
 };
