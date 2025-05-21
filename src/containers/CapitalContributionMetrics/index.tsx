@@ -8,7 +8,6 @@ import { IoHelpCircleOutline } from "react-icons/io5";
 import { FaLandmark } from "react-icons/fa";
 import React, { useState, ChangeEvent, useMemo, useEffect } from "react";
 import ETHLogo from "morpheus-asia/Image/ETH.png";
-import ReactApexcharts from "morpheus-asia/components/Charts/apex-charts";
 import QuickView24HrLineChart from "morpheus-asia/components/Charts/QuickViewLineChart";
 
 type Props = {
