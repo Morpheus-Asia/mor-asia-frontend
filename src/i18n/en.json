@@ -70,6 +70,7 @@
       "totalVirtualStaked": "Total Staked stETH in Capital Pool with multiplier accounted for as of today",
       "rewardEstimate": "This can change drastically depending on how much more ETH other people stake"
     },
-    "oneDayInterval": "1 Day Interval"
+    "oneDayInterval": "1 Day Interval",
+    "capitalContributionMetrics": "Capital Contribution Metrics"
   }
 }

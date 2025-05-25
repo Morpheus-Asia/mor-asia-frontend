@@ -70,6 +70,7 @@
       "totalVirtualStaked": "截至今日，计入乘数的资金池中总质押stETH",
       "rewardEstimate": "这可能会因其他人质押的ETH数量而发生显著变化"
     },
-    "oneDayInterval": "1天间隔"
+    "oneDayInterval": "1天间隔",
+    "capitalContributionMetrics": "资本贡献指标"
   }
 }

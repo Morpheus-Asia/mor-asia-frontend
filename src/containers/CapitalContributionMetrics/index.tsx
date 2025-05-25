@@ -1,33 +1,32 @@
 "use client";
-import { Box, Grid, HStack, Image, Stack, Text, VStack, Input, Skeleton } from "@chakra-ui/react";
-import { Tooltip } from "morpheus-asia/components/ui/tooltip";
+import { Box, Text, VStack } from "@chakra-ui/react";
 import { getDictionary } from "morpheus-asia/i18n";
-import PercentageChip from "morpheus-asia/components/PercentageChip";
-import { MdOutlineAutoGraph } from "react-icons/md";
-import { IoHelpCircleOutline } from "react-icons/io5";
-import { FaLandmark } from "react-icons/fa";
-import React, { useState, ChangeEvent, useMemo, useEffect } from "react";
-import ETHLogo from "morpheus-asia/Image/ETH.png";
-import QuickView24HrLineChart from "morpheus-asia/components/Charts/QuickViewLineChart";
+import React, { useState, useMemo, useEffect } from "react";
+import CapitalPool from "./CapitalPool";
+import Forcast from "./Forecast";
+import Divider from "morpheus-asia/components/Divider";
 
 type Props = {
   locale?: string;
 };
 
-export const CapitalContributionMetrics: React.FC<Props> = ({ locale }) => {
+export const CapitalContributionMetrics: React.FC<Props> = (props) => {
+  const { locale } = props;
   // =============== LOCALE
   const metricsPageLocale = getDictionary(locale)?.metricsPage;
 
   // =============== STATE
   const [loading, setLoading] = useState(true);
   const [totalVirtualStaked, setTotalVirtualStaked] = useState<string>("");
-  const [totalVirtualStakedUSD, setTotalVirtualStakedUSD] = useState<string>("");
-  const [metrics, setMetrics] = useState({} as any);
+  const [totalVirtualStakedUSD, setTotalVirtualStakedUSD] =
+    useState<string>("");
   const [ethPrice, setEthPrice] = useState<string>("");
   const [morPrice, setMorPrice] = useState<number>(0);
   const [totalLocked, setTotalLocked] = useState<string>("");
   const [balance, setBalance] = useState<string>("");
-  const [ethPriceHistory, setEthPriceHistory] = useState<Array<{priceUsd: string, time: number}>>([]);
+  const [ethPriceHistory, setEthPriceHistory] = useState<
+    Array<{ priceUsd: string; time: number }>
+  >([]);
   const [priceChangePercent, setPriceChangePercent] = useState<number>(0);
 
   // =============== EFFECTS
@@ -39,12 +38,17 @@ export const CapitalContributionMetrics: React.FC<Props> = ({ locale }) => {
         const ethHistoryData = await ethHistoryResponse.json();
         if (ethHistoryData && ethHistoryData.data) {
           setEthPriceHistory(ethHistoryData.data);
-          
+
           // Calculate price change percentage
           if (ethHistoryData.data.length >= 2) {
-            const latestPrice = parseFloat(ethHistoryData.data[ethHistoryData.data.length - 1].priceUsd);
-            const previousPrice = parseFloat(ethHistoryData.data[ethHistoryData.data.length - 2].priceUsd);
-            const percentChange = ((latestPrice - previousPrice) / previousPrice) * 100;
+            const latestPrice = parseFloat(
+              ethHistoryData.data[ethHistoryData.data.length - 1].priceUsd
+            );
+            const previousPrice = parseFloat(
+              ethHistoryData.data[ethHistoryData.data.length - 2].priceUsd
+            );
+            const percentChange =
+              ((latestPrice - previousPrice) / previousPrice) * 100;
             setPriceChangePercent(Number(percentChange.toFixed(2)));
           }
         }
@@ -52,35 +56,55 @@ export const CapitalContributionMetrics: React.FC<Props> = ({ locale }) => {
         // Fetch total virtual staked
         const virtualStakedResponse = await fetch(`/api/cap_virtual_deposited`);
         const virtualStakedData = await virtualStakedResponse.json();
-        if (virtualStakedData && virtualStakedData.data && virtualStakedData.data.totalVirtualDeposited) {
-          const formattedValue = (Number(virtualStakedData.data.totalVirtualDeposited) / 1e18).toFixed(4);
+        if (
+          virtualStakedData &&
+          virtualStakedData.data &&
+          virtualStakedData.data.totalVirtualDeposited
+        ) {
+          const formattedValue = (
+            Number(virtualStakedData.data.totalVirtualDeposited) / 1e18
+          ).toFixed(4);
           setTotalVirtualStaked(`${formattedValue} stETH`);
-          
+
           // Calculate USD value if ETH price is available
           const ethPriceResponse = await fetch(`/api/eth/price`);
           const ethPriceData = await ethPriceResponse.json();
           if (ethPriceData && ethPriceData.data && ethPriceData.data.priceUsd) {
             const ethPriceUsd = Number(ethPriceData.data.priceUsd);
-            const usdValue = (Number(formattedValue) * ethPriceUsd).toLocaleString('en-US', {
-              style: 'currency',
-              currency: 'USD'
+            const usdValue = (
+              Number(formattedValue) * ethPriceUsd
+            ).toLocaleString("en-US", {
+              style: "currency",
+              currency: "USD",
             });
             setTotalVirtualStakedUSD(usdValue);
           }
         } else {
-          console.error('Unexpected API response structure:', virtualStakedData);
-          setTotalVirtualStaked('-');
+          console.error(
+            "Unexpected API response structure:",
+            virtualStakedData
+          );
+          setTotalVirtualStaked("-");
         }
 
         // Fetch total locked
         const totalLockedResponse = await fetch(`/api/total_deposited`);
         const totalLockedData = await totalLockedResponse.json();
-        if (totalLockedData && totalLockedData.data && totalLockedData.data.totalDeposited) {
-          const formattedValue = (Number(totalLockedData.data.totalDeposited) / 1e18).toFixed(4);
+        if (
+          totalLockedData &&
+          totalLockedData.data &&
+          totalLockedData.data.totalDeposited
+        ) {
+          const formattedValue = (
+            Number(totalLockedData.data.totalDeposited) / 1e18
+          ).toFixed(4);
           setTotalLocked(`${formattedValue} ETH`);
         } else {
-          console.error('Unexpected total locked API response structure:', totalLockedData);
-          setTotalLocked('-');
+          console.error(
+            "Unexpected total locked API response structure:",
+            totalLockedData
+          );
+          setTotalLocked("-");
         }
 
         // Fetch ETH price
@@ -89,8 +113,11 @@ export const CapitalContributionMetrics: React.FC<Props> = ({ locale }) => {
         if (ethPriceData && ethPriceData.data && ethPriceData.data.priceUsd) {
           setEthPrice(`$${Number(ethPriceData.data.priceUsd).toFixed(2)}`);
         } else {
-          console.error('Unexpected ETH price API response structure:', ethPriceData);
-          setEthPrice('-');
+          console.error(
+            "Unexpected ETH price API response structure:",
+            ethPriceData
+          );
+          setEthPrice("-");
         }
 
         // Fetch MOR price and total supply
@@ -101,31 +128,43 @@ export const CapitalContributionMetrics: React.FC<Props> = ({ locale }) => {
         const morMetricsData = await morMetricsResponse.json();
         if (morMetricsData?.data?.asset) {
           setMorPrice(Number(morMetricsData.data.asset.priceUsd));
-          
+
           // Calculate balance (24% of total supply)
           if (morMetricsData.data.asset.maxSupply) {
             // Remove commas before converting to number
-            const cleanSupply = morMetricsData.data.asset.maxSupply.replace(/,/g, '');
+            const cleanSupply = morMetricsData.data.asset.maxSupply.replace(
+              /,/g,
+              ""
+            );
             const totalSupply = Number(cleanSupply);
             if (!isNaN(totalSupply)) {
-              const balanceValue = (totalSupply * 0.24).toLocaleString('en-US', {
-                maximumFractionDigits: 4,
-                minimumFractionDigits: 4
-              });
+              const balanceValue = (totalSupply * 0.24).toLocaleString(
+                "en-US",
+                {
+                  maximumFractionDigits: 4,
+                  minimumFractionDigits: 4,
+                }
+              );
               setBalance(`${balanceValue} MOR`);
             } else {
-              console.error('Invalid total supply value:', morMetricsData.data.asset.maxSupply);
-              setBalance('-');
+              console.error(
+                "Invalid total supply value:",
+                morMetricsData.data.asset.maxSupply
+              );
+              setBalance("-");
             }
           } else {
-            console.error('Missing maxSupply in API response:', morMetricsData.data.asset);
-            setBalance('-');
+            console.error(
+              "Missing maxSupply in API response:",
+              morMetricsData.data.asset
+            );
+            setBalance("-");
           }
         }
       } catch (error) {
         console.error("Error fetching data:", error);
-        setTotalVirtualStaked('-');
-        setEthPrice('-');
+        setTotalVirtualStaked("-");
+        setEthPrice("-");
       } finally {
         setLoading(false);
       }
@@ -134,28 +173,27 @@ export const CapitalContributionMetrics: React.FC<Props> = ({ locale }) => {
   }, []);
 
   // =============== VARIABLES
-  const metricsAsset = metrics?.asset;
-  const metricsHistory = metrics?.history;
-
   const chartData = useMemo(() => {
     if (!ethPriceHistory.length) return { series: [] };
-    
+
     return {
-      series: ethPriceHistory.map(item => [
+      series: ethPriceHistory.map((item) => [
         item.time,
-        parseFloat(item.priceUsd).toFixed(2)
-      ])
+        parseFloat(item.priceUsd).toFixed(2),
+      ]),
     };
   }, [ethPriceHistory]);
 
   // Calculate daily emissions
   const calculateDailyEmissions = useMemo(() => {
-    const startDate = new Date('2024-02-08');
+    const startDate = new Date("2024-02-08");
     const today = new Date();
-    const daysSinceStart = Math.floor((today.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24));
+    const daysSinceStart = Math.floor(
+      (today.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24)
+    );
     const initialEmissions = 14400;
     const dailyDecline = 2.468994701;
-    const currentEmissions = initialEmissions - (daysSinceStart * dailyDecline);
+    const currentEmissions = initialEmissions - daysSinceStart * dailyDecline;
     return currentEmissions.toFixed(4);
   }, []);
 
@@ -168,475 +206,37 @@ export const CapitalContributionMetrics: React.FC<Props> = ({ locale }) => {
   const price = ethPrice || "$3252.23";
   const percent = priceChangePercent;
   const dailyAccrual = `${dailyAccrualValue} MOR`;
-  const totalLockedValue = loading ? (
-    <Skeleton height="40px" width="200px" />
-  ) : (
-    totalLocked
-  );
-  const balanceValue = loading ? (
-    <Skeleton height="40px" width="200px" />
-  ) : (
-    balance
-  );
-
-  const [inputValue, setInputValue] = useState<number>(1000);
-
-  const generateTableRows = () => {
-    // Calculate total emissions up to a specific day
-    const calculateTotalEmissions = (daysFromStart: number) => {
-      let total = 0;
-      for (let i = 0; i < daysFromStart; i++) {
-        const dailyEmission = 14400 - (i * 2.468994701);
-        if (dailyEmission > 0) {
-          total += dailyEmission;
-        }
-      }
-      return total;
-    };
-
-    // Calculate multipliers based on dilution rates
-    const calculateMultiplier = (days: number) => {
-      const start = Math.floor(Date.now() / 1000); // Current time in unix timestamp
-      const end = start + (days * 24 * 60 * 60); // Add days converted to seconds
-      
-      // Constants from the formula
-      const constant = 16.61327546;
-      const epochStart = 1721908800;
-      const timeScale = 484272000;
-      
-      // Calculate the tanh terms
-      const startTerm = Math.tanh(2 * ((start - epochStart) / timeScale));
-      const endTerm = Math.tanh(2 * ((end - epochStart) / timeScale));
-      
-      // Calculate the multiplier
-      let multiplier = constant * (endTerm - startTerm);
-      
-      // Apply bounds
-      multiplier = Math.max(1.0, Math.min(10.7, multiplier));
-      
-      return multiplier.toFixed(1) + 'x';
-    };
-
-    // Convert daily accrual from "X MOR" to number
-    const dailyAccrualNumber = parseFloat(dailyAccrualValue);
-    
-    // Convert totalVirtualStakedUSD from currency string to number
-    const totalStakedUSD = parseFloat(totalVirtualStakedUSD.replace(/[^0-9.-]+/g, ''));
-
-    const calculateRewardEstimate = (days: number, newInitialValue: number) => {
-      // Calculate new total including the user's new stake
-      const newTotalStaked = totalStakedUSD + newInitialValue;
-      
-      // Calculate the user's share of the new total pool
-      const userShare = newInitialValue / newTotalStaked;
-      
-      // Calculate total accrual for the period in MOR
-      let totalAccrualMOR = 0;
-      const startDate = new Date('2024-02-08');
-      const today = new Date();
-      const daysSinceStart = Math.floor((today.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24));
-      
-      // Calculate accrual for each day in the lock period
-      for (let i = 0; i < days; i++) {
-        // Calculate daily emissions for this specific day
-        const dailyEmission = 14400 - ((daysSinceStart + i) * 2.468994701);
-        if (dailyEmission > 0) {
-          // Calculate daily accrual (24% of daily emissions)
-          const dailyAccrual = dailyEmission * 0.24;
-          // Add this day's portion of accrual to total
-          totalAccrualMOR += dailyAccrual * userShare;
-        }
-      }
-      
-      // Convert MOR accrual to USD using current MOR price
-      const totalAccrualUSD = totalAccrualMOR * morPrice;
-      
-      // Add to initial value
-      return newInitialValue + totalAccrualUSD;
-    };
-
-    return [
-      { 
-        days: '7 Days', 
-        multiplier: calculateMultiplier(7), 
-        newInitialValue: `$${(inputValue * Number(calculateMultiplier(7).replace('x', ''))).toLocaleString()}`,
-        rewardEstimate: `$${calculateRewardEstimate(7, inputValue * Number(calculateMultiplier(7).replace('x', ''))).toLocaleString()}`
-      },
-      { 
-        days: '365 Days (1Y)', 
-        multiplier: calculateMultiplier(365), 
-        newInitialValue: `$${(inputValue * Number(calculateMultiplier(365).replace('x', ''))).toLocaleString()}`,
-        rewardEstimate: `$${calculateRewardEstimate(365, inputValue * Number(calculateMultiplier(365).replace('x', ''))).toLocaleString()}`
-      },
-      { 
-        days: '730 Days (2Y)', 
-        multiplier: calculateMultiplier(730), 
-        newInitialValue: `$${(inputValue * Number(calculateMultiplier(730).replace('x', ''))).toLocaleString()}`,
-        rewardEstimate: `$${calculateRewardEstimate(730, inputValue * Number(calculateMultiplier(730).replace('x', ''))).toLocaleString()}`
-      },
-      { 
-        days: '1095 Days (3Y)', 
-        multiplier: calculateMultiplier(1095), 
-        newInitialValue: `$${(inputValue * Number(calculateMultiplier(1095).replace('x', ''))).toLocaleString()}`,
-        rewardEstimate: `$${calculateRewardEstimate(1095, inputValue * Number(calculateMultiplier(1095).replace('x', ''))).toLocaleString()}`
-      },
-      { 
-        days: '1460 Days (4Y)', 
-        multiplier: calculateMultiplier(1460), 
-        newInitialValue: `$${(inputValue * Number(calculateMultiplier(1460).replace('x', ''))).toLocaleString()}`,
-        rewardEstimate: `$${calculateRewardEstimate(1460, inputValue * Number(calculateMultiplier(1460).replace('x', ''))).toLocaleString()}`
-      },
-      { 
-        days: '1825 Days (5Y)', 
-        multiplier: calculateMultiplier(1825), 
-        newInitialValue: `$${(inputValue * Number(calculateMultiplier(1825).replace('x', ''))).toLocaleString()}`,
-        rewardEstimate: `$${calculateRewardEstimate(1825, inputValue * Number(calculateMultiplier(1825).replace('x', ''))).toLocaleString()}`
-      },
-      { 
-        days: '2190 Days (6Y)', 
-        multiplier: calculateMultiplier(2190), 
-        newInitialValue: `$${(inputValue * Number(calculateMultiplier(2190).replace('x', ''))).toLocaleString()}`,
-        rewardEstimate: `$${calculateRewardEstimate(2190, inputValue * Number(calculateMultiplier(2190).replace('x', ''))).toLocaleString()}`
-      }
-    ];
-  };
 
   return (
-    <VStack width="100%" alignItems="flex-start" gap={6}>  
-      {loading ? (
-        <Skeleton
-          width="100%"
-          height="400px"
-          borderRadius={8}
+    <VStack width="100%" alignItems="flex-start" gap={6} pt={5}>
+      <Divider />
+      <Text color="#FFF" fontWeight={"bold"} fontSize={"2xl"}>
+        {metricsPageLocale?.capitalContributionMetrics}
+      </Text>
+      <Box width="100%">
+        <CapitalPool
+          loading={loading}
+          metricsPageLocale={metricsPageLocale}
+          price={price}
+          chartData={chartData}
+          calculateDailyEmissions={calculateDailyEmissions}
+          balanceValue={balance}
+          dailyAccrual={dailyAccrual}
+          totalLockedValue={totalLocked}
+          percent={percent}
         />
-      ) : (
-        <Box
-          width="100%"
-          borderRadius={8}
-          background="rgba(255,255,255,0.05)"
-          px={{ base: 4, md: 10 }}
-          py={{ base: 6, md: 10 }}
-          display="flex"
-          flexDirection="column"
-          gap={6}
-        >
-          <HStack width="100%" alignItems="center" justifyContent="space-between" gap={8} flexDirection={{ base: "column", md: "row" }}>
-            <HStack alignItems="center" gap={5} flex={1}>
-              <Image src={ETHLogo.src} alt="ETH" boxSize="56px" borderRadius="full" />
-              <VStack alignItems="flex-start" gap={0}>
-                <HStack alignItems="center" gap={2}>
-                  <Text color="#FFF" fontWeight="bold" fontSize="xl">ETH</Text>
-                  <Text color="#A2A3A6" fontSize="sm">{metricsPageLocale?.ethUsd}</Text>
-                </HStack>
-                <HStack alignItems="end" gap={4}>
-                  <Text color="#FFF" fontWeight="extrabold" fontSize="3xl">
-                    {price}
-                  </Text>
-                  <PercentageChip value={percent} />
-                </HStack>
-              </VStack>
-            </HStack>
-            <VStack gap={1} flex="end">
-              <QuickView24HrLineChart
-                colors={["#00DC8D"]}
-                data={chartData}
-              />
-              <Text color="#A2A3A6" fontSize="xs" textAlign="center" width="100%">
-                {metricsPageLocale?.oneDayInterval}
-              </Text>
-            </VStack>
-          </HStack>
-          <Box width="100%" height="1px" background="rgba(255,255,255,0.12)" my={2} />
-          <Grid templateColumns={{ base: "1fr", md: "1fr 1fr" }} gap={{ base: 6, md: 8 }}>
-            <VStack alignItems="flex-start" gap={0}>
-              <HStack>
-                <Text color="#FFF" fontWeight="semibold" fontSize="sm" opacity={0.8} textTransform="uppercase">
-                  {metricsPageLocale?.initialDailyEmissions}
-                </Text>
-                <Tooltip 
-                  content={metricsPageLocale?.tooltips?.initialDailyEmissions} 
-                  positioning={{ placement: "top" }}
-                  showArrow
-                  openDelay={0}
-                  closeDelay={0}
-                >
-                  <Box cursor="pointer">
-                    <IoHelpCircleOutline color="#A2A3A6" size={16} />
-                  </Box>
-                </Tooltip>
-              </HStack>
-              <Text color="#FFF" fontWeight="bold" fontSize="3xl">
-                14,400 MOR
-              </Text>
-            </VStack>
-
-            <VStack alignItems="flex-start" gap={0}>
-              <HStack>
-                <Text color="#FFF" fontWeight="semibold" fontSize="sm" opacity={0.8} textTransform="uppercase">
-                  {metricsPageLocale?.dailyEmissionsToday}
-                </Text>
-                <Tooltip 
-                  content={metricsPageLocale?.tooltips?.dailyEmissionsToday} 
-                  positioning={{ placement: "top" }}
-                  showArrow
-                  openDelay={0}
-                  closeDelay={0}
-                >
-                  <Box cursor="pointer">
-                    <IoHelpCircleOutline color="#A2A3A6" size={16} />
-                  </Box>
-                </Tooltip>
-              </HStack>
-              <Text color="#FFF" fontWeight="bold" fontSize="3xl">
-                {calculateDailyEmissions} MOR
-              </Text>
-            </VStack>
-          </Grid>
-          <Box
-            width="100%"
-            borderRadius={8}
-            background="rgba(255,255,255,0.05)"
-            px={{ base: 4, md: 10 }}
-            py={{ base: 4, md: 8 }}
-            display="flex"
-            flexDirection="column"
-            gap={6}
-          >
-            <HStack gap={3}>
-              <FaLandmark color="#00DC8D" size={20} />
-              <Text color="#FFF" fontWeight="bold" fontSize="2xl">
-                {metricsPageLocale?.capitalPool} (ID: 0)
-              </Text>
-            </HStack>
-            <Grid 
-              templateColumns={{ base: "1fr", md: "repeat(3, 1fr)" }} 
-              gap={{ base: 6, md: "5%" }} 
-              width="100%"
-              justifyContent="space-between"
-            >
-              <VStack alignItems="flex-start" gap={0}>
-                <HStack>
-                  <Text color="#FFF" fontWeight="semibold" fontSize="sm" opacity={0.8} textTransform="uppercase">
-                    {metricsPageLocale?.balance}
-                  </Text>
-                  <Tooltip 
-                    content={metricsPageLocale?.tooltips?.balance} 
-                    positioning={{ placement: "top" }}
-                    showArrow
-                    openDelay={0}
-                    closeDelay={0}
-                  >
-                    <Box cursor="pointer">
-                      <IoHelpCircleOutline color="#A2A3A6" size={16} />
-                    </Box>
-                  </Tooltip>
-                </HStack>
-                <Text color="#FFF" fontWeight="bold" fontSize="3xl">
-                  {balanceValue}
-                </Text>
-              </VStack>
-              <VStack alignItems="flex-start" gap={0}>
-                <HStack>
-                  <Text color="#FFF" fontWeight="semibold" fontSize="sm" opacity={0.8} textTransform="uppercase">
-                    {metricsPageLocale?.dailyAccrual}
-                  </Text>
-                  <Tooltip 
-                    content={metricsPageLocale?.tooltips?.dailyAccrual} 
-                    positioning={{ placement: "top" }}
-                    showArrow
-                    openDelay={0}
-                    closeDelay={0}
-                  >
-                    <Box cursor="pointer">
-                      <IoHelpCircleOutline color="#A2A3A6" size={16} />
-                    </Box>
-                  </Tooltip>
-                </HStack>
-                <Text color="#FFF" fontWeight="bold" fontSize="3xl">
-                  {dailyAccrual}
-                </Text>
-              </VStack>
-              <VStack alignItems="flex-start" gap={0}>
-                <HStack>
-                  <Text color="#FFF" fontWeight="semibold" fontSize="sm" opacity={0.8} textTransform="uppercase">
-                    {metricsPageLocale?.totalLocked}
-                  </Text>
-                  <Tooltip 
-                    content={metricsPageLocale?.tooltips?.totalLocked} 
-                    positioning={{ placement: "top" }}
-                    showArrow
-                    openDelay={0}
-                    closeDelay={0}
-                  >
-                    <Box cursor="pointer">
-                      <IoHelpCircleOutline color="#A2A3A6" size={16} />
-                    </Box>
-                  </Tooltip>
-                </HStack>
-                <Text color="#FFF" fontWeight="bold" fontSize="3xl">
-                  {totalLockedValue}
-                </Text>
-              </VStack>
-            </Grid>
-          </Box>
-        </Box>
-      )}
-
-      {loading ? (
-        <Skeleton
-          width="100%"
-          height="500px"
-          borderRadius={8}
+      </Box>
+      <Box width="100%">
+        <Forcast
+          loading={loading}
+          metricsPageLocale={metricsPageLocale}
+          totalVirtualStaked={totalVirtualStaked}
+          totalVirtualStakedUSD={totalVirtualStakedUSD}
+          morPrice={morPrice}
         />
-      ) : (
-        <Box
-          width="100%"
-          borderRadius={8}
-          background="rgba(255,255,255,0.05)"
-          px={{ base: 4, md: 10 }}
-          py={{ base: 6, md: 10 }}
-        >
-          <HStack gap={2} mb={4}>
-            <MdOutlineAutoGraph color="#00DC8D" size={24} />
-            <Text color="#FFF" fontWeight="bold" fontSize="xl">
-              {metricsPageLocale?.stakingMorRewardsForecast}
-            </Text>
-          </HStack>
-
-          <VStack gap={6} alignItems="flex-start" width="100%">
-            <Grid templateColumns={{ base: "1fr", md: "1fr 1fr 1fr" }} gap={8} width="100%">
-              <VStack alignItems="flex-start" gap={0}>
-                <HStack>
-                  <Text color="#FFF" fontWeight="semibold" fontSize="sm" opacity={0.8} textTransform="uppercase">
-                    {metricsPageLocale?.totalVirtualStakedSeth}
-                  </Text>
-                  <Tooltip 
-                    content={metricsPageLocale?.tooltips?.totalVirtualStaked} 
-                    positioning={{ placement: "top" }}
-                    showArrow
-                    openDelay={0}
-                    closeDelay={0}
-                  >
-                    <Box cursor="pointer">
-                      <IoHelpCircleOutline color="#A2A3A6" size={16} />
-                    </Box>
-                  </Tooltip>
-                </HStack>
-                <Text color="#FFF" fontWeight="bold" fontSize="3xl">
-                  {totalVirtualStaked}
-                </Text>
-              </VStack>
-
-              <VStack alignItems="flex-start" gap={0}>
-                <Text color="#FFF" fontWeight="semibold" fontSize="sm" opacity={0.8} textTransform="uppercase">
-                  {metricsPageLocale?.valueInUsd}
-                </Text>
-                {totalVirtualStakedUSD && (
-                  <Text color="#FFF" fontWeight="bold" fontSize="3xl">
-                    {totalVirtualStakedUSD}
-                  </Text>
-                )}
-              </VStack>
-
-              <VStack alignItems="flex-start" gap={0}>
-                <Text color="#FFF" fontWeight="semibold" fontSize="sm" opacity={0.8} textTransform="uppercase">
-                  {metricsPageLocale?.sethUsdLockIn}
-                </Text>
-                <Input
-                  type="text"
-                  value={`$${inputValue}`}
-                  onChange={(e: ChangeEvent<HTMLInputElement>) => {
-                    const value = e.target.value.replace('$', '');
-                    if (!isNaN(Number(value))) {
-                      setInputValue(Number(value));
-                    }
-                  }}
-                  min={0}
-                  color="#FFF"
-                  borderRadius={8}
-                  width="100%"
-                  textAlign="left"
-                  fontSize="xl"
-                  fontWeight="bold"
-                  border="none"
-                  bg="rgba(255,255,255,0.05)"
-                  py={2}
-                  px={4}
-                  _focus={{ border: "none", boxShadow: "none" }}
-                />
-              </VStack>
-            </Grid>
-
-            <Box
-              borderRadius={8}
-              background="rgba(255,255,255,0.02)"
-              px={{ base: 2, md: 6 }}
-              py={{ base: 4, md: 6 }}
-              overflowX="auto"
-              width="100%"
-            >
-              <Grid
-                templateColumns={{ base: 'repeat(4, minmax(120px, 1fr))', md: '1fr 1fr 1fr 1fr' }}
-                borderBottom="1px solid rgba(255,255,255,0.12)"
-                mb={2}
-                textAlign="left"
-                minWidth={{ base: '480px', md: 'auto' }}
-              >
-                <Text color="#FFF" fontWeight="bold" fontSize="lg" py={2} pl={4}>
-                  {metricsPageLocale?.lockPeriod}
-                </Text>
-                <Text color="#FFF" fontWeight="bold" fontSize="lg" py={2} pl={4}>
-                  {metricsPageLocale?.multiplier}
-                </Text>
-                <Text color="#FFF" fontWeight="bold" fontSize="lg" py={2} pl={4}>
-                  {metricsPageLocale?.newInitialValue}
-                </Text>
-                <HStack>
-                  <Text color="#FFF" fontWeight="bold" fontSize="lg" py={2} pl={4}>
-                    {metricsPageLocale?.rewardEstimate}
-                  </Text>
-                  <Tooltip 
-                    content={metricsPageLocale?.tooltips?.rewardEstimate} 
-                    positioning={{ placement: "top" }}
-                    showArrow
-                    openDelay={0}
-                    closeDelay={0}
-                  >
-                    <Box cursor="pointer">
-                      <IoHelpCircleOutline color="#A2A3A6" size={16} />
-                    </Box>
-                  </Tooltip>
-                </HStack>
-              </Grid>
-              {generateTableRows().map((row, idx) => (
-                <Grid
-                  key={row.days}
-                  templateColumns={{ base: 'repeat(4, minmax(120px, 1fr))', md: '1fr 1fr 1fr 1fr' }}
-                  borderBottom={idx < 4 ? '1px solid rgba(255,255,255,0.08)' : 'none'}
-                  alignItems="center"
-                  textAlign="left"
-                  minWidth={{ base: '480px', md: 'auto' }}
-                >
-                  <Text color="#FFF" fontSize="lg" py={2} pl={4}>
-                    {row.days}
-                  </Text>
-                  <Text color="#FFF" fontSize="lg" py={2} pl={4}>
-                    {row.multiplier}
-                  </Text>
-                  <Text color="#FFF" fontSize="lg" py={2} pl={4}>
-                    {row.newInitialValue}
-                  </Text>
-                  <Text color="#FFF" fontSize="lg" py={2} pl={4}>
-                    {row.rewardEstimate}
-                  </Text>
-                </Grid>
-              ))}
-            </Box>
-          </VStack>
-        </Box>
-      )}
+      </Box>
     </VStack>
   );
 };
 
-export default CapitalContributionMetrics; 
+export default CapitalContributionMetrics;
