@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { getDictionary } from "morpheus-asia/i18n";
 import fetchContentType from "morpheus-asia/utils/strapi/fetchContentTypes";
 import { LuSearch } from "react-icons/lu";
+import Link from "next/link";
 
 type Props = {
   locale?: string;
@@ -139,38 +140,40 @@ export const BlogContainer: React.FC<Props> = (props) => {
         >
           {filteredPosts.map((post) => (
             <GridItem key={post.id}>
-              <Box
-                background="rgba(255,255,255,0.05)"
-                borderRadius={8}
-                p={6}
-                height="100%"
-                transition="all 0.2s"
-                _hover={{
-                  background: "rgba(255,255,255,0.08)",
-                  transform: "translateY(-2px)",
-                }}
-              >
-                <VStack alignItems="flex-start" gap={3}>
-                  <Text color="#FFF" fontWeight={"bold"} fontSize={"lg"}>
-                    {post.Title || 'Untitled'}
-                  </Text>
-                  <Text color="#FFF" fontSize="sm">
-                    {post.Body?.[0]?.children?.[0]?.text || 'No content available'}
-                  </Text>
-                  <VStack alignItems="flex-start" gap={0} mt="auto">
+              <Link href={`/${locale}/blog/${post.id}`} style={{ textDecoration: 'none' }}>
+                <Box
+                  background="rgba(255,255,255,0.05)"
+                  borderRadius={8}
+                  p={6}
+                  height="100%"
+                  transition="all 0.2s"
+                  _hover={{
+                    background: "rgba(255,255,255,0.08)",
+                    transform: "translateY(-2px)",
+                  }}
+                >
+                  <VStack alignItems="flex-start" gap={3}>
+                    <Text color="#FFF" fontWeight={"bold"} fontSize={"lg"}>
+                      {post.Title || 'Untitled'}
+                    </Text>
                     <Text color="#FFF" fontSize="sm">
-                      {post.Author || 'Unknown'}
+                      {post.Body?.[0]?.children?.[0]?.text || 'No content available'}
                     </Text>
-                    <Text color="rgba(255,255,255,0.5)" fontSize="xs">
-                      {post.Date ? new Date(post.Date).toLocaleDateString(locale, {
-                        year: 'numeric',
-                        month: 'long',
-                        day: 'numeric'
-                      }) : 'No date available'}
-                    </Text>
+                    <VStack alignItems="flex-start" gap={0} mt="auto">
+                      <Text color="#FFF" fontSize="sm">
+                        {post.Author || 'Unknown'}
+                      </Text>
+                      <Text color="rgba(255,255,255,0.5)" fontSize="xs">
+                        {post.Date ? new Date(post.Date).toLocaleDateString(locale, {
+                          year: 'numeric',
+                          month: 'long',
+                          day: 'numeric'
+                        }) : 'No date available'}
+                      </Text>
+                    </VStack>
                   </VStack>
-                </VStack>
-              </Box>
+                </Box>
+              </Link>
             </GridItem>
           ))}
         </Grid>
