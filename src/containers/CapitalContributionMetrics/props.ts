@@ -18,6 +18,7 @@ export type ForcastProps = {
   totalVirtualStakedUSD: string;
   morPrice: number;
   loading: boolean;
+  ethPrice: string;
 };
 
 export type GenerateTableArgs = {

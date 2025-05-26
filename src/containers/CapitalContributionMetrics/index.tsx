@@ -233,6 +233,7 @@ export const CapitalContributionMetrics: React.FC<Props> = (props) => {
           totalVirtualStaked={totalVirtualStaked}
           totalVirtualStakedUSD={totalVirtualStakedUSD}
           morPrice={morPrice}
+          ethPrice={ethPrice}
         />
       </Box>
     </VStack>

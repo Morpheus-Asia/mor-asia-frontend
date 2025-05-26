@@ -146,31 +146,16 @@ export const generateTableRows = (args: GenerateTableArgs) => {
 };
 
 export function nonLinearMap(sliderValue: number): number {
-  if (sliderValue <= 30) {
-    // $50 increments from 100 to 1600
-    const stepSize = 50;
-    const minAmount = 100;
-    // Calculate raw amount
-    const rawAmount = minAmount + (sliderValue / 30) * (30 * stepSize);
-    // Snap to nearest multiple of stepSize
-    return Math.round(rawAmount / stepSize) * stepSize;
-  } else if (sliderValue <= 70) {
-    // $500 increments from 1600 to 21600
-    const stepSize = 500;
-    const minAmount = 1600;
-    const segmentLength = 40;
-    const rawAmount =
-      minAmount +
-      ((sliderValue - 30) / segmentLength) * (segmentLength * stepSize);
-    return Math.round(rawAmount / stepSize) * stepSize;
-  } else {
-    // $5000 increments from 21600 to 100000
-    const stepSize = 5000;
-    const minAmount = 21600;
-    const segmentLength = 30;
-    const rawAmount =
-      minAmount +
-      ((sliderValue - 70) / segmentLength) * (segmentLength * stepSize);
-    return Math.round(rawAmount / stepSize) * stepSize;
-  }
+  const min = 0.1;
+  const max = 1000;
+
+  const logMin = Math.log10(min);
+  const logMax = Math.log10(max);
+
+  const t = sliderValue / 100;
+
+  const logValue = logMin + t * (logMax - logMin);
+  const value = Math.pow(10, logValue);
+
+  return parseFloat(value.toFixed(2));
 }

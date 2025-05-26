@@ -19,6 +19,7 @@ export const Forcast: React.FC<ForcastProps> = (props) => {
     totalVirtualStakedUSD,
     morPrice,
     loading,
+    ethPrice,
   } = props;
   // =============== HOOKS
 
@@ -31,8 +32,12 @@ export const Forcast: React.FC<ForcastProps> = (props) => {
   // =============== EVENTS
 
   // =============== VARIABLES
-  const mappedValue = Math.round(nonLinearMap(value[0]));
-  const finalMappedValue = Math.round(nonLinearMap(finalValue[0]));
+  const ethPriceNumber = parseFloat(ethPrice.replace("$", ""));
+  console.log("eth", ethPriceNumber);
+
+  const mappedValue = nonLinearMap(value[0]);
+  const finalMappedValue = nonLinearMap(finalValue[0]) * ethPriceNumber;
+  console.log("finalMappedValue", finalMappedValue);
 
   // =============== RENDER FUNCTIONS
 
@@ -130,7 +135,7 @@ export const Forcast: React.FC<ForcastProps> = (props) => {
                 <Slider.Root
                   value={value}
                   min={0}
-                  max={86}
+                  max={100}
                   step={1}
                   onValueChange={(e) => setValue(e.value)}
                   onValueChangeEnd={(e) => setFinalValue(e.value)}
@@ -145,13 +150,13 @@ export const Forcast: React.FC<ForcastProps> = (props) => {
               </Box>
               <HStack width={"100%"} justifyContent="space-between">
                 <Text color="gray.400" fontWeight={600}>
-                  $100
+                  0.1
                 </Text>
                 <Text color="#FFF" fontSize="2xl" fontWeight="bold">
-                  ${mappedValue.toLocaleString()}
+                  {mappedValue} STETH
                 </Text>
                 <Text color="gray.400" fontWeight={600}>
-                  $100k
+                  100
                 </Text>
               </HStack>
             </VStack>

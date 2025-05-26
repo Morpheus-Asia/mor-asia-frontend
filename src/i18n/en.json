@@ -56,7 +56,7 @@
     "stakingMorRewardsForecast": "Staking MOR Rewards Forecast",
     "totalVirtualStakedSeth": "Total Virtual Staked stETH",
     "valueInUsd": "Value in USD",
-    "sethUsdLockIn": "stETH (USD) Lock-In",
+    "sethUsdLockIn": "stETH Lock-In",
     "lockPeriod": "LOCK PERIOD",
     "multiplier": "MULTIPLIER",
     "newInitialValue": "NEW INITIAL VALUE",
