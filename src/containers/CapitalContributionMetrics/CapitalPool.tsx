@@ -3,7 +3,7 @@ import QuickView24HrLineChart from "morpheus-asia/components/Charts/QuickViewLin
 import MetricsBox from "morpheus-asia/components/MetricsBox";
 import PercentageChip from "morpheus-asia/components/PercentageChip";
 import { Tooltip } from "morpheus-asia/components/ui/tooltip";
-import ETHLogo from "morpheus-asia/Image/ETH.png";
+import StethLogo from "morpheus-asia/Image/ETH.png";
 import { IoHelpCircleOutline } from "react-icons/io5";
 import { FaLandmark } from "react-icons/fa";
 import { CapitalPoolProps } from "./props";
@@ -65,8 +65,8 @@ export const CapitalPool: React.FC<CapitalPoolProps> = (props) => {
         >
           <HStack alignItems="center" gap={1} flex={1}>
             <Image
-              src={ETHLogo.src}
-              alt="ETH"
+              src={StethLogo.src}
+              alt="stETH"
               objectFit={"contain"}
               width={"75px"}
               height={"75px"}
@@ -74,7 +74,7 @@ export const CapitalPool: React.FC<CapitalPoolProps> = (props) => {
             <VStack alignItems="flex-start" gap={0}>
               <HStack alignItems="center" gap={2}>
                 <Text color="#FFF" fontWeight="bold" fontSize="xl">
-                  ETH
+                  stETH
                 </Text>
                 <Text color="#A2A3A6" fontSize="sm">
                   {metricsPageLocale?.ethUsd}

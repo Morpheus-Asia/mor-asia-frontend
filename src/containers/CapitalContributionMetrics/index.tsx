@@ -20,11 +20,11 @@ export const CapitalContributionMetrics: React.FC<Props> = (props) => {
   const [totalVirtualStaked, setTotalVirtualStaked] = useState<string>("");
   const [totalVirtualStakedUSD, setTotalVirtualStakedUSD] =
     useState<string>("");
-  const [ethPrice, setEthPrice] = useState<string>("");
+  const [stethPrice, setStethPrice] = useState<string>("");
   const [morPrice, setMorPrice] = useState<number>(0);
   const [totalLocked, setTotalLocked] = useState<string>("");
   const [balance, setBalance] = useState<string>("");
-  const [ethPriceHistory, setEthPriceHistory] = useState<
+  const [stethPriceHistory, setStethPriceHistory] = useState<
     Array<{ priceUsd: string; time: number }>
   >([]);
   const [priceChangePercent, setPriceChangePercent] = useState<number>(0);
@@ -40,9 +40,9 @@ export const CapitalContributionMetrics: React.FC<Props> = (props) => {
         const metricsData = await metricsResponse.json();
         
         if (metricsData?.data) {
-          // Handle ETH price history
+          // Handle stETH price history
           if (metricsData.data.ethHistory?.data) {
-            setEthPriceHistory(metricsData.data.ethHistory.data);
+            setStethPriceHistory(metricsData.data.ethHistory.data);
 
             // Calculate price change percentage
             if (metricsData.data.ethHistory.data.length >= 2) {
@@ -58,17 +58,17 @@ export const CapitalContributionMetrics: React.FC<Props> = (props) => {
             }
           }
 
-          // Handle ETH price
+          // Handle stETH price
           if (metricsData.data.ethPrice?.data?.priceUsd) {
-            setEthPrice(`$${Number(metricsData.data.ethPrice.data.priceUsd).toFixed(2)}`);
+            setStethPrice(`$${Number(metricsData.data.ethPrice.data.priceUsd).toFixed(2)}`);
           }
 
           // Handle total locked
           if (metricsData.data.totalDeposited?.data?.totalDeposited) {
             const formattedValue = (
               Number(metricsData.data.totalDeposited.data.totalDeposited) / 1e18
-            ).toFixed(4);
-            setTotalLocked(`${formattedValue} ETH`);
+            ).toFixed(2);
+            setTotalLocked(`${formattedValue} stETH`);
           }
 
           // Handle MOR metrics
@@ -119,17 +119,19 @@ export const CapitalContributionMetrics: React.FC<Props> = (props) => {
         ) {
           const formattedValue = (
             Number(virtualStakedData.data.totalVirtualDeposited) / 1e18
-          ).toFixed(4);
+          ).toFixed(2);
           setTotalVirtualStaked(`${formattedValue} stETH`);
 
-          // Calculate USD value if ETH price is available
+          // Calculate USD value if stETH price is available
           if (metricsData?.data?.ethPrice?.data?.priceUsd) {
-            const ethPriceUsd = Number(metricsData.data.ethPrice.data.priceUsd);
+            const stethPriceUsd = Number(metricsData.data.ethPrice.data.priceUsd);
             const usdValue = (
-              Number(formattedValue) * ethPriceUsd
+              Number(formattedValue) * stethPriceUsd
             ).toLocaleString("en-US", {
               style: "currency",
               currency: "USD",
+              minimumFractionDigits: 2,
+              maximumFractionDigits: 2
             });
             setTotalVirtualStakedUSD(usdValue);
           }
@@ -138,7 +140,7 @@ export const CapitalContributionMetrics: React.FC<Props> = (props) => {
         }
       } catch (error) {
         setTotalVirtualStaked("-");
-        setEthPrice("-");
+        setStethPrice("-");
       } finally {
         setLoading(false);
       }
@@ -148,15 +150,15 @@ export const CapitalContributionMetrics: React.FC<Props> = (props) => {
 
   // =============== VARIABLES
   const chartData = useMemo(() => {
-    if (!ethPriceHistory.length) return { series: [] };
+    if (!stethPriceHistory.length) return { series: [] };
 
     return {
-      series: ethPriceHistory.map((item) => [
+      series: stethPriceHistory.map((item) => [
         item.time,
         parseFloat(item.priceUsd).toFixed(2),
       ]),
     };
-  }, [ethPriceHistory]);
+  }, [stethPriceHistory]);
 
   // Calculate daily emissions
   const calculateDailyEmissions = useMemo(() => {
@@ -177,7 +179,7 @@ export const CapitalContributionMetrics: React.FC<Props> = (props) => {
   }, [calculateDailyEmissions]);
 
   // Placeholder values
-  const price = ethPrice || "$3252.23";
+  const price = stethPrice || "$3252.23";
   const percent = priceChangePercent;
   const dailyAccrual = `${dailyAccrualValue} MOR`;
 
@@ -207,7 +209,7 @@ export const CapitalContributionMetrics: React.FC<Props> = (props) => {
           totalVirtualStaked={totalVirtualStaked}
           totalVirtualStakedUSD={totalVirtualStakedUSD}
           morPrice={morPrice}
-          ethPrice={ethPrice}
+          ethPrice={stethPrice}
         />
       </Box>
     </VStack>

@@ -32,9 +32,9 @@ export const Forcast: React.FC<ForcastProps> = (props) => {
   // =============== EVENTS
 
   // =============== VARIABLES
-  const ethPriceNumber = parseFloat(ethPrice.replace("$", ""));
+  const stethPriceNumber = parseFloat(ethPrice.replace("$", ""));
   const mappedValue = nonLinearMap(value[0]);
-  const finalMappedValue = nonLinearMap(finalValue[0]) * ethPriceNumber;
+  const finalMappedValue = nonLinearMap(finalValue[0]) * stethPriceNumber;
 
   // =============== RENDER FUNCTIONS
 
@@ -150,12 +150,15 @@ export const Forcast: React.FC<ForcastProps> = (props) => {
                   0.1
                 </Text>
                 <Text color="#FFF" fontSize="2xl" fontWeight="bold">
-                  {mappedValue} STETH
+                  {mappedValue} stETH
                 </Text>
                 <Text color="gray.400" fontWeight={600}>
                   100
                 </Text>
               </HStack>
+              <Text color="#FFF" fontSize="lg" fontWeight="semibold" opacity={0.8} textAlign="center" width="100%">
+                ≈ ${(mappedValue * stethPriceNumber).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+              </Text>
             </VStack>
           </Grid>
 
@@ -178,7 +181,7 @@ export const Forcast: React.FC<ForcastProps> = (props) => {
               minWidth={{ base: "480px", md: "auto" }}
             >
               <Text color="#FFF" fontWeight="bold" fontSize="lg" py={2} pl={4}>
-                {metricsPageLocale?.lockPeriod}
+                {metricsPageLocale?.timePeriod}
               </Text>
               <Text color="#FFF" fontWeight="bold" fontSize="lg" py={2} pl={4}>
                 {metricsPageLocale?.multiplier}

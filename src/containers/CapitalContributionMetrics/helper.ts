@@ -49,81 +49,88 @@ export const generateTableRows = (args: GenerateTableArgs) => {
 
   return [
     {
-      days: "7 Days",
-      multiplier: calculateMultiplier(7),
-      newInitialValue: `$${(
-        inputValue * Number(calculateMultiplier(7).replace("x", ""))
-      ).toLocaleString()}`,
-      rewardEstimate: `$${calculateRewardEstimate(
-        7,
-        inputValue * Number(calculateMultiplier(7).replace("x", ""))
-      ).toLocaleString()}`,
+      days: "90d",
+      multiplier: calculateMultiplier(90),
+      newInitialValue: `$${(inputValue * Number(calculateMultiplier(90).replace("x", ""))).toLocaleString(undefined, {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      })}`,
+      rewardEstimate: `+$${(calculateRewardEstimate(90, inputValue * Number(calculateMultiplier(90).replace("x", ""))) - inputValue).toLocaleString(undefined, {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      })}`,
     },
     {
-      days: "365 Days (1Y)",
+      days: "1y",
       multiplier: calculateMultiplier(365),
-      newInitialValue: `$${(
-        inputValue * Number(calculateMultiplier(365).replace("x", ""))
-      ).toLocaleString()}`,
-      rewardEstimate: `$${calculateRewardEstimate(
-        365,
-        inputValue * Number(calculateMultiplier(365).replace("x", ""))
-      ).toLocaleString()}`,
+      newInitialValue: `$${(inputValue * Number(calculateMultiplier(365).replace("x", ""))).toLocaleString(undefined, {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      })}`,
+      rewardEstimate: `+$${(calculateRewardEstimate(365, inputValue * Number(calculateMultiplier(365).replace("x", ""))) - inputValue).toLocaleString(undefined, {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      })}`,
     },
     {
-      days: "730 Days (2Y)",
+      days: "2y",
       multiplier: calculateMultiplier(730),
-      newInitialValue: `$${(
-        inputValue * Number(calculateMultiplier(730).replace("x", ""))
-      ).toLocaleString()}`,
-      rewardEstimate: `$${calculateRewardEstimate(
-        730,
-        inputValue * Number(calculateMultiplier(730).replace("x", ""))
-      ).toLocaleString()}`,
+      newInitialValue: `$${(inputValue * Number(calculateMultiplier(730).replace("x", ""))).toLocaleString(undefined, {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      })}`,
+      rewardEstimate: `+$${(calculateRewardEstimate(730, inputValue * Number(calculateMultiplier(730).replace("x", ""))) - inputValue).toLocaleString(undefined, {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      })}`,
     },
     {
-      days: "1095 Days (3Y)",
+      days: "3y",
       multiplier: calculateMultiplier(1095),
-      newInitialValue: `$${(
-        inputValue * Number(calculateMultiplier(1095).replace("x", ""))
-      ).toLocaleString()}`,
-      rewardEstimate: `$${calculateRewardEstimate(
-        1095,
-        inputValue * Number(calculateMultiplier(1095).replace("x", ""))
-      ).toLocaleString()}`,
+      newInitialValue: `$${(inputValue * Number(calculateMultiplier(1095).replace("x", ""))).toLocaleString(undefined, {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      })}`,
+      rewardEstimate: `+$${(calculateRewardEstimate(1095, inputValue * Number(calculateMultiplier(1095).replace("x", ""))) - inputValue).toLocaleString(undefined, {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      })}`,
     },
     {
-      days: "1460 Days (4Y)",
+      days: "4y",
       multiplier: calculateMultiplier(1460),
-      newInitialValue: `$${(
-        inputValue * Number(calculateMultiplier(1460).replace("x", ""))
-      ).toLocaleString()}`,
-      rewardEstimate: `$${calculateRewardEstimate(
-        1460,
-        inputValue * Number(calculateMultiplier(1460).replace("x", ""))
-      ).toLocaleString()}`,
+      newInitialValue: `$${(inputValue * Number(calculateMultiplier(1460).replace("x", ""))).toLocaleString(undefined, {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      })}`,
+      rewardEstimate: `+$${(calculateRewardEstimate(1460, inputValue * Number(calculateMultiplier(1460).replace("x", ""))) - inputValue).toLocaleString(undefined, {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      })}`,
     },
     {
-      days: "1825 Days (5Y)",
+      days: "5y",
       multiplier: calculateMultiplier(1825),
-      newInitialValue: `$${(
-        inputValue * Number(calculateMultiplier(1825).replace("x", ""))
-      ).toLocaleString()}`,
-      rewardEstimate: `$${calculateRewardEstimate(
-        1825,
-        inputValue * Number(calculateMultiplier(1825).replace("x", ""))
-      ).toLocaleString()}`,
+      newInitialValue: `$${(inputValue * Number(calculateMultiplier(1825).replace("x", ""))).toLocaleString(undefined, {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      })}`,
+      rewardEstimate: `+$${(calculateRewardEstimate(1825, inputValue * Number(calculateMultiplier(1825).replace("x", ""))) - inputValue).toLocaleString(undefined, {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      })}`,
     },
     {
-      days: "2190 Days (6Y)",
+      days: "6y",
       multiplier: calculateMultiplier(2190),
-      newInitialValue: `$${(
-        inputValue * Number(calculateMultiplier(2190).replace("x", ""))
-      ).toLocaleString()}`,
-      rewardEstimate: `$${calculateRewardEstimate(
-        2190,
-        inputValue * Number(calculateMultiplier(2190).replace("x", ""))
-      ).toLocaleString()}`,
+      newInitialValue: `$${(inputValue * Number(calculateMultiplier(2190).replace("x", ""))).toLocaleString(undefined, {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      })}`,
+      rewardEstimate: `+$${(calculateRewardEstimate(2190, inputValue * Number(calculateMultiplier(2190).replace("x", ""))) - inputValue).toLocaleString(undefined, {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      })}`,
     },
   ];
 };
