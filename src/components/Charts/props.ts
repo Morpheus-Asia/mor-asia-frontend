@@ -6,4 +6,5 @@ export type ChartProps = {
     title?: string;
   };
   colors?: string[];
+  height?: string | number;
 };
