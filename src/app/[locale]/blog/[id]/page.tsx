@@ -5,9 +5,24 @@ import ClientSlugHandler from "morpheus-asia/components/ClientSlugHandler";
 import { Box, Container, Text, VStack } from "@chakra-ui/react";
 import ContainerWrapper from "morpheus-asia/containers/ContainerWrapper";
 
+type BlogPost = {
+  id: number;
+  Title: string;
+  Date: string;
+  Author: string;
+  Tags: string;
+  Body: string;
+  localizations?: Array<{
+    locale: string;
+  }>;
+};
+
+// Constants
+const IMAGE_MARKDOWN_REGEX = /!\[(.*?)\]\((.*?)\)/;
+
 export async function generateMetadata({ params }: any): Promise<Metadata> {
-  const { locale, id } = params;
-  const blogPost = await fetchContentType(
+  const { locale, id } = await params;
+  const response = await fetchContentType(
     "blog-posts",
     {
       filters: { 
@@ -16,12 +31,14 @@ export async function generateMetadata({ params }: any): Promise<Metadata> {
       },
       pLevel: 4,
     },
-    true
+    false
   );
+
+  const blogPost = response?.data?.[0] as BlogPost;
 
   const seo = {
     metaTitle: blogPost?.Title,
-    metaDescription: blogPost?.Body?.[0]?.children?.[0]?.text || '',
+    metaDescription: blogPost?.Body?.split('\n')[0] || '',
   };
   
   const metadata = generateMetadataObject(seo, locale);
@@ -29,9 +46,9 @@ export async function generateMetadata({ params }: any): Promise<Metadata> {
 }
 
 export default async function BlogPostPage({ params }: any) {
-  const { locale, id } = params;
+  const { locale, id } = await params;
   
-  const blogPost = await fetchContentType(
+  const response = await fetchContentType(
     "blog-posts",
     {
       filters: { 
@@ -40,8 +57,10 @@ export default async function BlogPostPage({ params }: any) {
       },
       pLevel: 4,
     },
-    true
+    false
   );
+
+  const blogPost = response?.data?.[0] as BlogPost;
 
   if (!blogPost) {
     return (
@@ -53,17 +72,32 @@ export default async function BlogPostPage({ params }: any) {
     );
   }
 
-  const localizedSlugs = blogPost?.localizations?.reduce(
-    (acc: Record<string, string>, localization: any) => {
-      if (localization.locale === "zh-Hans") {
-        acc["cn"] = "";
-        return acc;
+  // Simplified localizedSlugs logic
+  const localizedSlugs = {
+    [locale]: "",
+    ...(blogPost.localizations?.reduce((acc, { locale: loc }) => ({
+      ...acc,
+      [loc === "zh-Hans" ? "cn" : loc]: ""
+    }), {}) || {})
+  };
+
+  // Split content into paragraphs and handle images
+  const content = blogPost.Body.split('\n').map((line, index) => {
+    // Check if line is an image markdown
+    if (line.startsWith('![')) {
+      const match = line.match(IMAGE_MARKDOWN_REGEX);
+      if (match) {
+        const [, alt, src] = match;
+        return (
+          <Box key={index} as="figure" my={4}>
+            <img src={src} alt={alt} style={{ maxWidth: '100%', height: 'auto' }} />
+          </Box>
+        );
       }
-      acc[localization.locale] = "";
-      return acc;
-    },
-    { [locale]: "" }
-  );
+    }
+    // Regular text line
+    return line ? <Text key={index} mb={4}>{line}</Text> : null;
+  });
 
   return (
     <>
@@ -96,13 +130,7 @@ export default async function BlogPostPage({ params }: any) {
               fontSize="lg" 
               lineHeight="1.8"
             >
-              {blogPost.Body.map((block: any, index: number) => (
-                <Box key={index} mb={4}>
-                  {block.children.map((child: any, childIndex: number) => (
-                    <Text key={childIndex}>{child.text}</Text>
-                  ))}
-                </Box>
-              ))}
+              {content}
             </Box>
           </VStack>
         </Container>

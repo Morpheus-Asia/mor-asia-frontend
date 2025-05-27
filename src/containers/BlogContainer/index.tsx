@@ -19,16 +19,22 @@ type BlogPost = {
   updatedAt: string;
   publishedAt: string;
   locale: string;
-  Body: Array<{
-    type: string;
-    children: Array<{
-      text: string;
-      type: string;
-    }>;
-  }>;
+  Body: string;
   Date: string;
   Author: string;
   Tags: string;
+};
+
+// Helper function to get preview text
+const getPreviewText = (body: string): string => {
+  if (!body) return 'No content available';
+  const imgIdx = body.search(/!\[.*?\]\(.*?\)/);
+  const linkIdx = body.search(/https?:\/\/|www\./);
+  let cutIdx = 150;
+  if (imgIdx !== -1 && imgIdx < cutIdx) cutIdx = imgIdx;
+  if (linkIdx !== -1 && linkIdx < cutIdx) cutIdx = linkIdx;
+  const preview = body.slice(0, cutIdx);
+  return preview.length < body.length ? preview + '...' : preview;
 };
 
 /**
@@ -70,13 +76,6 @@ export const BlogContainer: React.FC<Props> = (props) => {
   // =============== UTILS
   const allTags = Array.from(new Set(posts.flatMap(post => post.Tags.split(',').map(tag => tag.trim()))));
   
-  const filteredPosts = posts.filter(post => {
-    const matchesSearch = post.Title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                         post.Body[0]?.children[0]?.text.toLowerCase().includes(searchQuery.toLowerCase());
-    const matchesTag = !selectedTag || post.Tags.includes(selectedTag);
-    return matchesSearch && matchesTag;
-  });
-
   // =============== VIEWS
   return (
     <Box width="100%" px={{ base: 0, md: 6 }}>
@@ -138,7 +137,13 @@ export const BlogContainer: React.FC<Props> = (props) => {
           gap={6}
           width="100%"
         >
-          {filteredPosts.map((post) => (
+          {posts.filter(post => {
+            const searchLower = searchQuery.toLowerCase();
+            const matchesSearch = post.Title.toLowerCase().includes(searchLower) ||
+                                 post.Body.toLowerCase().includes(searchLower);
+            const matchesTag = !selectedTag || post.Tags.includes(selectedTag);
+            return matchesSearch && matchesTag;
+          }).map((post) => (
             <GridItem key={post.id}>
               <Link href={`/${locale}/blog/${post.id}`} style={{ textDecoration: 'none' }}>
                 <Box
@@ -157,7 +162,7 @@ export const BlogContainer: React.FC<Props> = (props) => {
                       {post.Title || 'Untitled'}
                     </Text>
                     <Text color="#FFF" fontSize="sm">
-                      {post.Body?.[0]?.children?.[0]?.text || 'No content available'}
+                      {getPreviewText(post.Body)}
                     </Text>
                     <VStack alignItems="flex-start" gap={0} mt="auto">
                       <Text color="#FFF" fontSize="sm">
