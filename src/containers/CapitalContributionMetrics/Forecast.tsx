@@ -33,11 +33,8 @@ export const Forcast: React.FC<ForcastProps> = (props) => {
 
   // =============== VARIABLES
   const ethPriceNumber = parseFloat(ethPrice.replace("$", ""));
-  console.log("eth", ethPriceNumber);
-
   const mappedValue = nonLinearMap(value[0]);
   const finalMappedValue = nonLinearMap(finalValue[0]) * ethPriceNumber;
-  console.log("finalMappedValue", finalMappedValue);
 
   // =============== RENDER FUNCTIONS
 
@@ -224,7 +221,7 @@ export const Forcast: React.FC<ForcastProps> = (props) => {
                   md: "1fr 1fr 1fr 1fr",
                 }}
                 borderBottom={
-                  idx < 4 ? "1px solid rgba(255,255,255,0.08)" : "none"
+                  idx < 6 ? "1px solid rgba(255,255,255,0.08)" : "none"
                 }
                 alignItems="center"
                 textAlign="left"

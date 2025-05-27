@@ -33,27 +33,83 @@ export const CapitalContributionMetrics: React.FC<Props> = (props) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // Fetch ETH price history
-        const ethHistoryResponse = await fetch(`/api/eth/history`);
-        const ethHistoryData = await ethHistoryResponse.json();
-        if (ethHistoryData && ethHistoryData.data) {
-          setEthPriceHistory(ethHistoryData.data);
+        const currentTime = Date.now();
+        
+        // Fetch all metrics data in one call
+        const metricsResponse = await fetch(`/api/morpheus-api/metrics-data?currentTime=${currentTime}`);
+        const metricsData = await metricsResponse.json();
+        
+        if (metricsData?.data) {
+          // Handle ETH price history
+          if (metricsData.data.ethHistory?.data) {
+            setEthPriceHistory(metricsData.data.ethHistory.data);
 
-          // Calculate price change percentage
-          if (ethHistoryData.data.length >= 2) {
-            const latestPrice = parseFloat(
-              ethHistoryData.data[ethHistoryData.data.length - 1].priceUsd
-            );
-            const previousPrice = parseFloat(
-              ethHistoryData.data[ethHistoryData.data.length - 2].priceUsd
-            );
-            const percentChange =
-              ((latestPrice - previousPrice) / previousPrice) * 100;
-            setPriceChangePercent(Number(percentChange.toFixed(2)));
+            // Calculate price change percentage
+            if (metricsData.data.ethHistory.data.length >= 2) {
+              const latestPrice = parseFloat(
+                metricsData.data.ethHistory.data[metricsData.data.ethHistory.data.length - 1].priceUsd
+              );
+              const previousPrice = parseFloat(
+                metricsData.data.ethHistory.data[metricsData.data.ethHistory.data.length - 2].priceUsd
+              );
+              const percentChange =
+                ((latestPrice - previousPrice) / previousPrice) * 100;
+              setPriceChangePercent(Number(percentChange.toFixed(2)));
+            }
+          }
+
+          // Handle ETH price
+          if (metricsData.data.ethPrice?.data?.priceUsd) {
+            setEthPrice(`$${Number(metricsData.data.ethPrice.data.priceUsd).toFixed(2)}`);
+          }
+
+          // Handle total locked
+          if (metricsData.data.totalDeposited?.data?.totalDeposited) {
+            const formattedValue = (
+              Number(metricsData.data.totalDeposited.data.totalDeposited) / 1e18
+            ).toFixed(4);
+            setTotalLocked(`${formattedValue} ETH`);
+          }
+
+          // Handle MOR metrics
+          if (metricsData.data.morMetrics?.data?.asset) {
+            setMorPrice(Number(metricsData.data.morMetrics.data.asset.priceUsd));
+
+            // Calculate balance (24% of total supply)
+            if (metricsData.data.morMetrics.data.asset.maxSupply) {
+              // Remove commas before converting to number
+              const cleanSupply = metricsData.data.morMetrics.data.asset.maxSupply.replace(
+                /,/g,
+                ""
+              );
+              const totalSupply = Number(cleanSupply);
+              if (!isNaN(totalSupply)) {
+                const balanceValue = (totalSupply * 0.24).toLocaleString(
+                  "en-US",
+                  {
+                    maximumFractionDigits: 4,
+                    minimumFractionDigits: 4,
+                  }
+                );
+                setBalance(`${balanceValue} MOR`);
+              } else {
+                console.error(
+                  "Invalid total supply value:",
+                  metricsData.data.morMetrics.data.asset.maxSupply
+                );
+                setBalance("-");
+              }
+            } else {
+              console.error(
+                "Missing maxSupply in API response:",
+                metricsData.data.morMetrics.data.asset
+              );
+              setBalance("-");
+            }
           }
         }
 
-        // Fetch total virtual staked
+        // Fetch total virtual staked (keeping this separate as requested)
         const virtualStakedResponse = await fetch(`/api/cap_virtual_deposited`);
         const virtualStakedData = await virtualStakedResponse.json();
         if (
@@ -67,10 +123,8 @@ export const CapitalContributionMetrics: React.FC<Props> = (props) => {
           setTotalVirtualStaked(`${formattedValue} stETH`);
 
           // Calculate USD value if ETH price is available
-          const ethPriceResponse = await fetch(`/api/eth/price`);
-          const ethPriceData = await ethPriceResponse.json();
-          if (ethPriceData && ethPriceData.data && ethPriceData.data.priceUsd) {
-            const ethPriceUsd = Number(ethPriceData.data.priceUsd);
+          if (metricsData?.data?.ethPrice?.data?.priceUsd) {
+            const ethPriceUsd = Number(metricsData.data.ethPrice.data.priceUsd);
             const usdValue = (
               Number(formattedValue) * ethPriceUsd
             ).toLocaleString("en-US", {
@@ -80,89 +134,9 @@ export const CapitalContributionMetrics: React.FC<Props> = (props) => {
             setTotalVirtualStakedUSD(usdValue);
           }
         } else {
-          console.error(
-            "Unexpected API response structure:",
-            virtualStakedData
-          );
           setTotalVirtualStaked("-");
         }
-
-        // Fetch total locked
-        const totalLockedResponse = await fetch(`/api/total_deposited`);
-        const totalLockedData = await totalLockedResponse.json();
-        if (
-          totalLockedData &&
-          totalLockedData.data &&
-          totalLockedData.data.totalDeposited
-        ) {
-          const formattedValue = (
-            Number(totalLockedData.data.totalDeposited) / 1e18
-          ).toFixed(4);
-          setTotalLocked(`${formattedValue} ETH`);
-        } else {
-          console.error(
-            "Unexpected total locked API response structure:",
-            totalLockedData
-          );
-          setTotalLocked("-");
-        }
-
-        // Fetch ETH price
-        const ethPriceResponse = await fetch(`/api/eth/price`);
-        const ethPriceData = await ethPriceResponse.json();
-        if (ethPriceData && ethPriceData.data && ethPriceData.data.priceUsd) {
-          setEthPrice(`$${Number(ethPriceData.data.priceUsd).toFixed(2)}`);
-        } else {
-          console.error(
-            "Unexpected ETH price API response structure:",
-            ethPriceData
-          );
-          setEthPrice("-");
-        }
-
-        // Fetch MOR price and total supply
-        const currentTime = Date.now();
-        const morMetricsResponse = await fetch(
-          `/api/morpheus-api/data?currentTime=${currentTime}`
-        );
-        const morMetricsData = await morMetricsResponse.json();
-        if (morMetricsData?.data?.asset) {
-          setMorPrice(Number(morMetricsData.data.asset.priceUsd));
-
-          // Calculate balance (24% of total supply)
-          if (morMetricsData.data.asset.maxSupply) {
-            // Remove commas before converting to number
-            const cleanSupply = morMetricsData.data.asset.maxSupply.replace(
-              /,/g,
-              ""
-            );
-            const totalSupply = Number(cleanSupply);
-            if (!isNaN(totalSupply)) {
-              const balanceValue = (totalSupply * 0.24).toLocaleString(
-                "en-US",
-                {
-                  maximumFractionDigits: 4,
-                  minimumFractionDigits: 4,
-                }
-              );
-              setBalance(`${balanceValue} MOR`);
-            } else {
-              console.error(
-                "Invalid total supply value:",
-                morMetricsData.data.asset.maxSupply
-              );
-              setBalance("-");
-            }
-          } else {
-            console.error(
-              "Missing maxSupply in API response:",
-              morMetricsData.data.asset
-            );
-            setBalance("-");
-          }
-        }
       } catch (error) {
-        console.error("Error fetching data:", error);
         setTotalVirtualStaked("-");
         setEthPrice("-");
       } finally {

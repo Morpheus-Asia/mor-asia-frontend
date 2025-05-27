@@ -2,65 +2,48 @@ import { GenerateTableArgs } from "./props";
 
 export const generateTableRows = (args: GenerateTableArgs) => {
   const { totalVirtualStakedUSD, morPrice, inputValue } = args;
-  // Calculate multipliers based on dilution rates
-  const calculateMultiplier = (days: number) => {
-    const start = Math.floor(Date.now() / 1000); // Current time in unix timestamp
-    const end = start + days * 24 * 60 * 60; // Add days converted to seconds
 
-    // Constants from the formula
+  const calculateMultiplier = (days: number) => {
+    const start = Math.floor(Date.now() / 1000);
+    const end = start + days * 24 * 60 * 60;
+
     const constant = 16.61327546;
     const epochStart = 1721908800;
     const timeScale = 484272000;
 
-    // Calculate the tanh terms
     const startTerm = Math.tanh(2 * ((start - epochStart) / timeScale));
     const endTerm = Math.tanh(2 * ((end - epochStart) / timeScale));
 
-    // Calculate the multiplier
     let multiplier = constant * (endTerm - startTerm);
-
-    // Apply bounds
     multiplier = Math.max(1.0, Math.min(10.7, multiplier));
 
     return multiplier.toFixed(1) + "x";
   };
 
-  // Convert totalVirtualStakedUSD from currency string to number
   const totalStakedUSD = parseFloat(
     totalVirtualStakedUSD.replace(/[^0-9.-]+/g, "")
   );
 
   const calculateRewardEstimate = (days: number, newInitialValue: number) => {
-    // Calculate new total including the user's new stake
     const newTotalStaked = totalStakedUSD + newInitialValue;
-
-    // Calculate the user's share of the new total pool
     const userShare = newInitialValue / newTotalStaked;
-
-    // Calculate total accrual for the period in MOR
     let totalAccrualMOR = 0;
+    
     const startDate = new Date("2024-02-08");
     const today = new Date();
     const daysSinceStart = Math.floor(
       (today.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24)
     );
 
-    // Calculate accrual for each day in the lock period
     for (let i = 0; i < days; i++) {
-      // Calculate daily emissions for this specific day
       const dailyEmission = 14400 - (daysSinceStart + i) * 2.468994701;
       if (dailyEmission > 0) {
-        // Calculate daily accrual (24% of daily emissions)
         const dailyAccrual = dailyEmission * 0.24;
-        // Add this day's portion of accrual to total
         totalAccrualMOR += dailyAccrual * userShare;
       }
     }
 
-    // Convert MOR accrual to USD using current MOR price
     const totalAccrualUSD = totalAccrualMOR * morPrice;
-
-    // Add to initial value
     return newInitialValue + totalAccrualUSD;
   };
 
