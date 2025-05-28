@@ -1,6 +1,6 @@
 "use client";
 
-import { Box, Grid, GridItem, Text, VStack, Input, Button, Stack } from "@chakra-ui/react";
+import { Box, Grid, GridItem, Text, VStack, Input, Button, Stack, HStack, Image } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { getDictionary } from "morpheus-asia/i18n";
 import fetchContentType from "morpheus-asia/utils/strapi/fetchContentTypes";
@@ -21,8 +21,18 @@ type BlogPost = {
   locale: string;
   Body: string;
   Date: string;
-  Author: string;
+  author: {
+    id: number;
+    Name: string;
+  };
   Tags: string;
+  Featured_Image?: {
+    formats: {
+      small: {
+        url: string;
+      };
+    };
+  };
 };
 
 // Helper function to get preview text
@@ -60,7 +70,13 @@ export const BlogContainer: React.FC<Props> = (props) => {
         const response = await fetchContentType(
           "blog-posts",
           {
-            filters: { locale }
+            filters: { locale },
+            populate: {
+              author: {
+                populate: ['Avatar']
+              },
+              Featured_Image: true
+            }
           }
         );
         setPosts(response?.data || []);
@@ -149,7 +165,7 @@ export const BlogContainer: React.FC<Props> = (props) => {
                 <Box
                   background="rgba(255,255,255,0.05)"
                   borderRadius={8}
-                  p={6}
+                  overflow="hidden"
                   height="100%"
                   transition="all 0.2s"
                   _hover={{
@@ -157,7 +173,16 @@ export const BlogContainer: React.FC<Props> = (props) => {
                     transform: "translateY(-2px)",
                   }}
                 >
-                  <VStack alignItems="flex-start" gap={3}>
+                  {post.Featured_Image?.formats?.small?.url && (
+                    <Image
+                      src={post.Featured_Image.formats.small.url}
+                      alt={post.Title}
+                      width="100%"
+                      height="200px"
+                      objectFit="cover"
+                    />
+                  )}
+                  <VStack alignItems="flex-start" gap={3} p={6}>
                     <Text color="#FFF" fontWeight={"bold"} fontSize={"lg"}>
                       {post.Title || 'Untitled'}
                     </Text>
@@ -166,7 +191,7 @@ export const BlogContainer: React.FC<Props> = (props) => {
                     </Text>
                     <VStack alignItems="flex-start" gap={0} mt="auto">
                       <Text color="#FFF" fontSize="sm">
-                        {post.Author || 'Unknown'}
+                        {post.author?.Name || 'Unknown'}
                       </Text>
                       <Text color="rgba(255,255,255,0.5)" fontSize="xs">
                         {post.Date ? new Date(post.Date).toLocaleDateString(locale, {

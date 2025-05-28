@@ -16,6 +16,7 @@ export async function generateMetadata({ params }: any): Promise<Metadata> {
     "blog-page",
     {
       filters: { locale },
+      populate: ['author'],
       pLevel: 4,
     },
     true
@@ -33,6 +34,7 @@ export default async function Page({ params }: any) {
     "blog-page",
     {
       filters: { locale },
+      populate: ['author'],
       pLevel: 4,
     },
     true
