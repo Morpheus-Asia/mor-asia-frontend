@@ -206,7 +206,7 @@ export const Forcast: React.FC<ForcastProps> = (props) => {
               borderBottom="1px solid rgba(255,255,255,0.12)"
               mb={0}
               textAlign="left"
-              minWidth={{ base: "840px", md: "auto" }}
+              minWidth="1200px"
             >
               <GridItem colSpan={1}></GridItem>
               <GridItem colSpan={2}>
@@ -342,7 +342,7 @@ export const Forcast: React.FC<ForcastProps> = (props) => {
                 }
                 alignItems="center"
                 textAlign="left"
-                minWidth={{ base: "840px", md: "auto" }}
+                minWidth="1200px"
               >
                 <GridItem>
                   <Text color="#FFF" fontSize="lg" py={2} pl={4}>
