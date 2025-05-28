@@ -75,9 +75,17 @@
       "rewardEstimateNoLock": "Reward estimate without claim lock",
       "percentageYield": "Reward divided by initial deposit value",
       "percentageYieldWithMultiplier": "Reward with multiplier divided by initial deposit value",
-      "newInitialValue": "Virtual initial value, New initial value after multiplier applied"
+      "newInitialValue": "Virtual initial value, New initial value after multiplier applied",
+      "timePeriod": "How long to lock your claims",
+      "multiplier": "Power factor awarded for locking claims"
     },
     "oneDayInterval": "1 Day Interval",
-    "capitalContributionMetrics": "Capital Contribution Metrics"
+    "capitalContributionMetrics": "Capital Contribution Metrics",
+    "stakingWithoutLockup": "Staking without lockup",
+    "stakingWithLockup": "Staking with lockup",
+    "disclaimerTooltip": "All USD values are based on the current MOR and stETH price and do not account for future price changes.",
+    "disclaimerMain": "Calculated amounts in USD assume a stable current MOR & stETH price.",
+    "disclaimerStaking": "You stake your stETH with us and get MOR tokens as a reward, you may lock yourself from claiming those MOR rewards to get a multiplier, you may unstake your stETH anytime.",
+    "disclaimerMoreInfo": "More information can be found {here}."
   }
 }

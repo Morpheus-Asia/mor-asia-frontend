@@ -1,4 +1,4 @@
-import { Box, Grid, HStack, Slider, Text, VStack } from "@chakra-ui/react";
+import { Box, Grid, GridItem, HStack, Slider, Text, VStack, Link } from "@chakra-ui/react";
 import { MdOutlineAutoGraph } from "react-icons/md";
 import { generateTableRows, nonLinearMap } from "./helper";
 import { Tooltip } from "morpheus-asia/components/ui/tooltip";
@@ -6,6 +6,7 @@ import { useState } from "react";
 import { IoHelpCircleOutline } from "react-icons/io5";
 import { ForcastProps } from "./props";
 import MetricsBox from "morpheus-asia/components/MetricsBox";
+import React from "react";
 
 /**
  * ===========================
@@ -68,6 +69,33 @@ export const Forcast: React.FC<ForcastProps> = (props) => {
         </HStack>
 
         <VStack gap={6} alignItems="flex-start" width="100%">
+          <Box width="100%" mb={2}>
+            <Text fontSize="sm" color="gray.400" fontStyle="italic">
+              <Tooltip
+                content={metricsPageLocale?.disclaimerTooltip}
+                positioning={{ placement: 'top' }}
+                showArrow
+                openDelay={0}
+                closeDelay={0}
+              >
+                <Box as="span" cursor="pointer" textDecoration="underline dotted">
+                  {metricsPageLocale?.disclaimerMain}
+                </Box>
+              </Tooltip>
+              {" "}
+              {metricsPageLocale?.disclaimerStaking}
+              {" "}
+              {(() => {
+                const moreInfo = metricsPageLocale?.disclaimerMoreInfo || "";
+                const parts = moreInfo.split('{here}');
+                return <>
+                  {parts[0]}
+                  <Link href="https://morpheusai.gitbook.io/morpheus" target="_blank" rel="noopener noreferrer" color="#FFF" fontWeight="bold" textDecoration="underline">here</Link>
+                  {parts[1]}
+                </>;
+              })()}
+            </Text>
+          </Box>
           <Grid
             templateColumns={{ base: "1fr", md: "1fr 1fr 1fr" }}
             gap={8}
@@ -166,7 +194,7 @@ export const Forcast: React.FC<ForcastProps> = (props) => {
             borderRadius={8}
             background="rgba(255,255,255,0.02)"
             px={{ base: 2, md: 6 }}
-            py={{ base: 4, md: 6 }}
+            py={2}
             overflowX="auto"
             width="100%"
           >
@@ -176,23 +204,50 @@ export const Forcast: React.FC<ForcastProps> = (props) => {
                 md: "1fr 1fr 1fr 1fr 1fr 1fr 1fr",
               }}
               borderBottom="1px solid rgba(255,255,255,0.12)"
-              mb={2}
+              mb={0}
               textAlign="left"
               minWidth={{ base: "840px", md: "auto" }}
             >
-              <Text color="#FFF" fontWeight="bold" fontSize="lg" py={2} pl={4}>
-                {metricsPageLocale?.timePeriod}
-              </Text>
-              <HStack>
+              <GridItem colSpan={1}></GridItem>
+              <GridItem colSpan={2}>
                 <Text
                   color="#FFF"
                   fontWeight="bold"
-                  fontSize="lg"
+                  fontSize="xl"
+                  textAlign="center"
+                  opacity={0.8}
                   py={2}
-                  pl={4}
                 >
-                  {metricsPageLocale?.rewardEstimateNoLock}
+                  {metricsPageLocale?.stakingWithoutLockup}
                 </Text>
+              </GridItem>
+              <GridItem colSpan={4}>
+                <Text
+                  color="#FFF"
+                  fontWeight="bold"
+                  fontSize="xl"
+                  textAlign="center"
+                  opacity={0.8}
+                  py={2}
+                >
+                  {metricsPageLocale?.stakingWithLockup}
+                </Text>
+              </GridItem>
+
+              <GridItem>
+                <Tooltip
+                  content={metricsPageLocale?.tooltips?.timePeriod}
+                  positioning={{ placement: "top" }}
+                  showArrow
+                  openDelay={0}
+                  closeDelay={0}
+                >
+                  <Text color="#FFF" fontWeight="bold" fontSize="lg" py={2} pl={4}>
+                    {metricsPageLocale?.timePeriod}
+                  </Text>
+                </Tooltip>
+              </GridItem>
+              <GridItem borderLeft="1px solid rgba(255,255,255,0.12)">
                 <Tooltip
                   content={metricsPageLocale?.tooltips?.rewardEstimateNoLock}
                   positioning={{ placement: "top" }}
@@ -200,21 +255,12 @@ export const Forcast: React.FC<ForcastProps> = (props) => {
                   openDelay={0}
                   closeDelay={0}
                 >
-                  <Box cursor="pointer">
-                    <IoHelpCircleOutline color="#A2A3A6" size={16} />
-                  </Box>
+                  <Text color="#FFF" fontWeight="bold" fontSize="lg" py={2} pl={4}>
+                    {metricsPageLocale?.rewardEstimateNoLock}
+                  </Text>
                 </Tooltip>
-              </HStack>
-              <HStack>
-                <Text
-                  color="#FFF"
-                  fontWeight="bold"
-                  fontSize="lg"
-                  py={2}
-                  pl={4}
-                >
-                  {metricsPageLocale?.percentageYield}
-                </Text>
+              </GridItem>
+              <GridItem borderRight="1px solid rgba(255,255,255,0.12)">
                 <Tooltip
                   content={metricsPageLocale?.tooltips?.percentageYield}
                   positioning={{ placement: "top" }}
@@ -222,24 +268,25 @@ export const Forcast: React.FC<ForcastProps> = (props) => {
                   openDelay={0}
                   closeDelay={0}
                 >
-                  <Box cursor="pointer">
-                    <IoHelpCircleOutline color="#A2A3A6" size={16} />
-                  </Box>
+                  <Text color="#FFF" fontWeight="bold" fontSize="lg" py={2} pl={4}>
+                    {metricsPageLocale?.percentageYield}
+                  </Text>
                 </Tooltip>
-              </HStack>
-              <Text color="#FFF" fontWeight="bold" fontSize="lg" py={2} pl={4}>
-                {metricsPageLocale?.multiplier}
-              </Text>
-              <HStack>
-                <Text
-                  color="#FFF"
-                  fontWeight="bold"
-                  fontSize="lg"
-                  py={2}
-                  pl={4}
+              </GridItem>
+              <GridItem>
+                <Tooltip
+                  content={metricsPageLocale?.tooltips?.multiplier}
+                  positioning={{ placement: "top" }}
+                  showArrow
+                  openDelay={0}
+                  closeDelay={0}
                 >
-                  {metricsPageLocale?.newInitialValue}
-                </Text>
+                  <Text color="#FFF" fontWeight="bold" fontSize="lg" py={2} pl={4}>
+                    {metricsPageLocale?.multiplier}
+                  </Text>
+                </Tooltip>
+              </GridItem>
+              <GridItem>
                 <Tooltip
                   content={metricsPageLocale?.tooltips?.newInitialValue}
                   positioning={{ placement: "top" }}
@@ -247,21 +294,12 @@ export const Forcast: React.FC<ForcastProps> = (props) => {
                   openDelay={0}
                   closeDelay={0}
                 >
-                  <Box cursor="pointer">
-                    <IoHelpCircleOutline color="#A2A3A6" size={16} />
-                  </Box>
+                  <Text color="#FFF" fontWeight="bold" fontSize="lg" py={2} pl={4}>
+                    {metricsPageLocale?.newInitialValue}
+                  </Text>
                 </Tooltip>
-              </HStack>
-              <HStack>
-                <Text
-                  color="#FFF"
-                  fontWeight="bold"
-                  fontSize="lg"
-                  py={2}
-                  pl={4}
-                >
-                  {metricsPageLocale?.rewardEstimate}
-                </Text>
+              </GridItem>
+              <GridItem>
                 <Tooltip
                   content={metricsPageLocale?.tooltips?.rewardEstimate}
                   positioning={{ placement: "top" }}
@@ -269,21 +307,12 @@ export const Forcast: React.FC<ForcastProps> = (props) => {
                   openDelay={0}
                   closeDelay={0}
                 >
-                  <Box cursor="pointer">
-                    <IoHelpCircleOutline color="#A2A3A6" size={16} />
-                  </Box>
+                  <Text color="#FFF" fontWeight="bold" fontSize="lg" py={2} pl={4}>
+                    {metricsPageLocale?.rewardEstimate}
+                  </Text>
                 </Tooltip>
-              </HStack>
-              <HStack>
-                <Text
-                  color="#FFF"
-                  fontWeight="bold"
-                  fontSize="lg"
-                  py={2}
-                  pl={4}
-                >
-                  {metricsPageLocale?.percentageYieldWithMultiplier}
-                </Text>
+              </GridItem>
+              <GridItem borderRight="1px solid rgba(255,255,255,0.12)">
                 <Tooltip
                   content={metricsPageLocale?.tooltips?.percentageYieldWithMultiplier}
                   positioning={{ placement: "top" }}
@@ -291,11 +320,11 @@ export const Forcast: React.FC<ForcastProps> = (props) => {
                   openDelay={0}
                   closeDelay={0}
                 >
-                  <Box cursor="pointer">
-                    <IoHelpCircleOutline color="#A2A3A6" size={16} />
-                  </Box>
+                  <Text color="#FFF" fontWeight="bold" fontSize="lg" py={2} pl={4}>
+                    {metricsPageLocale?.percentageYieldWithMultiplier}
+                  </Text>
                 </Tooltip>
-              </HStack>
+              </GridItem>
             </Grid>
             {generateTableRows({
               totalVirtualStakedUSD,
@@ -315,27 +344,41 @@ export const Forcast: React.FC<ForcastProps> = (props) => {
                 textAlign="left"
                 minWidth={{ base: "840px", md: "auto" }}
               >
-                <Text color="#FFF" fontSize="lg" py={2} pl={4}>
-                  {row.days}
-                </Text>
-                <Text color="#FFF" fontSize="lg" py={2} pl={4}>
-                  {row.rewardEstimateNoLock}
-                </Text>
-                <Text color="#FFF" fontSize="lg" py={2} pl={4}>
-                  {row.percentageYield}
-                </Text>
-                <Text color="#FFF" fontSize="lg" py={2} pl={4}>
-                  {row.multiplier}
-                </Text>
-                <Text color="#FFF" fontSize="lg" py={2} pl={4}>
-                  {row.newInitialValue}
-                </Text>
-                <Text color="#FFF" fontSize="lg" py={2} pl={4}>
-                  {row.rewardEstimate}
-                </Text>
-                <Text color="#FFF" fontSize="lg" py={2} pl={4}>
-                  {row.percentageYieldWithMultiplier}
-                </Text>
+                <GridItem>
+                  <Text color="#FFF" fontSize="lg" py={2} pl={4}>
+                    {row.days}
+                  </Text>
+                </GridItem>
+                <GridItem borderLeft="1px solid rgba(255,255,255,0.12)">
+                  <Text color="#FFF" fontSize="lg" py={2} pl={4}>
+                    {row.rewardEstimateNoLock}
+                  </Text>
+                </GridItem>
+                <GridItem borderRight="1px solid rgba(255,255,255,0.12)">
+                  <Text color="#FFF" fontSize="lg" py={2} pl={4}>
+                    {row.percentageYield}
+                  </Text>
+                </GridItem>
+                <GridItem>
+                  <Text color="#FFF" fontSize="lg" py={2} pl={4}>
+                    {row.multiplier}
+                  </Text>
+                </GridItem>
+                <GridItem>
+                  <Text color="#FFF" fontSize="lg" py={2} pl={4}>
+                    {row.newInitialValue}
+                  </Text>
+                </GridItem>
+                <GridItem>
+                  <Text color="#FFF" fontSize="lg" py={2} pl={4}>
+                    {row.rewardEstimate}
+                  </Text>
+                </GridItem>
+                <GridItem borderRight="1px solid rgba(255,255,255,0.12)">
+                  <Text color="#FFF" fontSize="lg" py={2} pl={4}>
+                    {row.percentageYieldWithMultiplier}
+                  </Text>
+                </GridItem>
               </Grid>
             ))}
           </Box>
