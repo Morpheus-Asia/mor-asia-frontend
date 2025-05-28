@@ -61,6 +61,9 @@
     "multiplier": "乘数",
     "newInitialValue": "新初始价值",
     "rewardEstimate": "奖励预估",
+    "rewardEstimateNoLock": "奖励预估（无锁定）",
+    "percentageYield": "百分比收益率",
+    "percentageYieldWithMultiplier": "百分比收益率",
     "tooltips": {
       "initialDailyEmissions": "最初分配给所有群体的MOR代币总量",
       "dailyEmissionsToday": "当前每日MOR代币发行量",
@@ -68,7 +71,11 @@
       "dailyAccrual": "从每日发行量添加到池中的MOR代币数量",
       "totalLocked": "资金池中锁定的stETH总量",
       "totalVirtualStaked": "截至今日，计入乘数的资金池中总质押stETH",
-      "rewardEstimate": "这可能会因其他人质押的stETH数量而发生显著变化"
+      "rewardEstimate": "这可能会因其他人质押的stETH数量而发生显著变化",
+      "rewardEstimateNoLock": "无认领锁定的奖励预估",
+      "percentageYield": "奖励除以初始存款价值",
+      "percentageYieldWithMultiplier": "带乘数的奖励除以初始存款价值",
+      "newInitialValue": "虚拟初始价值，应用乘数后的新初始价值"
     },
     "oneDayInterval": "1天间隔",
     "capitalContributionMetrics": "资本贡献指标"

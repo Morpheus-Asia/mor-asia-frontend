@@ -61,6 +61,9 @@
     "multiplier": "MULTIPLIER",
     "newInitialValue": "VIRTUAL INITIAL VALUE",
     "rewardEstimate": "REWARD ESTIMATE",
+    "rewardEstimateNoLock": "REWARD ESTIMATE (NO LOCK)",
+    "percentageYield": "PERCENTAGE YIELD",
+    "percentageYieldWithMultiplier": "PERCENTAGE YIELD",
     "tooltips": {
       "initialDailyEmissions": "Total MOR tokens emitted to all groups initially",
       "dailyEmissionsToday": "Current daily MOR token emissions",
@@ -68,7 +71,11 @@
       "dailyAccrual": "Amount of MOR tokens added to the pool from daily emissions",
       "totalLocked": "Total amount of stETH locked in the capital pool",
       "totalVirtualStaked": "Total Staked stETH in Capital Pool with multiplier accounted for as of today",
-      "rewardEstimate": "This can change drastically depending on how much more stETH other people stake"
+      "rewardEstimate": "This can change drastically depending on how much more stETH other people stake",
+      "rewardEstimateNoLock": "Reward estimate without claim lock",
+      "percentageYield": "Reward divided by initial deposit value",
+      "percentageYieldWithMultiplier": "Reward with multiplier divided by initial deposit value",
+      "newInitialValue": "Virtual initial value, New initial value after multiplier applied"
     },
     "oneDayInterval": "1 Day Interval",
     "capitalContributionMetrics": "Capital Contribution Metrics"

@@ -172,23 +172,86 @@ export const Forcast: React.FC<ForcastProps> = (props) => {
           >
             <Grid
               templateColumns={{
-                base: "repeat(4, minmax(120px, 1fr))",
-                md: "1fr 1fr 1fr 1fr",
+                base: "repeat(7, minmax(120px, 1fr))",
+                md: "1fr 1fr 1fr 1fr 1fr 1fr 1fr",
               }}
               borderBottom="1px solid rgba(255,255,255,0.12)"
               mb={2}
               textAlign="left"
-              minWidth={{ base: "480px", md: "auto" }}
+              minWidth={{ base: "840px", md: "auto" }}
             >
               <Text color="#FFF" fontWeight="bold" fontSize="lg" py={2} pl={4}>
                 {metricsPageLocale?.timePeriod}
               </Text>
+              <HStack>
+                <Text
+                  color="#FFF"
+                  fontWeight="bold"
+                  fontSize="lg"
+                  py={2}
+                  pl={4}
+                >
+                  {metricsPageLocale?.rewardEstimateNoLock}
+                </Text>
+                <Tooltip
+                  content={metricsPageLocale?.tooltips?.rewardEstimateNoLock}
+                  positioning={{ placement: "top" }}
+                  showArrow
+                  openDelay={0}
+                  closeDelay={0}
+                >
+                  <Box cursor="pointer">
+                    <IoHelpCircleOutline color="#A2A3A6" size={16} />
+                  </Box>
+                </Tooltip>
+              </HStack>
+              <HStack>
+                <Text
+                  color="#FFF"
+                  fontWeight="bold"
+                  fontSize="lg"
+                  py={2}
+                  pl={4}
+                >
+                  {metricsPageLocale?.percentageYield}
+                </Text>
+                <Tooltip
+                  content={metricsPageLocale?.tooltips?.percentageYield}
+                  positioning={{ placement: "top" }}
+                  showArrow
+                  openDelay={0}
+                  closeDelay={0}
+                >
+                  <Box cursor="pointer">
+                    <IoHelpCircleOutline color="#A2A3A6" size={16} />
+                  </Box>
+                </Tooltip>
+              </HStack>
               <Text color="#FFF" fontWeight="bold" fontSize="lg" py={2} pl={4}>
                 {metricsPageLocale?.multiplier}
               </Text>
-              <Text color="#FFF" fontWeight="bold" fontSize="lg" py={2} pl={4}>
-                {metricsPageLocale?.newInitialValue}
-              </Text>
+              <HStack>
+                <Text
+                  color="#FFF"
+                  fontWeight="bold"
+                  fontSize="lg"
+                  py={2}
+                  pl={4}
+                >
+                  {metricsPageLocale?.newInitialValue}
+                </Text>
+                <Tooltip
+                  content={metricsPageLocale?.tooltips?.newInitialValue}
+                  positioning={{ placement: "top" }}
+                  showArrow
+                  openDelay={0}
+                  closeDelay={0}
+                >
+                  <Box cursor="pointer">
+                    <IoHelpCircleOutline color="#A2A3A6" size={16} />
+                  </Box>
+                </Tooltip>
+              </HStack>
               <HStack>
                 <Text
                   color="#FFF"
@@ -211,6 +274,28 @@ export const Forcast: React.FC<ForcastProps> = (props) => {
                   </Box>
                 </Tooltip>
               </HStack>
+              <HStack>
+                <Text
+                  color="#FFF"
+                  fontWeight="bold"
+                  fontSize="lg"
+                  py={2}
+                  pl={4}
+                >
+                  {metricsPageLocale?.percentageYieldWithMultiplier}
+                </Text>
+                <Tooltip
+                  content={metricsPageLocale?.tooltips?.percentageYieldWithMultiplier}
+                  positioning={{ placement: "top" }}
+                  showArrow
+                  openDelay={0}
+                  closeDelay={0}
+                >
+                  <Box cursor="pointer">
+                    <IoHelpCircleOutline color="#A2A3A6" size={16} />
+                  </Box>
+                </Tooltip>
+              </HStack>
             </Grid>
             {generateTableRows({
               totalVirtualStakedUSD,
@@ -220,18 +305,24 @@ export const Forcast: React.FC<ForcastProps> = (props) => {
               <Grid
                 key={row.days}
                 templateColumns={{
-                  base: "repeat(4, minmax(120px, 1fr))",
-                  md: "1fr 1fr 1fr 1fr",
+                  base: "repeat(7, minmax(120px, 1fr))",
+                  md: "1fr 1fr 1fr 1fr 1fr 1fr 1fr",
                 }}
                 borderBottom={
                   idx < 6 ? "1px solid rgba(255,255,255,0.08)" : "none"
                 }
                 alignItems="center"
                 textAlign="left"
-                minWidth={{ base: "480px", md: "auto" }}
+                minWidth={{ base: "840px", md: "auto" }}
               >
                 <Text color="#FFF" fontSize="lg" py={2} pl={4}>
                   {row.days}
+                </Text>
+                <Text color="#FFF" fontSize="lg" py={2} pl={4}>
+                  {row.rewardEstimateNoLock}
+                </Text>
+                <Text color="#FFF" fontSize="lg" py={2} pl={4}>
+                  {row.percentageYield}
                 </Text>
                 <Text color="#FFF" fontSize="lg" py={2} pl={4}>
                   {row.multiplier}
@@ -241,6 +332,9 @@ export const Forcast: React.FC<ForcastProps> = (props) => {
                 </Text>
                 <Text color="#FFF" fontSize="lg" py={2} pl={4}>
                   {row.rewardEstimate}
+                </Text>
+                <Text color="#FFF" fontSize="lg" py={2} pl={4}>
+                  {row.percentageYieldWithMultiplier}
                 </Text>
               </Grid>
             ))}

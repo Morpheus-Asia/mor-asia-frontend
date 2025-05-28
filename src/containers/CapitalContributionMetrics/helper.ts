@@ -47,6 +47,27 @@ export const generateTableRows = (args: GenerateTableArgs) => {
     return newInitialValue + totalAccrualUSD;
   };
 
+  const calculateRewardEstimateNoLock = (days: number) => {
+    const userShare = inputValue / totalStakedUSD;
+    let totalAccrualMOR = 0;
+    
+    const startDate = new Date("2024-02-08");
+    const today = new Date();
+    const daysSinceStart = Math.floor(
+      (today.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24)
+    );
+
+    for (let i = 0; i < days; i++) {
+      const dailyEmission = 14400 - (daysSinceStart + i) * 2.468994701;
+      if (dailyEmission > 0) {
+        const dailyAccrual = dailyEmission * 0.24;
+        totalAccrualMOR += dailyAccrual * userShare;
+      }
+    }
+
+    return totalAccrualMOR * morPrice;
+  };
+
   return [
     {
       days: "90d",
@@ -55,6 +76,12 @@ export const generateTableRows = (args: GenerateTableArgs) => {
         minimumFractionDigits: 2,
         maximumFractionDigits: 2,
       })}`,
+      rewardEstimateNoLock: `+$${calculateRewardEstimateNoLock(90).toLocaleString(undefined, {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      })}`,
+      percentageYield: `${((calculateRewardEstimateNoLock(90) / inputValue) * 100).toFixed(2)}%`,
+      percentageYieldWithMultiplier: `${((calculateRewardEstimate(90, inputValue * Number(calculateMultiplier(90).replace("x", ""))) - inputValue) / inputValue * 100).toFixed(2)}%`,
       rewardEstimate: `+$${(calculateRewardEstimate(90, inputValue * Number(calculateMultiplier(90).replace("x", ""))) - inputValue).toLocaleString(undefined, {
         minimumFractionDigits: 2,
         maximumFractionDigits: 2,
@@ -67,6 +94,12 @@ export const generateTableRows = (args: GenerateTableArgs) => {
         minimumFractionDigits: 2,
         maximumFractionDigits: 2,
       })}`,
+      rewardEstimateNoLock: `+$${calculateRewardEstimateNoLock(365).toLocaleString(undefined, {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      })}`,
+      percentageYield: `${((calculateRewardEstimateNoLock(365) / inputValue) * 100).toFixed(2)}%`,
+      percentageYieldWithMultiplier: `${((calculateRewardEstimate(365, inputValue * Number(calculateMultiplier(365).replace("x", ""))) - inputValue) / inputValue * 100).toFixed(2)}%`,
       rewardEstimate: `+$${(calculateRewardEstimate(365, inputValue * Number(calculateMultiplier(365).replace("x", ""))) - inputValue).toLocaleString(undefined, {
         minimumFractionDigits: 2,
         maximumFractionDigits: 2,
@@ -79,6 +112,12 @@ export const generateTableRows = (args: GenerateTableArgs) => {
         minimumFractionDigits: 2,
         maximumFractionDigits: 2,
       })}`,
+      rewardEstimateNoLock: `+$${calculateRewardEstimateNoLock(730).toLocaleString(undefined, {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      })}`,
+      percentageYield: `${((calculateRewardEstimateNoLock(730) / inputValue) * 100).toFixed(2)}%`,
+      percentageYieldWithMultiplier: `${((calculateRewardEstimate(730, inputValue * Number(calculateMultiplier(730).replace("x", ""))) - inputValue) / inputValue * 100).toFixed(2)}%`,
       rewardEstimate: `+$${(calculateRewardEstimate(730, inputValue * Number(calculateMultiplier(730).replace("x", ""))) - inputValue).toLocaleString(undefined, {
         minimumFractionDigits: 2,
         maximumFractionDigits: 2,
@@ -91,6 +130,12 @@ export const generateTableRows = (args: GenerateTableArgs) => {
         minimumFractionDigits: 2,
         maximumFractionDigits: 2,
       })}`,
+      rewardEstimateNoLock: `+$${calculateRewardEstimateNoLock(1095).toLocaleString(undefined, {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      })}`,
+      percentageYield: `${((calculateRewardEstimateNoLock(1095) / inputValue) * 100).toFixed(2)}%`,
+      percentageYieldWithMultiplier: `${((calculateRewardEstimate(1095, inputValue * Number(calculateMultiplier(1095).replace("x", ""))) - inputValue) / inputValue * 100).toFixed(2)}%`,
       rewardEstimate: `+$${(calculateRewardEstimate(1095, inputValue * Number(calculateMultiplier(1095).replace("x", ""))) - inputValue).toLocaleString(undefined, {
         minimumFractionDigits: 2,
         maximumFractionDigits: 2,
@@ -103,6 +148,12 @@ export const generateTableRows = (args: GenerateTableArgs) => {
         minimumFractionDigits: 2,
         maximumFractionDigits: 2,
       })}`,
+      rewardEstimateNoLock: `+$${calculateRewardEstimateNoLock(1460).toLocaleString(undefined, {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      })}`,
+      percentageYield: `${((calculateRewardEstimateNoLock(1460) / inputValue) * 100).toFixed(2)}%`,
+      percentageYieldWithMultiplier: `${((calculateRewardEstimate(1460, inputValue * Number(calculateMultiplier(1460).replace("x", ""))) - inputValue) / inputValue * 100).toFixed(2)}%`,
       rewardEstimate: `+$${(calculateRewardEstimate(1460, inputValue * Number(calculateMultiplier(1460).replace("x", ""))) - inputValue).toLocaleString(undefined, {
         minimumFractionDigits: 2,
         maximumFractionDigits: 2,
@@ -115,6 +166,12 @@ export const generateTableRows = (args: GenerateTableArgs) => {
         minimumFractionDigits: 2,
         maximumFractionDigits: 2,
       })}`,
+      rewardEstimateNoLock: `+$${calculateRewardEstimateNoLock(1825).toLocaleString(undefined, {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      })}`,
+      percentageYield: `${((calculateRewardEstimateNoLock(1825) / inputValue) * 100).toFixed(2)}%`,
+      percentageYieldWithMultiplier: `${((calculateRewardEstimate(1825, inputValue * Number(calculateMultiplier(1825).replace("x", ""))) - inputValue) / inputValue * 100).toFixed(2)}%`,
       rewardEstimate: `+$${(calculateRewardEstimate(1825, inputValue * Number(calculateMultiplier(1825).replace("x", ""))) - inputValue).toLocaleString(undefined, {
         minimumFractionDigits: 2,
         maximumFractionDigits: 2,
@@ -127,6 +184,12 @@ export const generateTableRows = (args: GenerateTableArgs) => {
         minimumFractionDigits: 2,
         maximumFractionDigits: 2,
       })}`,
+      rewardEstimateNoLock: `+$${calculateRewardEstimateNoLock(2190).toLocaleString(undefined, {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      })}`,
+      percentageYield: `${((calculateRewardEstimateNoLock(2190) / inputValue) * 100).toFixed(2)}%`,
+      percentageYieldWithMultiplier: `${((calculateRewardEstimate(2190, inputValue * Number(calculateMultiplier(2190).replace("x", ""))) - inputValue) / inputValue * 100).toFixed(2)}%`,
       rewardEstimate: `+$${(calculateRewardEstimate(2190, inputValue * Number(calculateMultiplier(2190).replace("x", ""))) - inputValue).toLocaleString(undefined, {
         minimumFractionDigits: 2,
         maximumFractionDigits: 2,
