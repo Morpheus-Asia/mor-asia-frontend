@@ -33,7 +33,10 @@ export const CapitalContributionMetrics: React.FC<Props> = (props) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const metricsResponse = await fetch("/api/morpheus-api/capitalData");
+        const currentTime = Date.now();
+        const metricsResponse = await fetch(
+          `/api/morpheus-api/capitalData?currentTime=${currentTime}`
+        );
         const metricsData = await metricsResponse.json();
         setCapitalPoolData(metricsData?.data || {});
         const virtualStakedResponse = await fetch(`/api/cap_virtual_deposited`);
