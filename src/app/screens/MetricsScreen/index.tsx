@@ -4,6 +4,7 @@ import { MetricsCirculatingSupply } from "morpheus-asia/containers/MetricsCircul
 import MetricsTopMetrics from "morpheus-asia/containers/MetricsContainer/MorpheusTopMetrics";
 import { MetricsPriceHistory } from "morpheus-asia/containers/MetricsPriceHistory";
 import CapitalContributionMetrics from "morpheus-asia/containers/CapitalContributionMetrics";
+import { MORMetricsProvider } from "./MORMetricsProvider/context";
 
 export type MetricsPageProps = {
   locale?: string;
@@ -34,16 +35,18 @@ export const MetricsPage: React.FC<MetricsPageProps> = (props) => {
               {metricsPage.subHeading}
             </Text>
           </VStack>
-          <MetricsTopMetrics locale={locale} />
-          <Box width={"100%"}>
-            <MetricsPriceHistory locale={locale} />
-          </Box>
-          <Box width="100%">
-            <MetricsCirculatingSupply locale={locale} />
-          </Box>
-          <Box width="100%">
-            <CapitalContributionMetrics locale={locale} />
-          </Box>
+          <MORMetricsProvider>
+            <MetricsTopMetrics locale={locale} />
+            <Box width={"100%"}>
+              <MetricsPriceHistory locale={locale} />
+            </Box>
+            <Box width="100%">
+              <MetricsCirculatingSupply locale={locale} />
+            </Box>
+            <Box width="100%">
+              <CapitalContributionMetrics locale={locale} />
+            </Box>
+          </MORMetricsProvider>
         </VStack>
       </ContainerWrapper>
       {/* <Divider size="sm" />
