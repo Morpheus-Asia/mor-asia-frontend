@@ -27,6 +27,27 @@ export const MetricsPage: React.FC<MetricsPageProps> = (props) => {
     <>
       <ContainerWrapper pt={"8rem"} width={"100%"} pb={"3.5rem"}>
         <VStack gap={5} width="100%">
+          {/* In Development Notice */}
+          <Box
+            width="100%"
+            maxWidth="600px"
+            bg="rgba(255, 165, 0, 0.1)"
+            border="1px solid rgba(255, 165, 0, 0.3)"
+            borderRadius="8px"
+            px={4}
+            py={3}
+            mb={2}
+          >
+            <Text
+              color="#FFA500"
+              fontSize="sm"
+              fontWeight="semibold"
+              textAlign="center"
+            >
+              🚧 This page is currently in development. Data and features may be incomplete or subject to change.
+            </Text>
+          </Box>
+          
           <VStack justifyContent={"center"} alignItems={"center"}>
             <Text color="#FFF" fontWeight={"bold"} fontSize={"4xl"}>
               {metricsPage.heading}
@@ -35,6 +56,7 @@ export const MetricsPage: React.FC<MetricsPageProps> = (props) => {
               {metricsPage.subHeading}
             </Text>
           </VStack>
+          
           <MORMetricsProvider>
             <MetricsTopMetrics locale={locale} />
             <Box width={"100%"}>
