@@ -1,4 +1,13 @@
-import { Box, Grid, GridItem, HStack, Slider, Text, VStack, Link } from "@chakra-ui/react";
+import {
+  Box,
+  Grid,
+  GridItem,
+  HStack,
+  Slider,
+  Text,
+  VStack,
+  Link,
+} from "@chakra-ui/react";
 import { MdOutlineAutoGraph } from "react-icons/md";
 import { generateTableRows, nonLinearMap } from "./helper";
 import { Tooltip } from "morpheus-asia/components/ui/tooltip";
@@ -22,22 +31,14 @@ export const Forcast: React.FC<ForcastProps> = (props) => {
     loading,
     ethPrice,
   } = props;
-  // =============== HOOKS
 
   // =============== STATE
   const [value, setValue] = useState([0]);
   const [finalValue, setFinalValue] = useState([0]);
 
-  // =============== API
-
-  // =============== EVENTS
-
   // =============== VARIABLES
-  const stethPriceNumber = parseFloat(ethPrice.replace("$", ""));
   const mappedValue = nonLinearMap(value[0]);
-  const finalMappedValue = nonLinearMap(finalValue[0]) * stethPriceNumber;
-
-  // =============== RENDER FUNCTIONS
+  const finalMappedValue = nonLinearMap(finalValue[0]) * ethPrice;
 
   // =============== VIEWS
   return (
@@ -63,7 +64,7 @@ export const Forcast: React.FC<ForcastProps> = (props) => {
           alignSelf={"flex-start"}
         >
           <MdOutlineAutoGraph color="#00DC8D" size={28} />
-          <Text color="#FFF" fontWeight="bold" fontSize="xl">
+          <Text color="#FFF" fontWeight="bold" fontSize={"1.25rem"}>
             {metricsPageLocale?.stakingMorRewardsForecast}
           </Text>
         </HStack>
@@ -73,26 +74,39 @@ export const Forcast: React.FC<ForcastProps> = (props) => {
             <Text fontSize="sm" color="gray.400" fontStyle="italic">
               <Tooltip
                 content={metricsPageLocale?.disclaimerTooltip}
-                positioning={{ placement: 'top' }}
+                positioning={{ placement: "top" }}
                 showArrow
                 openDelay={0}
                 closeDelay={0}
               >
-                <Box as="span" cursor="pointer" textDecoration="underline dotted">
+                <Box
+                  as="span"
+                  cursor="pointer"
+                  textDecoration="underline dotted"
+                >
                   {metricsPageLocale?.disclaimerMain}
                 </Box>
-              </Tooltip>
-              {" "}
-              {metricsPageLocale?.disclaimerStaking}
-              {" "}
+              </Tooltip>{" "}
+              {metricsPageLocale?.disclaimerStaking}{" "}
               {(() => {
                 const moreInfo = metricsPageLocale?.disclaimerMoreInfo || "";
-                const parts = moreInfo.split('{here}');
-                return <>
-                  {parts[0]}
-                  <Link href="https://morpheusai.gitbook.io/morpheus" target="_blank" rel="noopener noreferrer" color="#FFF" fontWeight="bold" textDecoration="underline">here</Link>
-                  {parts[1]}
-                </>;
+                const parts = moreInfo.split("{here}");
+                return (
+                  <>
+                    {parts[0]}
+                    <Link
+                      href="https://morpheusai.gitbook.io/morpheus"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      color="#FFF"
+                      fontWeight="bold"
+                      textDecoration="underline"
+                    >
+                      here
+                    </Link>
+                    {parts[1]}
+                  </>
+                );
               })()}
             </Text>
           </Box>
@@ -106,7 +120,7 @@ export const Forcast: React.FC<ForcastProps> = (props) => {
                 <Text
                   color="#FFF"
                   fontWeight="semibold"
-                  fontSize="sm"
+                  fontSize={{ md: ".8rem", lg: ".875rem" }}
                   opacity={0.8}
                   textTransform="uppercase"
                 >
@@ -124,7 +138,17 @@ export const Forcast: React.FC<ForcastProps> = (props) => {
                   </Box>
                 </Tooltip>
               </HStack>
-              <Text color="#FFF" fontWeight="bold" fontSize="3xl">
+              <Text
+                color="#FFF"
+                fontWeight="bold"
+                fontSize={{
+                  base: "1.5rem",
+                  sm: "1.3rem",
+                  md: "1.4rem",
+                  lg: "1.5rem",
+                  xl: "1.875rem",
+                }}
+              >
                 {totalVirtualStaked}
               </Text>
             </VStack>
@@ -133,14 +157,24 @@ export const Forcast: React.FC<ForcastProps> = (props) => {
               <Text
                 color="#FFF"
                 fontWeight="semibold"
-                fontSize="sm"
+                fontSize={{ md: ".8rem", lg: ".875rem" }}
                 opacity={0.8}
                 textTransform="uppercase"
               >
                 {metricsPageLocale?.valueInUsd}
               </Text>
               {totalVirtualStakedUSD && (
-                <Text color="#FFF" fontWeight="bold" fontSize="3xl">
+                <Text
+                  color="#FFF"
+                  fontWeight="bold"
+                  fontSize={{
+                    base: "1.5rem",
+                    sm: "1.3rem",
+                    md: "1.4rem",
+                    lg: "1.5rem",
+                    xl: "1.875rem",
+                  }}
+                >
                   {totalVirtualStakedUSD}
                 </Text>
               )}
@@ -150,7 +184,7 @@ export const Forcast: React.FC<ForcastProps> = (props) => {
               <Text
                 color="#FFF"
                 fontWeight="semibold"
-                fontSize="sm"
+                fontSize={{ md: ".8rem", lg: ".875rem" }}
                 opacity={0.8}
                 textTransform="uppercase"
               >
@@ -184,8 +218,19 @@ export const Forcast: React.FC<ForcastProps> = (props) => {
                   100
                 </Text>
               </HStack>
-              <Text color="#FFF" fontSize="lg" fontWeight="semibold" opacity={0.8} textAlign="center" width="100%">
-                ≈ ${(mappedValue * stethPriceNumber).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+              <Text
+                color="#FFF"
+                fontSize="lg"
+                fontWeight="semibold"
+                opacity={0.8}
+                textAlign="center"
+                width="100%"
+              >
+                ≈ $
+                {(mappedValue * ethPrice).toLocaleString(undefined, {
+                  minimumFractionDigits: 2,
+                  maximumFractionDigits: 2,
+                })}
               </Text>
             </VStack>
           </Grid>
@@ -242,7 +287,13 @@ export const Forcast: React.FC<ForcastProps> = (props) => {
                   openDelay={0}
                   closeDelay={0}
                 >
-                  <Text color="#FFF" fontWeight="bold" fontSize="lg" py={2} pl={4}>
+                  <Text
+                    color="#FFF"
+                    fontWeight="bold"
+                    fontSize="lg"
+                    py={2}
+                    pl={4}
+                  >
                     {metricsPageLocale?.timePeriod}
                   </Text>
                 </Tooltip>
@@ -255,7 +306,13 @@ export const Forcast: React.FC<ForcastProps> = (props) => {
                   openDelay={0}
                   closeDelay={0}
                 >
-                  <Text color="#FFF" fontWeight="bold" fontSize="lg" py={2} pl={4}>
+                  <Text
+                    color="#FFF"
+                    fontWeight="bold"
+                    fontSize="lg"
+                    py={2}
+                    pl={4}
+                  >
                     {metricsPageLocale?.rewardEstimateNoLock}
                   </Text>
                 </Tooltip>
@@ -268,7 +325,13 @@ export const Forcast: React.FC<ForcastProps> = (props) => {
                   openDelay={0}
                   closeDelay={0}
                 >
-                  <Text color="#FFF" fontWeight="bold" fontSize="lg" py={2} pl={4}>
+                  <Text
+                    color="#FFF"
+                    fontWeight="bold"
+                    fontSize="lg"
+                    py={2}
+                    pl={4}
+                  >
                     {metricsPageLocale?.percentageYield}
                   </Text>
                 </Tooltip>
@@ -281,7 +344,13 @@ export const Forcast: React.FC<ForcastProps> = (props) => {
                   openDelay={0}
                   closeDelay={0}
                 >
-                  <Text color="#FFF" fontWeight="bold" fontSize="lg" py={2} pl={4}>
+                  <Text
+                    color="#FFF"
+                    fontWeight="bold"
+                    fontSize="lg"
+                    py={2}
+                    pl={4}
+                  >
                     {metricsPageLocale?.multiplier}
                   </Text>
                 </Tooltip>
@@ -294,7 +363,13 @@ export const Forcast: React.FC<ForcastProps> = (props) => {
                   openDelay={0}
                   closeDelay={0}
                 >
-                  <Text color="#FFF" fontWeight="bold" fontSize="lg" py={2} pl={4}>
+                  <Text
+                    color="#FFF"
+                    fontWeight="bold"
+                    fontSize="lg"
+                    py={2}
+                    pl={4}
+                  >
                     {metricsPageLocale?.newInitialValue}
                   </Text>
                 </Tooltip>
@@ -307,20 +382,34 @@ export const Forcast: React.FC<ForcastProps> = (props) => {
                   openDelay={0}
                   closeDelay={0}
                 >
-                  <Text color="#FFF" fontWeight="bold" fontSize="lg" py={2} pl={4}>
+                  <Text
+                    color="#FFF"
+                    fontWeight="bold"
+                    fontSize="lg"
+                    py={2}
+                    pl={4}
+                  >
                     {metricsPageLocale?.rewardEstimate}
                   </Text>
                 </Tooltip>
               </GridItem>
               <GridItem borderRight="1px solid rgba(255,255,255,0.12)">
                 <Tooltip
-                  content={metricsPageLocale?.tooltips?.percentageYieldWithMultiplier}
+                  content={
+                    metricsPageLocale?.tooltips?.percentageYieldWithMultiplier
+                  }
                   positioning={{ placement: "top" }}
                   showArrow
                   openDelay={0}
                   closeDelay={0}
                 >
-                  <Text color="#FFF" fontWeight="bold" fontSize="lg" py={2} pl={4}>
+                  <Text
+                    color="#FFF"
+                    fontWeight="bold"
+                    fontSize="lg"
+                    py={2}
+                    pl={4}
+                  >
                     {metricsPageLocale?.percentageYieldWithMultiplier}
                   </Text>
                 </Tooltip>

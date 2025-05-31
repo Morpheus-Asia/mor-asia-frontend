@@ -21,22 +21,11 @@ export const CapitalPool: React.FC<CapitalPoolProps> = (props) => {
     price,
     percent,
     chartData,
-    calculateDailyEmissions,
+    dailyEmission,
     balanceValue,
     dailyAccrual,
     totalLockedValue,
   } = props;
-  // =============== HOOKS
-
-  // =============== STATE
-
-  // =============== API
-
-  // =============== EVENTS
-
-  // =============== VARIABLES
-
-  // =============== RENDER FUNCTIONS
 
   // =============== VIEWS
   return (
@@ -113,7 +102,7 @@ export const CapitalPool: React.FC<CapitalPoolProps> = (props) => {
               <Text
                 color="#FFF"
                 fontWeight="semibold"
-                fontSize="sm"
+                fontSize={{ md: ".8rem", lg: ".875rem" }}
                 opacity={0.8}
                 textTransform="uppercase"
               >
@@ -131,7 +120,17 @@ export const CapitalPool: React.FC<CapitalPoolProps> = (props) => {
                 </Box>
               </Tooltip>
             </HStack>
-            <Text color="#FFF" fontWeight="bold" fontSize="3xl">
+            <Text
+              color="#FFF"
+              fontWeight="bold"
+              fontSize={{
+                base: "1.5rem",
+                sm: "1.3rem",
+                md: "1.4rem",
+                lg: "1.5rem",
+                xl: "1.875rem",
+              }}
+            >
               14,400 MOR
             </Text>
           </VStack>
@@ -141,9 +140,9 @@ export const CapitalPool: React.FC<CapitalPoolProps> = (props) => {
               <Text
                 color="#FFF"
                 fontWeight="semibold"
-                fontSize="sm"
                 opacity={0.8}
                 textTransform="uppercase"
+                fontSize={{ md: ".8rem", lg: ".875rem" }}
               >
                 {metricsPageLocale?.dailyEmissionsToday}
               </Text>
@@ -159,8 +158,18 @@ export const CapitalPool: React.FC<CapitalPoolProps> = (props) => {
                 </Box>
               </Tooltip>
             </HStack>
-            <Text color="#FFF" fontWeight="bold" fontSize="3xl">
-              {calculateDailyEmissions} MOR
+            <Text
+              color="#FFF"
+              fontWeight="bold"
+              fontSize={{
+                base: "1.5rem",
+                sm: "1.3rem",
+                md: "1.4rem",
+                lg: "1.5rem",
+                xl: "1.875rem",
+              }}
+            >
+              {dailyEmission} MOR
             </Text>
           </VStack>
         </Grid>
@@ -177,7 +186,7 @@ export const CapitalPool: React.FC<CapitalPoolProps> = (props) => {
           >
             <HStack gap={4}>
               <FaLandmark color="#00DC8D" size={25} />
-              <Text color="#FFF" fontWeight="bold" fontSize="2xl">
+              <Text color="#FFF" fontWeight="bold" fontSize={"1.25rem"}>
                 {metricsPageLocale?.capitalPool} (ID: 0)
               </Text>
             </HStack>
@@ -192,7 +201,7 @@ export const CapitalPool: React.FC<CapitalPoolProps> = (props) => {
                   <Text
                     color="#FFF"
                     fontWeight="semibold"
-                    fontSize="sm"
+                    fontSize={{ md: ".8rem", lg: ".875rem" }}
                     opacity={0.8}
                     textTransform="uppercase"
                   >
@@ -210,7 +219,17 @@ export const CapitalPool: React.FC<CapitalPoolProps> = (props) => {
                     </Box>
                   </Tooltip>
                 </HStack>
-                <Text color="#FFF" fontWeight="bold" fontSize="3xl">
+                <Text
+                  color="#FFF"
+                  fontWeight="bold"
+                  fontSize={{
+                    base: "1.5rem",
+                    sm: "1.3rem",
+                    md: "1.4rem",
+                    lg: "1.5rem",
+                    xl: "1.875rem",
+                  }}
+                >
                   {balanceValue}
                 </Text>
               </VStack>
@@ -219,7 +238,7 @@ export const CapitalPool: React.FC<CapitalPoolProps> = (props) => {
                   <Text
                     color="#FFF"
                     fontWeight="semibold"
-                    fontSize="sm"
+                    fontSize={{ md: ".8rem", lg: ".875rem" }}
                     opacity={0.8}
                     textTransform="uppercase"
                   >
@@ -237,7 +256,17 @@ export const CapitalPool: React.FC<CapitalPoolProps> = (props) => {
                     </Box>
                   </Tooltip>
                 </HStack>
-                <Text color="#FFF" fontWeight="bold" fontSize="3xl">
+                <Text
+                  color="#FFF"
+                  fontWeight="bold"
+                  fontSize={{
+                    base: "1.5rem",
+                    sm: "1.3rem",
+                    md: "1.4rem",
+                    lg: "1.5rem",
+                    xl: "1.875rem",
+                  }}
+                >
                   {dailyAccrual}
                 </Text>
               </VStack>
@@ -246,7 +275,7 @@ export const CapitalPool: React.FC<CapitalPoolProps> = (props) => {
                   <Text
                     color="#FFF"
                     fontWeight="semibold"
-                    fontSize="sm"
+                    fontSize={{ md: ".8rem", lg: ".875rem" }}
                     opacity={0.8}
                     textTransform="uppercase"
                   >
@@ -264,7 +293,17 @@ export const CapitalPool: React.FC<CapitalPoolProps> = (props) => {
                     </Box>
                   </Tooltip>
                 </HStack>
-                <Text color="#FFF" fontWeight="bold" fontSize="3xl">
+                <Text
+                  color="#FFF"
+                  fontWeight="bold"
+                  fontSize={{
+                    base: "1.5rem",
+                    sm: "1.3rem",
+                    md: "1.4rem",
+                    lg: "1.5rem",
+                    xl: "1.875rem",
+                  }}
+                >
                   {totalLockedValue}
                 </Text>
               </VStack>

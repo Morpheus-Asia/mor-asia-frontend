@@ -1,10 +1,12 @@
 "use client";
 import { Box, Text, VStack } from "@chakra-ui/react";
 import { getDictionary } from "morpheus-asia/i18n";
-import React, { useState, useMemo, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import CapitalPool from "./CapitalPool";
 import Forcast from "./Forecast";
 import Divider from "morpheus-asia/components/Divider";
+import { useMorMetrics } from "morpheus-asia/app/screens/MetricsScreen/MORMetricsProvider/context";
+import { CapitalPoolData } from "./props";
 
 type Props = {
   locale?: string;
@@ -15,132 +17,47 @@ export const CapitalContributionMetrics: React.FC<Props> = (props) => {
   // =============== LOCALE
   const metricsPageLocale = getDictionary(locale)?.metricsPage;
 
+  // =============== HOOKS
+  const { loading: morMetricsLoading, metrics: morMetrics } = useMorMetrics();
+
   // =============== STATE
   const [loading, setLoading] = useState(true);
   const [totalVirtualStaked, setTotalVirtualStaked] = useState<string>("");
   const [totalVirtualStakedUSD, setTotalVirtualStakedUSD] =
     useState<string>("");
-  const [stethPrice, setStethPrice] = useState<string>("");
-  const [morPrice, setMorPrice] = useState<number>(0);
-  const [totalLocked, setTotalLocked] = useState<string>("");
-  const [balance, setBalance] = useState<string>("");
-  const [stethPriceHistory, setStethPriceHistory] = useState<
-    Array<{ priceUsd: string; time: number }>
-  >([]);
-  const [priceChangePercent, setPriceChangePercent] = useState<number>(0);
+  const [capitalPoolData, setCapitalPoolData] = useState<CapitalPoolData>(
+    {} as CapitalPoolData
+  );
 
   // =============== EFFECTS
   useEffect(() => {
     const fetchData = async () => {
       try {
         const currentTime = Date.now();
-        
-        // Fetch all metrics data in one call
-        const metricsResponse = await fetch(`/api/morpheus-api/metrics-data?currentTime=${currentTime}`);
+        const metricsResponse = await fetch(
+          `/api/morpheus-api/capitalData?currentTime=${currentTime}`
+        );
         const metricsData = await metricsResponse.json();
-        
-        if (metricsData?.data) {
-          // Handle stETH price history
-          if (metricsData.data.ethHistory?.data) {
-            setStethPriceHistory(metricsData.data.ethHistory.data);
-
-            // Calculate price change percentage
-            if (metricsData.data.ethHistory.data.length >= 2) {
-              const latestPrice = parseFloat(
-                metricsData.data.ethHistory.data[metricsData.data.ethHistory.data.length - 1].priceUsd
-              );
-              const previousPrice = parseFloat(
-                metricsData.data.ethHistory.data[metricsData.data.ethHistory.data.length - 2].priceUsd
-              );
-              const percentChange =
-                ((latestPrice - previousPrice) / previousPrice) * 100;
-              setPriceChangePercent(Number(percentChange.toFixed(2)));
-            }
-          }
-
-          // Handle stETH price
-          if (metricsData.data.ethPrice?.data?.priceUsd) {
-            setStethPrice(`$${Number(metricsData.data.ethPrice.data.priceUsd).toFixed(2)}`);
-          }
-
-          // Handle total locked
-          if (metricsData.data.totalDeposited?.data?.totalDeposited) {
-            const formattedValue = (
-              Number(metricsData.data.totalDeposited.data.totalDeposited) / 1e18
-            ).toFixed(2);
-            setTotalLocked(`${formattedValue} stETH`);
-          }
-
-          // Handle MOR metrics
-          if (metricsData.data.morMetrics?.data?.asset) {
-            setMorPrice(Number(metricsData.data.morMetrics.data.asset.priceUsd));
-
-            // Calculate balance (24% of total supply)
-            if (metricsData.data.morMetrics.data.asset.maxSupply) {
-              // Remove commas before converting to number
-              const cleanSupply = metricsData.data.morMetrics.data.asset.maxSupply.replace(
-                /,/g,
-                ""
-              );
-              const totalSupply = Number(cleanSupply);
-              if (!isNaN(totalSupply)) {
-                const balanceValue = (totalSupply * 0.24).toLocaleString(
-                  "en-US",
-                  {
-                    maximumFractionDigits: 4,
-                    minimumFractionDigits: 4,
-                  }
-                );
-                setBalance(`${balanceValue} MOR`);
-              } else {
-                console.error(
-                  "Invalid total supply value:",
-                  metricsData.data.morMetrics.data.asset.maxSupply
-                );
-                setBalance("-");
-              }
-            } else {
-              console.error(
-                "Missing maxSupply in API response:",
-                metricsData.data.morMetrics.data.asset
-              );
-              setBalance("-");
-            }
-          }
-        }
-
-        // Fetch total virtual staked (keeping this separate as requested)
+        setCapitalPoolData(metricsData?.data || {});
         const virtualStakedResponse = await fetch(`/api/cap_virtual_deposited`);
         const virtualStakedData = await virtualStakedResponse.json();
-        if (
-          virtualStakedData &&
-          virtualStakedData.data &&
-          virtualStakedData.data.totalVirtualDeposited
-        ) {
-          const formattedValue = (
-            Number(virtualStakedData.data.totalVirtualDeposited) / 1e18
-          ).toFixed(2);
-          setTotalVirtualStaked(`${formattedValue} stETH`);
-
-          // Calculate USD value if stETH price is available
-          if (metricsData?.data?.ethPrice?.data?.priceUsd) {
-            const stethPriceUsd = Number(metricsData.data.ethPrice.data.priceUsd);
-            const usdValue = (
-              Number(formattedValue) * stethPriceUsd
-            ).toLocaleString("en-US", {
-              style: "currency",
-              currency: "USD",
-              minimumFractionDigits: 2,
-              maximumFractionDigits: 2
-            });
-            setTotalVirtualStakedUSD(usdValue);
-          }
-        } else {
-          setTotalVirtualStaked("-");
+        const totalVirtualDepositedData =
+          virtualStakedData.data.totalVirtualDeposited;
+        const ethPrice = metricsData?.data?.asset?.priceUsd;
+        setTotalVirtualStaked(`${totalVirtualDepositedData} stETH`);
+        if (ethPrice) {
+          const usdValue = (
+            Number(totalVirtualDepositedData) * ethPrice
+          ).toLocaleString("en-US", {
+            style: "currency",
+            currency: "USD",
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2,
+          });
+          setTotalVirtualStakedUSD(usdValue);
         }
-      } catch (error) {
+      } catch {
         setTotalVirtualStaked("-");
-        setStethPrice("-");
       } finally {
         setLoading(false);
       }
@@ -149,39 +66,19 @@ export const CapitalContributionMetrics: React.FC<Props> = (props) => {
   }, []);
 
   // =============== VARIABLES
-  const chartData = useMemo(() => {
-    if (!stethPriceHistory.length) return { series: [] };
+  const asset = capitalPoolData?.asset;
+  const morAsset = morMetrics?.asset || {};
+  const metrics = capitalPoolData?.metrics || {};
+  const history = capitalPoolData?.history || [];
 
-    return {
-      series: stethPriceHistory.map((item) => [
-        item.time,
-        parseFloat(item.priceUsd).toFixed(2),
-      ]),
-    };
-  }, [stethPriceHistory]);
-
-  // Calculate daily emissions
-  const calculateDailyEmissions = useMemo(() => {
-    const startDate = new Date("2024-02-08");
-    const today = new Date();
-    const daysSinceStart = Math.floor(
-      (today.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24)
-    );
-    const initialEmissions = 14400;
-    const dailyDecline = 2.468994701;
-    const currentEmissions = initialEmissions - daysSinceStart * dailyDecline;
-    return currentEmissions.toFixed(4);
-  }, []);
-
-  // Calculate daily accrual (24% of daily emissions)
-  const dailyAccrualValue = useMemo(() => {
-    return (Number(calculateDailyEmissions) * 0.24).toFixed(4);
-  }, [calculateDailyEmissions]);
-
-  // Placeholder values
-  const price = stethPrice || "$3252.23";
-  const percent = priceChangePercent;
-  const dailyAccrual = `${dailyAccrualValue} MOR`;
+  const chartData = !history.length
+    ? { series: [] }
+    : {
+        series: history.map((item) => [
+          item.time,
+          parseFloat(item.priceUsd).toFixed(2),
+        ]),
+      };
 
   return (
     <VStack width="100%" alignItems="flex-start" gap={6} pt={5}>
@@ -191,25 +88,25 @@ export const CapitalContributionMetrics: React.FC<Props> = (props) => {
       </Text>
       <Box width="100%">
         <CapitalPool
-          loading={loading}
+          loading={loading || morMetricsLoading}
           metricsPageLocale={metricsPageLocale}
-          price={price}
+          price={asset?.priceUsd}
           chartData={chartData}
-          calculateDailyEmissions={calculateDailyEmissions}
-          balanceValue={balance}
-          dailyAccrual={dailyAccrual}
-          totalLockedValue={totalLocked}
-          percent={percent}
+          dailyEmission={metrics?.dailyEmission}
+          balanceValue={morAsset?.balance}
+          dailyAccrual={metrics?.dailyAccrual}
+          totalLockedValue={metrics?.totalLockedValue}
+          percent={asset?.changePercent24Hr}
         />
       </Box>
       <Box width="100%">
         <Forcast
-          loading={loading}
+          loading={loading || morMetricsLoading}
           metricsPageLocale={metricsPageLocale}
           totalVirtualStaked={totalVirtualStaked}
           totalVirtualStakedUSD={totalVirtualStakedUSD}
-          morPrice={morPrice}
-          ethPrice={stethPrice}
+          morPrice={morAsset?.priceUsd}
+          ethPrice={asset?.priceUsd}
         />
       </Box>
     </VStack>

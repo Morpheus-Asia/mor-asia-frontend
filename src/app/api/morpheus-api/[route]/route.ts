@@ -6,44 +6,13 @@ const endpointMap: Record<string, string> = {
   priceData: "price/history",
   addSubscriber: "engagement/subscriber/add",
   sendEmail: "engagement/email/send",
+  capitalData: "capital",
 };
 
 export async function GET(request: NextRequest) {
   try {
     const { pathname, search } = new URL(request.url);
     const route = pathname.split("/api/morpheus-api/")[1];
-
-    // Handle metrics-data route specially
-    if (route === "metrics-data") {
-      const { searchParams } = new URL(request.url);
-      const currentTime = searchParams.get("currentTime");
-
-      // Fetch all data in parallel
-      const [ethPriceResponse, ethHistoryResponse, totalDepositedResponse, morMetricsResponse] = await Promise.all([
-        fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/eth/price`),
-        fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/eth/history`),
-        fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/total_deposited`),
-        fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/metrics?currentTime=${currentTime}`),
-      ]);
-
-      // Parse all responses
-      const [ethPriceData, ethHistoryData, totalDepositedData, morMetricsData] = await Promise.all([
-        ethPriceResponse.json(),
-        ethHistoryResponse.json(),
-        totalDepositedResponse.json(),
-        morMetricsResponse.json(),
-      ]);
-
-      // Combine all data into a single response
-      const combinedData = {
-        ethPrice: ethPriceData,
-        ethHistory: ethHistoryData,
-        totalDeposited: totalDepositedData,
-        morMetrics: morMetricsData,
-      };
-
-      return NextResponse.json({ data: combinedData });
-    }
 
     const mappedEndpoint = endpointMap?.[route];
     if (!mappedEndpoint) {
