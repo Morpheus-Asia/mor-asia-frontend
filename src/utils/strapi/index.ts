@@ -73,7 +73,6 @@ export function generateMetadataObject(seo: any, locale: any) {
     description,
     keywords,
     robots,
-    viewport,
     alternates: {
       canonical,
     },

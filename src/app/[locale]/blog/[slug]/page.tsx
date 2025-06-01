@@ -7,8 +7,10 @@ import ContainerWrapper from "morpheus-asia/containers/ContainerWrapper";
 
 type BlogPost = {
   id: number;
+  documentId: string;
   Title: string;
   Date: string;
+  slug: string;
   author: {
     id: number;
     Name: string;
@@ -27,20 +29,28 @@ type BlogPost = {
   };
   localizations?: Array<{
     locale: string;
+    slug: string;
   }>;
 };
 
 // Constants
 const IMAGE_MARKDOWN_REGEX = /!\[(.*?)\]\((.*?)\)/;
 
+export async function generateViewport() {
+  return {
+    width: 'device-width',
+    initialScale: 1,
+  };
+}
+
 export async function generateMetadata({ params }: any): Promise<Metadata> {
-  const { locale, id } = await params;
+  const { locale, slug } = await params;
   const response = await fetchContentType(
     "blog-posts",
     {
       filters: { 
         locale,
-        id: parseInt(id)
+        slug
       },
       populate: {
         author: {
@@ -65,14 +75,14 @@ export async function generateMetadata({ params }: any): Promise<Metadata> {
 }
 
 export default async function BlogPostPage({ params }: any) {
-  const { locale, id } = await params;
+  const { locale, slug } = await params;
   
   const response = await fetchContentType(
     "blog-posts",
     {
       filters: { 
         locale,
-        id: parseInt(id)
+        slug
       },
       populate: {
         author: {
@@ -97,17 +107,17 @@ export default async function BlogPostPage({ params }: any) {
     );
   }
 
-  // Simplified localizedSlugs logic
+  // Build localizedSlugs with actual slug values from localizations
   const localizedSlugs = {
-    [locale]: "",
-    ...(blogPost.localizations?.reduce((acc, { locale: loc }) => ({
+    [locale]: slug,
+    ...(blogPost.localizations?.reduce((acc, { locale: loc, slug: locSlug }) => ({
       ...acc,
-      [loc === "zh-Hans" ? "cn" : loc]: ""
+      [loc === "zh-Hans" ? "cn" : loc]: locSlug
     }), {}) || {})
   };
 
-  // Split content into paragraphs and handle images
-  const content = blogPost.Body.split('\n').map((line, index) => {
+  // Split content into paragraphs and handle images - with null check
+  const content = blogPost.Body ? blogPost.Body.split('\n').map((line, index) => {
     // Check if line is an image markdown
     if (line.startsWith('![')) {
       const match = line.match(IMAGE_MARKDOWN_REGEX);
@@ -122,7 +132,7 @@ export default async function BlogPostPage({ params }: any) {
     }
     // Regular text line
     return line ? <Text key={index} mb={4}>{line}</Text> : null;
-  });
+  }) : [<Text key="no-content" color="rgba(255,255,255,0.7)">No content available</Text>];
 
   return (
     <>
@@ -154,7 +164,7 @@ export default async function BlogPostPage({ params }: any) {
                     </Text>
                     <HStack gap={1} fontSize="sm" color="rgba(255,255,255,0.7)">
                       <Text>
-                        {Math.max(1, Math.ceil(blogPost.Body.split(/\s+/).length / 200))} min read
+                        {blogPost.Body ? Math.max(1, Math.ceil(blogPost.Body.split(/\s+/).length / 200)) : 1} min read
                       </Text>
                       <Text>•</Text>
                       <Text>
@@ -193,9 +203,11 @@ export default async function BlogPostPage({ params }: any) {
               color="#FFF" 
               fontSize="lg" 
               lineHeight="1.8"
-              maxW={{ base: "100%", md: "90%", lg: "1000px" }}
+              maxW={{ base: "100%", md: "90%", lg: "800px" }}
               mx="auto"
               px={{ base: 4, md: 0 }}
+              textAlign="left"
+              width="100%"
             >
               {content}
             </Box>

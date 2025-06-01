@@ -21,6 +21,7 @@ type BlogPost = {
   locale: string;
   Body: string;
   Date: string;
+  slug: string;
   author: {
     id: number;
     Name: string;
@@ -161,7 +162,7 @@ export const BlogContainer: React.FC<Props> = (props) => {
             return matchesSearch && matchesTag;
           }).map((post) => (
             <GridItem key={post.id}>
-              <Link href={`/${locale}/blog/${post.id}`} style={{ textDecoration: 'none' }}>
+              <Link href={`/${locale}/blog/${post.slug}`} style={{ textDecoration: 'none' }}>
                 <Box
                   background="rgba(255,255,255,0.05)"
                   borderRadius={8}
