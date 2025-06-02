@@ -7,7 +7,7 @@ import ReactApexcharts from "../apex-charts";
 export const QuickView24HrLineChart = memo(function LineChart(
   props: ChartProps
 ) {
-  const { colors, data } = props;
+  const { colors, data, height } = props;
   const options: ApexOptions = {
     chart: {
       parentHeightOffset: 0,
@@ -57,7 +57,7 @@ export const QuickView24HrLineChart = memo(function LineChart(
       type="line"
       options={options}
       series={[{ data: data?.series ?? [] }]}
-      height={"100px"}
+      height={height || "100px"}
       width={"100%"}
     />
   );

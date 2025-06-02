@@ -13,11 +13,11 @@ import { map } from "lodash";
 import QuickView24HrLineChart from "morpheus-asia/components/Charts/QuickViewLineChart";
 import MetricsBox from "morpheus-asia/components/MetricsBox";
 import MetricsDisplay from "morpheus-asia/components/MetricsDisplay";
-import { useEffect, useState } from "react";
+import PercentageChip from "morpheus-asia/components/PercentageChip";
 import MORLogo from "morpheus-asia/Image/MOR.png";
-import PercentageChip from "./Chip";
 import moment from "moment";
 import { getDictionary } from "morpheus-asia/i18n";
+import { useMorMetrics } from "morpheus-asia/app/screens/MetricsScreen/MORMetricsProvider/context";
 
 type Props = {
   locale?: string;
@@ -32,28 +32,9 @@ export const MetricsTopMetrics: React.FC<Props> = (props) => {
   const { locale } = props;
   // =============== LOCALE
   const metricsPageLocale = getDictionary(locale)?.metricsPage;
-  // =============== STATE
-  const [loading, setLoading] = useState(true);
-  const [metrics, setMetrics] = useState({} as any);
 
-  // =============== EFFECTS
-  useEffect(() => {
-    const fetchMetrics = async () => {
-      try {
-        const currentTime = Date.now();
-        const metrics = await fetch(
-          `${process.env.NEXT_PUBLIC_FRONTEND_URL}/api/morpheus-api/data?currentTime=${currentTime}`
-        );
-        const metricsData = await metrics.json();
-        setMetrics(metricsData?.data);
-      } catch (error) {
-        console.error("MetricsTopMetricsError", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchMetrics();
-  }, []);
+  // =============== HOOKS
+  const { loading, metrics } = useMorMetrics();
 
   // =============== VARIABLES
   const metricsAsset = metrics?.asset;

@@ -6,6 +6,7 @@ const endpointMap: Record<string, string> = {
   priceData: "price/history",
   addSubscriber: "engagement/subscriber/add",
   sendEmail: "engagement/email/send",
+  capitalData: "capital",
 };
 
 export async function GET(request: NextRequest) {

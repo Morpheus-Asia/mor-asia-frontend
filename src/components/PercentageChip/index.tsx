@@ -26,4 +26,4 @@ const PercentageChip: React.FC<PercentageChipProps> = ({ value }) => {
   );
 };
 
-export default PercentageChip;
+export default PercentageChip; 
