@@ -4,11 +4,15 @@ import { Box, Grid, GridItem, Text, VStack, Input, Button, Stack, HStack, Image,
 import { useEffect, useState } from "react";
 import { getDictionary } from "morpheus-asia/i18n";
 import fetchContentType from "morpheus-asia/utils/strapi/fetchContentTypes";
-import { LuSearch, LuChevronLeft, LuChevronRight } from "react-icons/lu";
+import { LuSearch } from "react-icons/lu";
+import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import Link from "next/link";
 
 type Props = {
   locale?: string;
+  blogPage?: {
+    heading: string;
+  };
 };
 
 type BlogPost = {
@@ -51,14 +55,17 @@ const getPreviewText = (body: string): string => {
   // Remove extra whitespace and newlines
   cleanText = cleanText.replace(/\s+/g, ' ').trim();
   
-  // Truncate to reasonable length - make it shorter to be safe
-  const maxLength = 80;
-  if (cleanText.length <= maxLength) return cleanText;
+  // Split into words
+  const words = cleanText.split(' ');
+  const maxLines = 2;
+  const wordsPerLine = 8; // Approximate words per line
+  const maxWords = maxLines * wordsPerLine;
   
-  const truncated = cleanText.slice(0, maxLength);
-  const lastSpace = truncated.lastIndexOf(' ');
+  if (words.length <= maxWords) return cleanText;
   
-  return lastSpace > 40 ? truncated.slice(0, lastSpace) + '...' : truncated + '...';
+  // Take only the words that fit in maxLines
+  const truncated = words.slice(0, maxWords).join(' ');
+  return truncated + '...';
 };
 
 // Helper function to truncate title
@@ -79,7 +86,7 @@ const getTruncatedTitle = (title: string): string => {
  * ===========================
  */
 export const BlogContainer: React.FC<Props> = (props) => {
-  const { locale } = props;
+  const { locale, blogPage } = props;
   // =============== LOCALE
   const blogPageLocale = getDictionary(locale)?.blogPage;
 
@@ -189,11 +196,11 @@ export const BlogContainer: React.FC<Props> = (props) => {
       <VStack width={"100%"} alignItems={"center"} gap={6} py={4}>
         {/* Title */}
         <Text color="#FFF" fontWeight={"bold"} fontSize={"3xl"} textAlign="center">
-          {blogPageLocale?.heading || 'DISCOVER OUR LATEST BLOG'}
+          {'DISCOVER OUR LATEST BLOG'}
         </Text>
 
         {/* Search Bar */}
-        <Box width="100%" maxW="600px" position="relative">
+        <Box width="100%" maxW="500px" position="relative">
           <Box position="absolute" left={4} top="50%" transform="translateY(-50%)" zIndex={1}>
             <LuSearch color="rgba(255,255,255,0.7)" size={20} />
           </Box>
@@ -306,10 +313,10 @@ export const BlogContainer: React.FC<Props> = (props) => {
                         lineHeight="1.4"
                         overflow="hidden"
                         textOverflow="ellipsis"
-                        whiteSpace="nowrap"
                         maxW="100%"
                         wordBreak="break-all"
                         overflowWrap="break-word"
+                        lineClamp={7}
                       >
                         {getPreviewText(post.Body)}
                       </Text>
@@ -348,23 +355,22 @@ export const BlogContainer: React.FC<Props> = (props) => {
         {/* Pagination Controls */}
         {totalPages > 1 && (
           <VStack gap={4} py={4}>
-            <HStack gap={2} justify="center" align="center">
+            <HStack gap={6} justify="center" align="center">
               {/* Previous Button */}
               <IconButton
                 aria-label="Previous page"
                 onClick={handlePreviousPage}
                 disabled={currentPage === 1}
-                bg="#1C4532"
+                bg="transparent"
                 color="white"
-                _hover={{ bg: "#234A38" }}
+                _hover={{ color: "rgba(255,255,255,0.8)" }}
                 _disabled={{ 
-                  bg: "rgba(255,255,255,0.1)", 
                   color: "rgba(255,255,255,0.3)",
                   cursor: "not-allowed"
                 }}
-                size="sm"
+                size="lg"
               >
-                <LuChevronLeft />
+                <FaChevronLeft size={80} />
               </IconButton>
 
               {/* Page Numbers */}
@@ -372,11 +378,16 @@ export const BlogContainer: React.FC<Props> = (props) => {
                 <Button
                   key={pageNum}
                   onClick={() => handlePageClick(pageNum)}
-                  bg={currentPage === pageNum ? "#2D6748" : "#1C4532"}
+                  bg={currentPage === pageNum ? "#20DC8E" : "transparent"}
                   color="white"
-                  _hover={{ bg: currentPage === pageNum ? "#2D6748" : "#234A38" }}
+                  _hover={{ bg: currentPage === pageNum ? "#20DC8E" : "rgba(255,255,255,0.1)" }}
                   size="sm"
-                  minW="40px"
+                  w="30px"
+                  h="30px"
+                  minW="20px"
+                  fontSize="lg"
+                  borderRadius="full"
+                  p={0}
                 >
                   {pageNum}
                 </Button>
@@ -387,24 +398,18 @@ export const BlogContainer: React.FC<Props> = (props) => {
                 aria-label="Next page"
                 onClick={handleNextPage}
                 disabled={currentPage === totalPages}
-                bg="#1C4532"
+                bg="transparent"
                 color="white"
-                _hover={{ bg: "#234A38" }}
+                _hover={{ color: "rgba(255,255,255,0.8)" }}
                 _disabled={{ 
-                  bg: "rgba(255,255,255,0.1)", 
                   color: "rgba(255,255,255,0.3)",
                   cursor: "not-allowed"
                 }}
-                size="sm"
+                size="lg"
               >
-                <LuChevronRight />
+                <FaChevronRight size={80} />
               </IconButton>
             </HStack>
-
-            {/* Page Info */}
-            <Text color="rgba(255,255,255,0.5)" fontSize="xs" textAlign="center">
-              Page {currentPage} of {totalPages}
-            </Text>
           </VStack>
         )}
       </VStack>

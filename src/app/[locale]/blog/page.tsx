@@ -16,8 +16,7 @@ export async function generateMetadata({ params }: any): Promise<Metadata> {
     "blog-page",
     {
       filters: { locale },
-      populate: ['author'],
-      pLevel: 4,
+      pLevel: 2,
     },
     true
   );
@@ -34,32 +33,28 @@ export default async function Page({ params }: any) {
     "blog-page",
     {
       filters: { locale },
-      populate: ['author'],
-      pLevel: 4,
+      pLevel: 2,
     },
     true
   );
 
-  // Debug log to check localizations
-  console.log('BLOG PAGE LOCALIZATIONS:', blogPage?.localizations, 'CURRENT LOCALE:', locale);
-
   const localizedSlugs = blogPage?.localizations?.reduce(
     (acc: Record<string, string>, localization: any) => {
       if (localization.locale === "zh-Hans") {
-        acc["cn"] = "";
+        acc["cn"] = "blog";
         return acc;
       }
-      acc[localization.locale] = "";
+      acc[localization.locale] = "blog";
       return acc;
     },
-    { [locale]: "" }
+    { [locale]: "blog" }
   );
 
   // ================ VIEWS
   return (
     <>
       <ClientSlugHandler localizedSlugs={localizedSlugs} />
-      <BlogScreen locale={locale} />
+      <BlogScreen locale={locale} blogPage={blogPage} />
     </>
   );
 } 

@@ -15,7 +15,7 @@ export type BlogPageProps = {
  * ===========================
  */
 export const BlogScreen: React.FC<BlogPageProps> = (props) => {
-  const { locale } = props;
+  const { locale, blogPage } = props;
 
   // =============== VIEWS
   return (
@@ -23,7 +23,7 @@ export const BlogScreen: React.FC<BlogPageProps> = (props) => {
       <ContainerWrapper pt={"8rem"} width={"100%"} pb={"3.5rem"}>
         <VStack gap={5} width="100%">
           <Box width="100%">
-            <BlogContainer locale={locale} />
+            <BlogContainer locale={locale} blogPage={blogPage} />
           </Box>
         </VStack>
       </ContainerWrapper>
