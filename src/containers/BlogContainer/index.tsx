@@ -1,6 +1,6 @@
 "use client";
 
-import { Box, Grid, GridItem, Text, VStack, Input, Button, Stack, HStack, Image, IconButton } from "@chakra-ui/react";
+import { Box, Grid, GridItem, Text, VStack, Input, Button, Stack, HStack, Image, IconButton, Menu, Portal } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { getDictionary } from "morpheus-asia/i18n";
 import fetchContentType from "morpheus-asia/utils/strapi/fetchContentTypes";
@@ -134,10 +134,18 @@ export const BlogContainer: React.FC<Props> = (props) => {
   // =============== UTILS
   const allTags = Array.from(new Set(posts.flatMap(post => 
     post.Tags ? post.Tags.split(',').map(tag => tag.trim()) : []
-  )));
+  ))).filter(Boolean); // Filter out any empty tags
+  
+  // Sort posts by date when no tag is selected
+  const sortedPosts = [...posts].sort((a, b) => {
+    if (!selectedTag) {
+      return new Date(b.Date).getTime() - new Date(a.Date).getTime();
+    }
+    return 0;
+  });
   
   // Filter posts based on search and tag
-  const filteredPosts = posts.filter(post => {
+  const filteredPosts = sortedPosts.filter(post => {
     const searchLower = searchQuery.toLowerCase();
     const matchesSearch = post.Title.toLowerCase().includes(searchLower) ||
                          post.Body.toLowerCase().includes(searchLower);
@@ -219,31 +227,108 @@ export const BlogContainer: React.FC<Props> = (props) => {
         </Box>
 
         {/* Tags */}
-        <Stack direction="row" gap={4} flexWrap="wrap" justifyContent="center">
-          <Button
-            size="sm"
-            onClick={() => setSelectedTag(null)}
-            bg={selectedTag === null ? "#2D6748" : "#1C4532"}
-            color="white"
-            borderRadius="full"
-            _hover={{ bg: selectedTag === null ? "#2D6748" : "#234A38" }}
-          >
-            {blogPageLocale?.allTags || 'All'}
-          </Button>
-          {allTags.map((tag) => (
+        <VStack width="100%" maxW="800px" gap={4}>
+          <HStack gap={4} width="100%" justify="center">
             <Button
-              key={tag}
               size="sm"
-              onClick={() => setSelectedTag(tag)}
-              bg={selectedTag === tag ? "#2D6748" : "#1C4532"}
+              onClick={() => setSelectedTag(null)}
+              bg={selectedTag === null ? "#2D6748" : "#1C4532"}
               color="white"
               borderRadius="full"
-              _hover={{ bg: selectedTag === tag ? "#2D6748" : "#234A38" }}
+              _hover={{ bg: selectedTag === null ? "#2D6748" : "#234A38" }}
+              textTransform="uppercase"
+              fontWeight="normal"
             >
-              {tag}
+              Latest
             </Button>
-          ))}
-        </Stack>
+            {allTags.slice(0, 3).map((tag) => (
+              <Button
+                key={tag}
+                size="sm"
+                onClick={() => setSelectedTag(tag)}
+                bg={selectedTag === tag ? "#2D6748" : "#1C4532"}
+                color="white"
+                borderRadius="full"
+                _hover={{ bg: selectedTag === tag ? "#2D6748" : "#234A38" }}
+                textTransform="uppercase"
+                fontWeight="normal"
+              >
+                {tag}
+              </Button>
+            ))}
+          </HStack>
+          
+          <HStack gap={4} width="100%" justify="center">
+            {allTags.slice(3, 6).map((tag) => (
+              <Button
+                key={tag}
+                size="sm"
+                onClick={() => setSelectedTag(tag)}
+                bg={selectedTag === tag ? "#2D6748" : "#1C4532"}
+                color="white"
+                borderRadius="full"
+                _hover={{ bg: selectedTag === tag ? "#2D6748" : "#234A38" }}
+                textTransform="uppercase"
+                fontWeight="normal"
+              >
+                {tag}
+              </Button>
+            ))}
+            {allTags.length > 6 && (
+              <Menu.Root>
+                <Menu.Trigger asChild>
+                  <Button
+                    size="sm"
+                    bg="#1C4532"
+                    color="white"
+                    borderRadius="full"
+                    _hover={{ bg: "#234A38" }}
+                    textTransform="uppercase"
+                    fontWeight="normal"
+                    px={6}
+                  >
+                    More <Box as="span" ml={1} fontSize="md" display="inline">▼</Box>
+                  </Button>
+                </Menu.Trigger>
+                <Portal>
+                  <Menu.Positioner>
+                    <Menu.Content
+                      bg="#1C4532"
+                      borderRadius="md"
+                      boxShadow="md"
+                      py={2}
+                      minW="120px"
+                      zIndex={20}
+                    >
+                      {allTags.slice(6).map((tag) => (
+                        <Menu.Item
+                          key={tag}
+                          value={tag}
+                          onSelect={() => setSelectedTag(tag)}
+                          style={{
+                            background: selectedTag === tag ? "#2D6748" : "#1C4532",
+                            color: "white",
+                            borderRadius: "9999px",
+                            textTransform: "uppercase",
+                            fontWeight: "normal",
+                            width: "100%",
+                            justifyContent: "flex-start",
+                            padding: "0.5rem 1rem",
+                            margin: 0,
+                            cursor: "pointer",
+                          }}
+                          _hover={{ background: "#234A38" }}
+                        >
+                          {tag}
+                        </Menu.Item>
+                      ))}
+                    </Menu.Content>
+                  </Menu.Positioner>
+                </Portal>
+              </Menu.Root>
+            )}
+          </HStack>
+        </VStack>
 
         {/* Results Info */}
         {filteredPosts.length > 0 && (
