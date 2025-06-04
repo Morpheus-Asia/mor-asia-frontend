@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { getDictionary } from "morpheus-asia/i18n";
 import fetchContentType from "morpheus-asia/utils/strapi/fetchContentTypes";
 import { LuSearch } from "react-icons/lu";
-import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
+import { FaChevronLeft, FaChevronRight, FaChevronDown } from "react-icons/fa";
 import Link from "next/link";
 
 type Props = {
@@ -287,7 +287,7 @@ export const BlogContainer: React.FC<Props> = (props) => {
                     fontWeight="normal"
                     px={6}
                   >
-                    More <Box as="span" ml={1} fontSize="md" display="inline">▼</Box>
+                    More <FaChevronDown style={{ marginLeft: 8, fontSize: 16 }} />
                   </Button>
                 </Menu.Trigger>
                 <Portal>
