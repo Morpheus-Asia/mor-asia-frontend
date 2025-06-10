@@ -118,18 +118,21 @@ export default async function BlogPostPage({ params }: any) {
               </Text>
               <Box color="rgba(255,255,255,0.7)" mb={6}>
                 <HStack gap={2} align="flex-start">
-                  {blogPost.author?.Avatar?.formats?.small?.url && (
-                    <Box mt={1}>
-                      <Image
-                        src={blogPost.author.Avatar.formats.small.url}
-                        alt={`${blogPost.author.Name}'s avatar`}
-                        w="32px"
-                        h="32px"
-                        borderRadius="full"
-                        objectFit="cover"
-                      />
-                    </Box>
-                  )}
+                  {(() => {
+                    const avatarUrl = blogPost.author?.Avatar?.formats?.small?.url;
+                    return avatarUrl && (
+                      <Box mt={1}>
+                        <Image
+                          src={avatarUrl}
+                          alt={`${blogPost.author.Name}'s avatar`}
+                          w="32px"
+                          h="32px"
+                          borderRadius="full"
+                          objectFit="cover"
+                        />
+                      </Box>
+                    );
+                  })()}
                   <VStack align="flex-start" gap={0.5}>
                     <Text color="#FFF" fontSize="md">
                       {blogPost.author?.Name}
