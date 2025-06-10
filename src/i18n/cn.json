@@ -87,5 +87,8 @@
     "disclaimerMain": "以美元计的金额假设当前 MOR 和 stETH 价格保持稳定。",
     "disclaimerStaking": "您将 stETH 质押给我们并获得 MOR 代币作为奖励，您可以通过锁定领取来获得奖励乘数，您可以随时解除质押。",
     "disclaimerMoreInfo": "更多信息请见 {here}。"
+  },
+  "blogPage": {
+    "title": "探索我们最新的博客"
   }
 }

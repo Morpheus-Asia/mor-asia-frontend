@@ -57,4 +57,4 @@ export default async function Page({ params }: any) {
       <BlogScreen locale={locale} blogPage={blogPage} />
     </>
   );
-} 
+}

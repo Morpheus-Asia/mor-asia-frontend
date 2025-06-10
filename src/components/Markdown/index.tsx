@@ -15,7 +15,6 @@ export const MarkdownRender: React.FC<Props> = ({
       remarkPlugins={[remarkGfm, remarkBreaks]}
       rehypePlugins={[rehypeRaw]}
       components={components}
-      // transformImageUri={(uri) => getStrapiMedia(uri)}
       // components={{
       //   a: (props) => (
       //     <CustomLink

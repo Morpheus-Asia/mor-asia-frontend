@@ -7,10 +7,14 @@ import { Props } from "./props";
  * ===========================
  */
 export const Text: React.FC<Props> = (props) => {
-  const { children } = props;
+  const { children, ...restProps } = props;
 
   // =============== VIEWS
-  return <ChakraText color="white">{children}</ChakraText>;
+  return (
+    <ChakraText color="white" {...restProps}>
+      {children}
+    </ChakraText>
+  );
 };
 
 /**
