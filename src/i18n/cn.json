@@ -43,5 +43,11 @@
     "marketCap": "市值",
     "supply": "供应量",
     "date": "日期"
+  },
+  "blog": {
+    "seeMore": "查看更多",
+    "minRead": "分钟阅读",
+    "noContent": "暂无内容",
+    "notFound": "未找到博客文章"
   }
 }

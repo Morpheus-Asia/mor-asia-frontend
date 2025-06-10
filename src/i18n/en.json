@@ -43,5 +43,11 @@
     "marketCap": "Market Cap",
     "supply": "Supply",
     "date": "Date"
+  },
+  "blog": {
+    "seeMore": "See more",
+    "minRead": "min read",
+    "noContent": "No content available",
+    "notFound": "Blog post not found"
   }
 }

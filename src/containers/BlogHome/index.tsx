@@ -2,6 +2,7 @@ import React from 'react';
 import { Box, Container, Heading, Link } from '@chakra-ui/react';
 import { BlogList } from '../../components/BlogList';
 import NextLink from 'next/link';
+import { getDictionary } from "morpheus-asia/i18n";
 
 interface BlogHomeProps {
   title: string;
@@ -9,6 +10,8 @@ interface BlogHomeProps {
 }
 
 const BlogHome: React.FC<BlogHomeProps> = ({ title, locale }) => {
+  const blogLocale = getDictionary(locale)?.blog;
+
   return (
     <Box 
       as="section" 
@@ -50,7 +53,7 @@ const BlogHome: React.FC<BlogHomeProps> = ({ title, locale }) => {
               textDecorationColor: "#20DC8E"
             }}
           >
-            See more
+            {blogLocale?.seeMore}
           </Link>
         </Box>
       </Container>

@@ -5,6 +5,7 @@ import ClientSlugHandler from "morpheus-asia/components/ClientSlugHandler";
 import { Box, Container, Text, VStack, HStack, Image } from "@chakra-ui/react";
 import ContainerWrapper from "morpheus-asia/containers/ContainerWrapper";
 import { BlogPost } from "morpheus-asia/components/BlogList/props";
+import { getDictionary } from "morpheus-asia/i18n";
 
 const IMAGE_MARKDOWN_REGEX = /!\[(.*?)\]\((.*?)\)/;
 
@@ -48,6 +49,7 @@ export async function generateMetadata({ params }: any): Promise<Metadata> {
 
 export default async function BlogPostPage({ params }: any) {
   const { locale, slug } = await params;
+  const blogLocale = getDictionary(locale)?.blog;
   
   const response = await fetchContentType(
     "blog-posts",
@@ -73,7 +75,7 @@ export default async function BlogPostPage({ params }: any) {
     return (
       <ContainerWrapper pt={"8rem"} width={"100%"} pb={"3.5rem"}>
         <Container maxW="container.xl">
-          <Text color="#FFF" fontSize="xl">Blog post not found</Text>
+          <Text color="#FFF" fontSize="xl">{blogLocale?.notFound}</Text>
         </Container>
       </ContainerWrapper>
     );
@@ -104,7 +106,7 @@ export default async function BlogPostPage({ params }: any) {
     }
     // Regular text line
     return line ? <Text key={index} mb={4}>{line}</Text> : null;
-  }) : [<Text key="no-content" color="rgba(255,255,255,0.7)">No content available</Text>];
+  }) : [<Text key="no-content" color="rgba(255,255,255,0.7)">{blogLocale?.noContent}</Text>];
 
   return (
     <>
@@ -139,7 +141,7 @@ export default async function BlogPostPage({ params }: any) {
                     </Text>
                     <HStack gap={1} fontSize="sm" color="rgba(255,255,255,0.7)">
                       <Text>
-                        {blogPost.Body ? Math.max(1, Math.ceil(blogPost.Body.split(/\s+/).length / 200)) : 1} min read
+                        {blogPost.Body ? Math.max(1, Math.ceil(blogPost.Body.split(/\s+/).length / 200)) : 1} {blogLocale?.minRead}
                       </Text>
                       <Text>•</Text>
                       <Text>
