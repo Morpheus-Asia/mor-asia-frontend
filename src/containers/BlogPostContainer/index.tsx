@@ -27,8 +27,8 @@ export const BlogPostContainer: React.FC<BlogPostContainerProps> = (props) => {
   // =============== VARIABLES
   const blogPostAvatar = blogPost?.author?.avatar;
   const author = blogPostAvatar?.formats?.small?.url || blogPostAvatar?.url;
-  const tags = blogPost.tags.map((tag) => tag.name);
-  const blogPostContent = blogPost.content || "";
+  const tags = blogPost?.tags?.map((tag) => tag?.name);
+  const blogPostContent = blogPost?.content || "";
 
   // =============== RENDER FUNCTIONS
   const renderContent = () => {
@@ -67,13 +67,8 @@ export const BlogPostContainer: React.FC<BlogPostContainerProps> = (props) => {
     );
   }
   return (
-    <ContainerWrapper
-      pt={"8rem"}
-      width={"100%"}
-      pb={"3.5rem"}
-      paddingInline={10}
-    >
-      <VStack gap={8} align="stretch" h={"100vh"} mb={6}>
+    <ContainerWrapper pt={"8rem"} width={"100%"} pb={"3.5rem"}>
+      <VStack gap={8} align="stretch" mb={6}>
         <Box>
           <Text color="#FFF" fontSize="4xl" fontWeight="bold" mb={4}>
             {blogPost.title}

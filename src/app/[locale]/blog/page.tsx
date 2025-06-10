@@ -57,7 +57,7 @@ export default async function Page({ params }: any) {
       <BlogScreen
         locale={locale}
         blogPage={blogPage}
-        title={blogPage.title || "Discover Our Latest Blogs"}
+        title={blogPage.heading || "Discover Our Latest Blogs"}
       />
     </>
   );
