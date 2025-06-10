@@ -43,16 +43,6 @@ export async function generateMetadata({ params }: any): Promise<Metadata> {
 
 export default async function BlogPostPage({ params }: any) {
   const { locale, slug } = await params;
-
-  const blogPage = await fetchContentType(
-    "blog-page",
-    {
-      filters: { locale },
-      pLevel: 2,
-    },
-    true
-  );
-
   const response = await fetchContentType(
     "blog-posts",
     {
@@ -75,7 +65,7 @@ export default async function BlogPostPage({ params }: any) {
   const blogPost = response?.data?.[0] as BlogPost;
 
   // Build localizedSlugs with actual slug values from localizations
-  const localizedSlugs = blogPage?.localizations?.reduce(
+  const localizedSlugs = blogPost?.localizations?.reduce(
     (acc: Record<string, string>, localization: any) => {
       if (localization.locale === "zh-Hans") {
         acc["cn"] = "";
@@ -85,7 +75,7 @@ export default async function BlogPostPage({ params }: any) {
       return acc;
     },
     { [locale]: "" }
-  );
+  ) as Record<string, string>;
 
   return (
     <>

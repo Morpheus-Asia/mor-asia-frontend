@@ -54,7 +54,11 @@ export default async function Page({ params }: any) {
   return (
     <>
       <ClientSlugHandler localizedSlugs={localizedSlugs} />
-      <BlogScreen locale={locale} blogPage={blogPage} />
+      <BlogScreen
+        locale={locale}
+        blogPage={blogPage}
+        title={blogPage.title || "Discover Our Latest Blogs"}
+      />
     </>
   );
 }

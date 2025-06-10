@@ -6,6 +6,7 @@ import MarkdownRender from "morpheus-asia/components/Markdown";
 export type BlogPostContainerProps = {
   blogPost: BlogPost;
   locale?: string;
+  title?: string;
 };
 
 /**

@@ -16,7 +16,6 @@ import {
   SkeletonText,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
-import { getDictionary } from "morpheus-asia/i18n";
 import fetchContentType from "morpheus-asia/utils/strapi/fetchContentTypes";
 import { LuSearch } from "react-icons/lu";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
@@ -32,6 +31,7 @@ type Props = {
   blogPage?: {
     heading: string;
   };
+  title?: string;
 };
 
 /**
@@ -40,9 +40,7 @@ type Props = {
  * ===========================
  */
 export const BlogContainer: React.FC<Props> = (props) => {
-  const { locale } = props;
-  // =============== LOCALE
-  const blogPageLocale = getDictionary(locale)?.blogPage;
+  const { locale, title } = props;
 
   // =============== STATE
   const [loadingPosts, setLoadingPosts] = useState(true);
@@ -195,7 +193,7 @@ export const BlogContainer: React.FC<Props> = (props) => {
           fontSize={"4xl"}
           textAlign="center"
         >
-          {blogPageLocale?.title}
+          {title}
         </Text>
 
         {/* Search Bar */}
