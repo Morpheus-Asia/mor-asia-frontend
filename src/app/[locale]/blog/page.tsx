@@ -3,7 +3,6 @@ import { Metadata } from "next";
 import { generateMetadataObject } from "morpheus-asia/utils/strapi";
 import BlogScreen from "morpheus-asia/app/screens/BlogScreen";
 import ClientSlugHandler from "morpheus-asia/components/ClientSlugHandler";
-import { BlogPost } from "morpheus-asia/components/BlogList/props";
 
 /**
  * ===========================
