@@ -4,36 +4,8 @@ import { generateMetadataObject } from "morpheus-asia/utils/strapi";
 import ClientSlugHandler from "morpheus-asia/components/ClientSlugHandler";
 import { Box, Container, Text, VStack, HStack, Image } from "@chakra-ui/react";
 import ContainerWrapper from "morpheus-asia/containers/ContainerWrapper";
+import { BlogPost } from "morpheus-asia/components/BlogList/props";
 
-type BlogPost = {
-  id: number;
-  documentId: string;
-  Title: string;
-  Date: string;
-  slug: string;
-  author: {
-    id: number;
-    Name: string;
-    Avatar?: {
-      formats: {
-        small: {
-          url: string;
-        };
-      };
-    };
-  };
-  Tags: string;
-  Body: string;
-  Featured_Image?: {
-    url: string;
-  };
-  localizations?: Array<{
-    locale: string;
-    slug: string;
-  }>;
-};
-
-// Constants
 const IMAGE_MARKDOWN_REGEX = /!\[(.*?)\]\((.*?)\)/;
 
 export async function generateViewport() {

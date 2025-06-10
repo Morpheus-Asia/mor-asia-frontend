@@ -7,6 +7,7 @@ import fetchContentType from "morpheus-asia/utils/strapi/fetchContentTypes";
 import { LuSearch } from "react-icons/lu";
 import { FaChevronLeft, FaChevronRight, FaChevronDown } from "react-icons/fa";
 import Link from "next/link";
+import { BlogPost } from "./props";
 
 type Props = {
   locale?: string;
@@ -15,31 +16,6 @@ type Props = {
   hideTags?: boolean;
   hidePagination?: boolean;
   hideResultsInfo?: boolean;
-};
-
-type BlogPost = {
-  id: number;
-  documentId: string;
-  Title: string;
-  createdAt: string;
-  updatedAt: string;
-  publishedAt: string;
-  locale: string;
-  Body: string;
-  Date: string;
-  slug: string;
-  author: {
-    id: number;
-    Name: string;
-  };
-  Tags: string;
-  Featured_Image?: {
-    formats: {
-      small: {
-        url: string;
-      };
-    };
-  };
 };
 
 // Helper function to get preview text

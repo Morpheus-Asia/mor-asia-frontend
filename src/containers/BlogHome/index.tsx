@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Container, Heading } from '@chakra-ui/react';
+import { Box, Container, Heading, Link } from '@chakra-ui/react';
 import { BlogList } from '../../components/BlogList';
 import NextLink from 'next/link';
 
@@ -13,23 +13,7 @@ const BlogHome: React.FC<BlogHomeProps> = ({ title, locale }) => {
     <Box 
       as="section" 
       py={16}
-      style={{
-        animation: 'fadeIn 0.8s ease-out forwards',
-        opacity: 0
-      }}
     >
-      <style jsx global>{`
-        @keyframes fadeIn {
-          from {
-            opacity: 0;
-            transform: translateY(20px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-      `}</style>
       <Container maxW="container.xl">
         <Heading 
           as="h2" 
@@ -52,19 +36,22 @@ const BlogHome: React.FC<BlogHomeProps> = ({ title, locale }) => {
           />
         </Box>
         <Box textAlign="center" mt={8}>
-          <NextLink 
+          <Link
+            as={NextLink}
             href={`/${locale}/blog`}
-            style={{
-              color: '#20DC8E',
-              fontSize: '1.125rem',
-              fontWeight: 500,
-              textDecoration: 'underline',
-              textDecorationColor: '#20DC8E',
-              textUnderlineOffset: '4px'
+            color="#20DC8E"
+            fontSize="lg"
+            fontWeight="medium"
+            textDecoration="underline"
+            textDecorationColor="#20DC8E"
+            textUnderlineOffset="4px"
+            _hover={{
+              textDecoration: "underline",
+              textDecorationColor: "#20DC8E"
             }}
           >
             See more
-          </NextLink>
+          </Link>
         </Box>
       </Container>
     </Box>
