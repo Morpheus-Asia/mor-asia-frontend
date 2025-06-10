@@ -10,6 +10,11 @@ import Link from "next/link";
 
 type Props = {
   locale?: string;
+  limit?: number;
+  hideSearch?: boolean;
+  hideTags?: boolean;
+  hidePagination?: boolean;
+  hideResultsInfo?: boolean;
 };
 
 type BlogPost = {
@@ -83,7 +88,7 @@ const getTruncatedTitle = (title: string): string => {
  * ===========================
  */
 export const BlogList: React.FC<Props> = (props) => {
-  const { locale } = props;
+  const { locale, limit, hideSearch, hideTags, hidePagination, hideResultsInfo } = props;
   // =============== LOCALE
   const blogPageLocale = getDictionary(locale)?.blogPage;
 
@@ -95,7 +100,7 @@ export const BlogList: React.FC<Props> = (props) => {
   const [currentPage, setCurrentPage] = useState(1);
   
   // =============== PAGINATION CONFIG
-  const POSTS_PER_PAGE = 9;
+  const POSTS_PER_PAGE = limit || 9;
 
   // =============== EFFECTS
   useEffect(() => {
@@ -199,130 +204,134 @@ export const BlogList: React.FC<Props> = (props) => {
   return (
     <VStack width={"100%"} alignItems={"center"} gap={6} py={4}>
       {/* Search Bar */}
-      <Box width="100%" maxW="500px" position="relative">
-        <Box position="absolute" left={4} top="50%" transform="translateY(-50%)" zIndex={1}>
-          <LuSearch color="rgba(255,255,255,0.7)" size={20} />
+      {!hideSearch && (
+        <Box width="100%" maxW="500px" position="relative">
+          <Box position="absolute" left={4} top="50%" transform="translateY(-50%)" zIndex={1}>
+            <LuSearch color="rgba(255,255,255,0.7)" size={20} />
+          </Box>
+          <Input
+            placeholder="Search Blog"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            bg="#1C4532"
+            color="white"
+            _placeholder={{ color: 'rgba(255,255,255,0.7)' }}
+            border="none"
+            _hover={{ bg: "#1C4532" }}
+            _focus={{ bg: "#1C4532" }}
+            pl={12}
+          />
         </Box>
-        <Input
-          placeholder="Search Blog"
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-          bg="#1C4532"
-          color="white"
-          _placeholder={{ color: 'rgba(255,255,255,0.7)' }}
-          border="none"
-          _hover={{ bg: "#1C4532" }}
-          _focus={{ bg: "#1C4532" }}
-          pl={12}
-        />
-      </Box>
+      )}
 
       {/* Tags */}
-      <VStack width="100%" maxW="800px" gap={4}>
-        <HStack gap={4} width="100%" justify="center">
-          <Button
-            size="sm"
-            onClick={() => setSelectedTag(null)}
-            bg={selectedTag === null ? "#2D6748" : "#1C4532"}
-            color="white"
-            borderRadius="full"
-            _hover={{ bg: selectedTag === null ? "#2D6748" : "#234A38" }}
-            textTransform="uppercase"
-            fontWeight="normal"
-          >
-            Latest
-          </Button>
-          {allTags.slice(0, 3).map((tag) => (
+      {!hideTags && (
+        <VStack width="100%" maxW="800px" gap={4}>
+          <HStack gap={4} width="100%" justify="center">
             <Button
-              key={tag}
               size="sm"
-              onClick={() => setSelectedTag(tag)}
-              bg={selectedTag === tag ? "#2D6748" : "#1C4532"}
+              onClick={() => setSelectedTag(null)}
+              bg={selectedTag === null ? "#2D6748" : "#1C4532"}
               color="white"
               borderRadius="full"
-              _hover={{ bg: selectedTag === tag ? "#2D6748" : "#234A38" }}
+              _hover={{ bg: selectedTag === null ? "#2D6748" : "#234A38" }}
               textTransform="uppercase"
               fontWeight="normal"
             >
-              {tag}
+              Latest
             </Button>
-          ))}
-        </HStack>
-        
-        <HStack gap={4} width="100%" justify="center">
-          {allTags.slice(3, 6).map((tag) => (
-            <Button
-              key={tag}
-              size="sm"
-              onClick={() => setSelectedTag(tag)}
-              bg={selectedTag === tag ? "#2D6748" : "#1C4532"}
-              color="white"
-              borderRadius="full"
-              _hover={{ bg: selectedTag === tag ? "#2D6748" : "#234A38" }}
-              textTransform="uppercase"
-              fontWeight="normal"
-            >
-              {tag}
-            </Button>
-          ))}
-          {allTags.length > 6 && (
-            <Menu.Root>
-              <Menu.Trigger asChild>
-                <Button
-                  size="sm"
-                  bg="#1C4532"
-                  color="white"
-                  borderRadius="full"
-                  _hover={{ bg: "#234A38" }}
-                  textTransform="uppercase"
-                  fontWeight="normal"
-                  px={6}
-                >
-                  More <FaChevronDown style={{ marginLeft: 8, fontSize: 16 }} />
-                </Button>
-              </Menu.Trigger>
-              <Portal>
-                <Menu.Positioner>
-                  <Menu.Content
+            {allTags.slice(0, 3).map((tag) => (
+              <Button
+                key={tag}
+                size="sm"
+                onClick={() => setSelectedTag(tag)}
+                bg={selectedTag === tag ? "#2D6748" : "#1C4532"}
+                color="white"
+                borderRadius="full"
+                _hover={{ bg: selectedTag === tag ? "#2D6748" : "#234A38" }}
+                textTransform="uppercase"
+                fontWeight="normal"
+              >
+                {tag}
+              </Button>
+            ))}
+          </HStack>
+          
+          <HStack gap={4} width="100%" justify="center">
+            {allTags.slice(3, 6).map((tag) => (
+              <Button
+                key={tag}
+                size="sm"
+                onClick={() => setSelectedTag(tag)}
+                bg={selectedTag === tag ? "#2D6748" : "#1C4532"}
+                color="white"
+                borderRadius="full"
+                _hover={{ bg: selectedTag === tag ? "#2D6748" : "#234A38" }}
+                textTransform="uppercase"
+                fontWeight="normal"
+              >
+                {tag}
+              </Button>
+            ))}
+            {allTags.length > 6 && (
+              <Menu.Root>
+                <Menu.Trigger asChild>
+                  <Button
+                    size="sm"
                     bg="#1C4532"
-                    borderRadius="md"
-                    boxShadow="md"
-                    py={2}
-                    minW="120px"
-                    zIndex={20}
+                    color="white"
+                    borderRadius="full"
+                    _hover={{ bg: "#234A38" }}
+                    textTransform="uppercase"
+                    fontWeight="normal"
+                    px={6}
                   >
-                    {allTags.slice(6).map((tag) => (
-                      <Menu.Item
-                        key={tag}
-                        value={tag}
-                        onSelect={() => setSelectedTag(tag)}
-                        style={{
-                          background: selectedTag === tag ? "#2D6748" : "#1C4532",
-                          color: "white",
-                          borderRadius: "9999px",
-                          textTransform: "uppercase",
-                          fontWeight: "normal",
-                          width: "100%",
-                          justifyContent: "flex-start",
-                          padding: "0.5rem 1rem",
-                          margin: 0,
-                          cursor: "pointer",
-                        }}
-                        _hover={{ background: "#234A38" }}
-                      >
-                        {tag}
-                      </Menu.Item>
-                    ))}
-                  </Menu.Content>
-                </Menu.Positioner>
-              </Portal>
-            </Menu.Root>
-          )}
-        </HStack>
-      </VStack>
+                    More <FaChevronDown style={{ marginLeft: 8, fontSize: 16 }} />
+                  </Button>
+                </Menu.Trigger>
+                <Portal>
+                  <Menu.Positioner>
+                    <Menu.Content
+                      bg="#1C4532"
+                      borderRadius="md"
+                      boxShadow="md"
+                      py={2}
+                      minW="120px"
+                      zIndex={20}
+                    >
+                      {allTags.slice(6).map((tag) => (
+                        <Menu.Item
+                          key={tag}
+                          value={tag}
+                          onSelect={() => setSelectedTag(tag)}
+                          style={{
+                            background: selectedTag === tag ? "#2D6748" : "#1C4532",
+                            color: "white",
+                            borderRadius: "9999px",
+                            textTransform: "uppercase",
+                            fontWeight: "normal",
+                            width: "100%",
+                            justifyContent: "flex-start",
+                            padding: "0.5rem 1rem",
+                            margin: 0,
+                            cursor: "pointer",
+                          }}
+                          _hover={{ background: "#234A38" }}
+                        >
+                          {tag}
+                        </Menu.Item>
+                      ))}
+                    </Menu.Content>
+                  </Menu.Positioner>
+                </Portal>
+              </Menu.Root>
+            )}
+          </HStack>
+        </VStack>
+      )}
 
       {/* Results Info */}
-      {filteredPosts.length > 0 && (
+      {!hideResultsInfo && filteredPosts.length > 0 && (
         <Text color="rgba(255,255,255,0.7)" fontSize="sm">
           Showing {startIndex + 1}-{Math.min(endIndex, filteredPosts.length)} of {filteredPosts.length} posts
         </Text>
@@ -429,7 +438,7 @@ export const BlogList: React.FC<Props> = (props) => {
       )}
 
       {/* Pagination Controls */}
-      {totalPages > 1 && (
+      {!hidePagination && totalPages > 1 && (
         <VStack gap={4} py={4}>
           <HStack gap={6} justify="center" align="center">
             {/* Previous Button */}
