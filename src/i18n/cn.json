@@ -89,13 +89,6 @@
     "disclaimerMoreInfo": "更多信息请见 {here}。"
   },
   "blogPage": {
-    "title": "探索我们最新的博客",
-    "date": "日期"
-  },
-  "blog": {
-    "seeMore": "查看更多",
-    "minRead": "分钟阅读",
-    "noContent": "暂无内容",
-    "notFound": "未找到博客文章"
+    "title": "探索我们最新的博客"
   }
 }

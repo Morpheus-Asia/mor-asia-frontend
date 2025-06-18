@@ -25,9 +25,6 @@ const componentMapper: { [key: string]: any } = {
   "sections.cta": dynamic(() =>
     import("../containers/CTA").then((mod) => mod.default)
   ),
-  "sections.blog": dynamic(() =>
-    import("../containers/BlogHome").then((mod) => mod.default)
-  ),
   "sections.metrics": dynamic(() =>
     import("../containers/Metrics").then((mod) => mod.default)
   ),
