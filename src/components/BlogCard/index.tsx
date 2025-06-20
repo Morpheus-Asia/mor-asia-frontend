@@ -1,7 +1,7 @@
 import { Image, Stack, VStack } from "@chakra-ui/react";
 import Link from "next/link";
 import Text from "../Text";
-import { getPreviewText, getTruncatedTitle } from "morpheus-asia/utils/helper";
+import { getPreviewText } from "morpheus-asia/utils/helper";
 import { ReactNode } from "react";
 import { BlogPost } from "morpheus-asia/@types/blog";
 
@@ -94,20 +94,10 @@ export const BlogCard: React.FC<BlogCardProps> = (props) => {
             overflow="hidden"
             maxW="100%"
           >
-            <Text
-              color="#FFF"
-              fontWeight={"bold"}
-              fontSize={"lg"}
-              lineHeight="1.3"
-              overflow="hidden"
-              textOverflow="ellipsis"
-              whiteSpace="nowrap"
-              maxW="100%"
-              wordBreak="break-all"
-              overflowWrap="break-word"
-            >
-              {getTruncatedTitle(post.title)}
+            <Text color="#FFF" fontWeight={"bold"} fontSize={"lg"}>
+              {post.title}
             </Text>
+
             <Text
               color="rgba(255, 255, 255, 0.85)"
               fontSize="sm"
