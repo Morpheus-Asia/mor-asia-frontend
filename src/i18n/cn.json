@@ -89,9 +89,10 @@
     "disclaimerMoreInfo": "更多信息请见 {here}。"
   },
   "blogPage": {
-    "seeMore": "See more",
-    "minRead": "min read",
-    "noContent": "No content available",
-    "notFound": "Blog post not found"
+    "seeMore": "查看更多",
+    "minRead": "分钟阅读",
+    "noContent": "暂无内容",
+    "notFound": "未找到博客文章",
+    "all": "全部"
   }
 }

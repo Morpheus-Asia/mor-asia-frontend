@@ -25,6 +25,7 @@ import { map, size, times } from "lodash";
 import { BlogCard } from "morpheus-asia/components/BlogCard";
 import { SkeletonBlogCard } from "morpheus-asia/components/BlogCard/Skeleton";
 import { BlogPost } from "morpheus-asia/@types/blog";
+import { getDictionary } from "morpheus-asia/i18n";
 
 type Props = {
   locale?: string;
@@ -41,6 +42,8 @@ type Props = {
  */
 export const BlogContainer: React.FC<Props> = (props) => {
   const { locale, title } = props;
+
+  const blogLocale = getDictionary(locale)?.blogPage;
 
   // =============== STATE
   const [loadingPosts, setLoadingPosts] = useState(true);
@@ -221,7 +224,7 @@ export const BlogContainer: React.FC<Props> = (props) => {
       <Wrap gap={3} justify={"center"} maxW={"50%"}>
         <WrapItem>
           <FilterButton onClick={() => onHandleSelectTag(null)}>
-            ALL
+            {blogLocale?.all}
           </FilterButton>
         </WrapItem>
         {map(visibleTags, (tag) => (

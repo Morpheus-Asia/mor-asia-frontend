@@ -92,6 +92,7 @@
     "seeMore": "See more",
     "minRead": "min read",
     "noContent": "No content available",
-    "notFound": "Blog post not found"
+    "notFound": "Blog post not found",
+    "all": "All"
   }
 }
