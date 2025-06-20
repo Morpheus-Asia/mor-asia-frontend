@@ -1,64 +1,150 @@
-import React from 'react';
-import { Box, Container, Heading, Link } from '@chakra-ui/react';
-import { BlogList } from '../../components/BlogList';
-import NextLink from 'next/link';
-import { getDictionary } from "morpheus-asia/i18n";
+import React, { useEffect, useState } from "react";
+import {
+  Grid,
+  GridItem,
+  Heading,
+  Link,
+  Stack,
+  Text,
+  VStack,
+} from "@chakra-ui/react";
+import fetchContentType from "morpheus-asia/utils/strapi/fetchContentTypes";
+import { BlogPost } from "morpheus-asia/@types/blog";
+import { map, size, times } from "lodash";
+import { SkeletonBlogCard } from "morpheus-asia/components/BlogCard/Skeleton";
+import { BlogCard } from "morpheus-asia/components/BlogCard";
+import ContainerWrapper from "../ContainerWrapper";
 
 interface BlogHomeProps {
   title: string;
   locale: string;
+  seeMoreLink?: {
+    url: string;
+    text: string;
+    target?: string;
+  };
 }
 
-const BlogHome: React.FC<BlogHomeProps> = ({ title, locale }) => {
-  const blogLocale = getDictionary(locale)?.blog;
+const BlogHome: React.FC<BlogHomeProps> = ({ title, locale, seeMoreLink }) => {
+  const [posts, setPosts] = useState<BlogPost[]>([]);
+  const [loadingPosts, setLoadingPosts] = useState<boolean>(true);
+  useEffect(() => {
+    const fetchPosts = async () => {
+      try {
+        const response = await fetchContentType("blog-posts", {
+          filters: { locale },
+          sort: ["createdAt:desc"],
+          pagination: {
+            page: 1,
+            pageSize: 3,
+          },
+          populate: {
+            author: {
+              populate: ["avatar"],
+            },
+            tags: {
+              fields: ["name"],
+            },
+            featured_image: true,
+          },
+        });
+        const postsData = response?.data.map((postData: BlogPost) => ({
+          ...postData,
+          tags: postData.tags?.map((tag: { name: string }) => tag.name) || [],
+        }));
+        setPosts(postsData || []);
+      } catch (error) {
+        console.error("BlogPostsFetchError", error);
+      } finally {
+        setLoadingPosts(false);
+      }
+    };
+
+    fetchPosts();
+  }, [locale]);
+
+  const renderPosts = () => {
+    if (loadingPosts) {
+      return times(3, (index) => <SkeletonBlogCard key={index} />);
+    }
+    if (size(posts) === 0) {
+      return (
+        <GridItem
+          width={"100%"}
+          justifyItems={"center"}
+          alignItems={"center"}
+          gridColumn="1 / -1"
+        >
+          <VStack gap={4} py={8}>
+            {/** @TODO translation */}
+            <Text
+              color="rgba(255,255,255,0.7)"
+              fontSize="lg"
+              textAlign="center"
+            >
+              No blog posts found
+            </Text>
+            <Text
+              color="rgba(255,255,255,0.5)"
+              fontSize="sm"
+              textAlign="center"
+            >
+              Try adjusting your search terms or selected tags
+            </Text>
+          </VStack>
+        </GridItem>
+      );
+    }
+    return map(posts, (post) => (
+      <GridItem key={post.id} width="100%" maxW="100%" overflow="hidden">
+        <BlogCard post={post} locale={locale || ""} />
+      </GridItem>
+    ));
+  };
 
   return (
-    <Box 
-      as="section" 
-      py={16}
-    >
-      <Container maxW="container.xl">
-        <Heading 
-          as="h2" 
-          textAlign="center" 
-          mb={12}
-          fontSize={{ base: "3xl", md: "4xl" }}
-          fontWeight="bold"
-          color="white"
+    <ContainerWrapper>
+      <Heading
+        as="h2"
+        textAlign="center"
+        mb={12}
+        fontSize={{ base: "2xl", md: "3xl" }}
+        fontWeight="bold"
+        color="white"
+      >
+        {title}
+      </Heading>
+      <Grid
+        templateColumns={{
+          base: "1fr",
+          md: "repeat(2, 1fr)",
+          lg: "repeat(3, 1fr)",
+        }}
+        gap={6}
+        width="100%"
+      >
+        {renderPosts()}
+      </Grid>
+      {seeMoreLink?.url && (
+        <Stack
+          width="100%"
+          justifyContent={"center"}
+          alignItems="center"
+          mt={8}
         >
-          {title}
-        </Heading>
-        <Box maxW="1200px" mx="auto">
-          <BlogList 
-            locale={locale} 
-            limit={3} 
-            hideSearch={true}
-            hideTags={true}
-            hidePagination={true}
-            hideResultsInfo={true}
-          />
-        </Box>
-        <Box textAlign="center" mt={8}>
           <Link
-            as={NextLink}
-            href={`/${locale}/blog`}
-            color="#20DC8E"
-            fontSize="lg"
-            fontWeight="medium"
-            textDecoration="underline"
-            textDecorationColor="#20DC8E"
-            textUnderlineOffset="4px"
-            _hover={{
-              textDecoration: "underline",
-              textDecorationColor: "#20DC8E"
-            }}
+            href={seeMoreLink?.url}
+            color="primary.600"
+            variant={"underline"}
+            textDecorationThickness={2}
+            textUnderlineOffset={4.5}
           >
-            {blogLocale?.seeMore}
+            {seeMoreLink?.text}
           </Link>
-        </Box>
-      </Container>
-    </Box>
+        </Stack>
+      )}
+    </ContainerWrapper>
   );
 };
 
-export default BlogHome; 
+export default BlogHome;

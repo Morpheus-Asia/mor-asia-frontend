@@ -3,6 +3,7 @@ import { BlogPost } from "morpheus-asia/@types/blog";
 import ContainerWrapper from "../ContainerWrapper";
 import { Box, Text, VStack, HStack, Image } from "@chakra-ui/react";
 import MarkdownRender from "morpheus-asia/components/Markdown";
+import { getDictionary } from "morpheus-asia/i18n";
 export type BlogPostContainerProps = {
   blogPost: BlogPost;
   locale?: string;
@@ -27,17 +28,14 @@ export const BlogPostContainer: React.FC<BlogPostContainerProps> = (props) => {
   // =============== VARIABLES
   const blogPostAvatar = blogPost?.author?.avatar;
   const author = blogPostAvatar?.formats?.small?.url || blogPostAvatar?.url;
-  const tags = blogPost.tags.map((tag) => tag.name);
+  const tags = blogPost?.tags?.map((tag) => tag?.name) || [];
   const blogPostContent = blogPost.content || "";
+  const blogLocale = getDictionary(locale)?.blogPage;
 
   // =============== RENDER FUNCTIONS
   const renderContent = () => {
     if (!blogPostContent) {
-      return (
-        <Text color="rgba(255,255,255,0.7)">
-          No content available for this blog post.
-        </Text>
-      );
+      return <Text color="rgba(255,255,255,0.7)">{blogLocale?.noContent}</Text>;
     }
     return (
       <MarkdownRender
@@ -61,7 +59,7 @@ export const BlogPostContainer: React.FC<BlogPostContainerProps> = (props) => {
     return (
       <ContainerWrapper pt={"8rem"} width={"100%"} pb={"3.5rem"} h={"100vh"}>
         <Text color="#FFF" fontSize="xl">
-          Blog post not found
+          {blogLocale?.notFound}
         </Text>
       </ContainerWrapper>
     );
@@ -73,7 +71,7 @@ export const BlogPostContainer: React.FC<BlogPostContainerProps> = (props) => {
       pb={"3.5rem"}
       paddingInline={10}
     >
-      <VStack gap={8} align="stretch" h={"100vh"} mb={6}>
+      <VStack gap={8} align="stretch" minH={"100vh"} mb={6}>
         <Box>
           <Text color="#FFF" fontSize="4xl" fontWeight="bold" mb={4}>
             {blogPost.title}
@@ -109,7 +107,7 @@ export const BlogPostContainer: React.FC<BlogPostContainerProps> = (props) => {
                           Math.ceil(blogPost.content.split(/\s+/).length / 200)
                         )
                       : 1}{" "}
-                    min read
+                    {blogLocale?.minRead}
                   </Text>
                   <Text>•</Text>
                   <Text>

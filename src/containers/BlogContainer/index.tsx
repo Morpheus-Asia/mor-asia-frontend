@@ -298,13 +298,7 @@ export const BlogContainer: React.FC<Props> = (props) => {
 
   // =============== VIEWS
   return (
-    <VStack
-      width={"100%"}
-      alignItems={"center"}
-      gap={7}
-      py={4}
-      height={"100vh"}
-    >
+    <VStack width={"100%"} alignItems={"center"} gap={7} py={4} minH={"100vh"}>
       {renderTop()}
       {renderTags()}
 
