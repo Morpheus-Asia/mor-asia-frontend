@@ -89,6 +89,9 @@
     "disclaimerMoreInfo": "More information can be found {here}."
   },
   "blogPage": {
-    "title": "Explore Our Latest Blogs"
+    "seeMore": "See more",
+    "minRead": "min read",
+    "noContent": "No content available",
+    "notFound": "Blog post not found"
   }
 }
