@@ -29,7 +29,7 @@ export const BlogPostContainer: React.FC<BlogPostContainerProps> = (props) => {
   const blogPostAvatar = blogPost?.author?.avatar;
   const author = blogPostAvatar?.formats?.small?.url || blogPostAvatar?.url;
   const tags = blogPost?.tags?.map((tag) => tag?.name) || [];
-  const blogPostContent = blogPost.content || "";
+  const blogPostContent = blogPost?.content || "";
   const blogLocale = getDictionary(locale)?.blogPage;
 
   // =============== RENDER FUNCTIONS
