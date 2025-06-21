@@ -8,6 +8,8 @@ type CommonBlogPost = {
   locale: string;
   content: string;
   date: string;
+  summary: string;
+  metaTitle?: string;
   slug: string;
   author: {
     id: number;

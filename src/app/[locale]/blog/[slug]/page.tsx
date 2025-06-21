@@ -12,6 +12,7 @@ import BlogPostContainer from "morpheus-asia/containers/BlogPostContainer";
 
 export async function generateMetadata({ params }: any): Promise<Metadata> {
   const { locale, slug } = await params;
+
   const response = await fetchContentType(
     "blog-posts",
     {
@@ -23,18 +24,64 @@ export async function generateMetadata({ params }: any): Promise<Metadata> {
         author: {
           populate: ["avatar"],
         },
-        featured_Image: true,
+        tags: true,
+        featured_image: true,
       },
       pLevel: 4,
     },
     false
   );
 
+  if (!response || !response.data || response.data.length === 0) {
+    return {
+      title: "Blog Post Not Found",
+      description: "The requested blog post could not be found.",
+    };
+  }
+
   const blogPost = response?.data?.[0] as BlogPost;
 
+  const title = blogPost?.title;
+  const baseUrl = "https://www.morpheus.asia";
+  const content = blogPost?.summary;
+  const image = blogPost?.featured_image;
+  const imageUrl = blogPost?.featured_image?.url;
+  const url = `${baseUrl}/${locale}/blog/${slug}`;
+
   const seo = {
-    metaTitle: blogPost?.title,
-    metaDescription: blogPost?.content?.split("\n")[0] || "",
+    metaTitle: title,
+    metaDescription: content,
+    metaImage: image ? { url: imageUrl } : null,
+    canonicalURL: url,
+    opengraph: {
+      title,
+      description: content,
+      url,
+      image: image ? { url: imageUrl } : null,
+      siteName: "Morpheus Asia",
+    },
+    metaSocial: [
+      {
+        title,
+        description: content,
+        socialNetwork: "Twitter",
+        image: image ? { url: imageUrl } : null,
+      },
+    ],
+    structuredData: {
+      "@context": "https://schema.org",
+      "@type": "BlogPosting",
+      headline: title,
+      description: content,
+      author: {
+        "@type": "Person",
+        name: blogPost.author?.name || "Unknown",
+      },
+      datePublished: blogPost.publishedAt,
+      dateModified: blogPost.updatedAt,
+      mainEntityOfPage: url,
+      image: imageUrl,
+    },
   };
 
   const metadata = generateMetadataObject(seo, locale);
