@@ -22,7 +22,6 @@ export function generateMetadataObject(seo: any, locale: any) {
   const description = seo?.metaDescription || "Default Description";
   const keywords = seo?.keywords || "";
   const robots = seo?.metaRobots || "index, follow";
-  const viewport = seo?.metaViewport || "width=device-width, initial-scale=1";
   const canonical = seo?.canonicalURL ? seo?.canonicalURL : "";
   const openGraphData = {
     title: opengraph?.title,
@@ -73,7 +72,6 @@ export function generateMetadataObject(seo: any, locale: any) {
     description,
     keywords,
     robots,
-    viewport,
     alternates: {
       canonical,
     },

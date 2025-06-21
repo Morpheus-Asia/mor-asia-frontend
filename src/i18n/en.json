@@ -87,5 +87,12 @@
     "disclaimerMain": "Calculated amounts in USD assume a stable current MOR & stETH price.",
     "disclaimerStaking": "You stake your stETH with us and get MOR tokens as a reward, you may lock yourself from claiming those MOR rewards to get a multiplier, you may unstake your stETH anytime.",
     "disclaimerMoreInfo": "More information can be found {here}."
+  },
+  "blogPage": {
+    "seeMore": "See more",
+    "minRead": "min read",
+    "noContent": "No content available",
+    "notFound": "Blog post not found",
+    "all": "All"
   }
 }

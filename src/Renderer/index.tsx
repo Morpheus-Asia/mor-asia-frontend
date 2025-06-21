@@ -50,6 +50,9 @@ const componentMapper: { [key: string]: any } = {
   "component.spacer": dynamic(() =>
     import("../components/Spacer").then((mod) => mod.default)
   ),
+  "sections.blog": dynamic(() =>
+    import("../containers/BlogHome").then((mod) => mod.default)
+  ),
 };
 
 export const Renderer = (props: {
