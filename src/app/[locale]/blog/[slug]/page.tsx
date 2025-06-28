@@ -10,8 +10,6 @@ import BlogPostContainer from "morpheus-asia/containers/BlogPostContainer";
 // use MarkdownRender for content rendering
 // tags to be clickable
 
-export const dynamic = "force-dynamic";
-
 export async function generateMetadata({ params }: any): Promise<Metadata> {
   const { locale, slug } = await params;
 
