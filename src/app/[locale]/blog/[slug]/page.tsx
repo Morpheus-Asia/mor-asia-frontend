@@ -59,6 +59,7 @@ export async function generateMetadata({ params }: any): Promise<Metadata> {
       url,
       image: image ? { url: imageUrl } : null,
       siteName: "Morpheus Asia",
+      type: "article",
     },
     metaSocial: [
       {
