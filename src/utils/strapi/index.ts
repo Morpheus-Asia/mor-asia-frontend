@@ -32,6 +32,7 @@ export function generateMetadataObject(seo: any, locale: any) {
       ? [{ url: getStrapiMedia(opengraph.image.url) }]
       : [],
     locale: localeMap[locale], // or map your locale field accordingly
+    type: opengraph?.type || "website",
   };
   const metaImage = seo?.metaImage?.url
     ? getStrapiMedia(seo.metaImage.url)
