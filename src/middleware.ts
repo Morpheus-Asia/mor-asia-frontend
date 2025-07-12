@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import { i18n } from "../i18n.config";
+import { getRedirectConfig } from "./utils/redirects";
 
 import { match as matchLocale } from "@formatjs/intl-localematcher";
 import Negotiator from "negotiator";
@@ -23,6 +24,14 @@ export function middleware(request: NextRequest) {
   // Skip locale redirection for sitemap and robots.txt
   if (pathname === '/sitemap.xml' || pathname === '/robots.txt') {
     return NextResponse.next();
+  }
+
+  // Check for direct URL redirects first
+  const redirectConfig = getRedirectConfig(pathname);
+  if (redirectConfig) {
+    return NextResponse.redirect(
+      new URL(redirectConfig.target, request.url)
+    );
   }
   
   const pathnameIsMissingLocale = i18n.locales.every(
