@@ -14,17 +14,17 @@ function getLocale(request: NextRequest): string | undefined {
   const languages = new Negotiator({ headers: negotiatorHeaders }).languages();
 
   const locale = matchLocale(languages, locales, i18n.defaultLocale);
-  return locale;
+  return locale || i18n.defaultLocale;
 }
 
 export function middleware(request: NextRequest) {
   const pathname = request.nextUrl.pathname;
-  
+
   // Skip locale redirection for sitemap and robots.txt
-  if (pathname === '/sitemap.xml' || pathname === '/robots.txt') {
+  if (pathname === "/sitemap.xml" || pathname === "/robots.txt") {
     return NextResponse.next();
   }
-  
+
   const pathnameIsMissingLocale = i18n.locales.every(
     (locale) => !pathname.startsWith(`/${locale}/`) && pathname !== `/${locale}`
   );
