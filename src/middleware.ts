@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import type { NextRequest } from "next/server";
+import { NextRequest } from "next/server";
 import { i18n } from "../i18n.config";
 
 import { match as matchLocale } from "@formatjs/intl-localematcher";
@@ -27,8 +27,11 @@ function getLocale(request: NextRequest): string | undefined {
 export function middleware(request: NextRequest) {
   const pathname = request.nextUrl.pathname;
 
+  const userAgent = request.headers.get("user-agent") || "";
+  const isBot = /bot|crawler|spider|crawling/i.test(userAgent);
+
   // Skip locale redirection for sitemap and robots.txt
-  if (pathname === "/sitemap.xml" || pathname === "/robots.txt") {
+  if (pathname === "/sitemap.xml" || pathname === "/robots.txt" || isBot) {
     return NextResponse.next();
   }
 
