@@ -4,11 +4,7 @@ User-agent: facebookexternalhit
 Disallow:
 
 User-agent: *
-Disallow: /$
 Disallow: /api
-Allow: /en
-Allow: /en/
-Allow: /cn
-Allow: /cn/
+Allow: /
 Allow: /sitemap.xml
 
