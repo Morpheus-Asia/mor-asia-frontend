@@ -11,10 +11,17 @@ function getLocale(request: NextRequest): string | undefined {
 
   // @ts-expect-error locales are readonly
   const locales: string[] = i18n.locales;
+  const defaultLocale = i18n.defaultLocale;
+
   const languages = new Negotiator({ headers: negotiatorHeaders }).languages();
 
-  const locale = matchLocale(languages, locales, i18n.defaultLocale);
-  return locale || i18n.defaultLocale;
+  try {
+    const locale = matchLocale(languages, locales, defaultLocale);
+    return locale || defaultLocale;
+  } catch (error) {
+    console.warn("Error matching locale:", error);
+    return defaultLocale;
+  }
 }
 
 export function middleware(request: NextRequest) {
