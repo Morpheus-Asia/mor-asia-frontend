@@ -30,6 +30,8 @@ export function middleware(request: NextRequest) {
   const userAgent = request.headers.get("user-agent") || "";
   const isBot = /bot|crawler|spider|crawling/i.test(userAgent);
 
+  console.log("pathname:", pathname);
+
   // Skip locale redirection for sitemap and robots.txt
   if (pathname === "/sitemap.xml" || pathname === "/robots.txt" || isBot) {
     return NextResponse.next();
