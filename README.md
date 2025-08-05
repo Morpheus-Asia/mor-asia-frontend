@@ -10,7 +10,7 @@
 
 #### 2. Environment Configuration
 
-1. Copy the `.env.template` file and rename it to `.env`
+1. Copy the `.env.example` file and rename it to `.env`
 2. Add the following variables:
 
 ```env
