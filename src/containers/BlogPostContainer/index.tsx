@@ -48,6 +48,154 @@ export const BlogPostContainer: React.FC<BlogPostContainerProps> = (props) => {
               style={{ maxWidth: "100%", height: "auto" }}
             />
           ),
+          h1: (props: any) => (
+            <Text
+              as="h1"
+              fontSize="3xl"
+              fontWeight="bold"
+              color="#FFF"
+              mb={6}
+              mt={8}
+              lineHeight="1.2"
+            >
+              {props.children}
+            </Text>
+          ),
+          h2: (props: any) => (
+            <Text
+              as="h2"
+              fontSize="2xl"
+              fontWeight="bold"
+              color="#FFF"
+              mb={4}
+              mt={6}
+              lineHeight="1.3"
+            >
+              {props.children}
+            </Text>
+          ),
+          h3: (props: any) => (
+            <Text
+              as="h3"
+              fontSize="xl"
+              fontWeight="bold"
+              color="#FFF"
+              mb={3}
+              mt={5}
+              lineHeight="1.4"
+            >
+              {props.children}
+            </Text>
+          ),
+          h4: (props: any) => (
+            <Text
+              as="h4"
+              fontSize="lg"
+              fontWeight="bold"
+              color="#FFF"
+              mb={3}
+              mt={4}
+              lineHeight="1.4"
+            >
+              {props.children}
+            </Text>
+          ),
+          h5: (props: any) => (
+            <Text
+              as="h5"
+              fontSize="md"
+              fontWeight="bold"
+              color="#FFF"
+              mb={2}
+              mt={4}
+              lineHeight="1.5"
+            >
+              {props.children}
+            </Text>
+          ),
+          h6: (props: any) => (
+            <Text
+              as="h6"
+              fontSize="sm"
+              fontWeight="bold"
+              color="#FFF"
+              mb={2}
+              mt={3}
+              lineHeight="1.5"
+            >
+              {props.children}
+            </Text>
+          ),
+          p: (props: any) => (
+            <Text
+              color="rgba(255,255,255,0.9)"
+              mb={4}
+              lineHeight="1.8"
+              fontSize="md"
+            >
+              {props.children}
+            </Text>
+          ),
+          ul: (props: any) => (
+            <Box as="ul" mb={4} pl={6} color="rgba(255,255,255,0.9)">
+              {props.children}
+            </Box>
+          ),
+          ol: (props: any) => (
+            <Box as="ol" mb={4} pl={6} color="rgba(255,255,255,0.9)">
+              {props.children}
+            </Box>
+          ),
+          li: (props: any) => (
+            <Text as="li" mb={2} lineHeight="1.7">
+              {props.children}
+            </Text>
+          ),
+          blockquote: (props: any) => (
+            <Box
+              as="blockquote"
+              borderLeft="4px solid"
+              borderColor="rgba(255,255,255,0.3)"
+              pl={4}
+              py={2}
+              mb={4}
+              fontStyle="italic"
+              color="rgba(255,255,255,0.8)"
+              bg="rgba(255,255,255,0.05)"
+              borderRadius="md"
+            >
+              {props.children}
+            </Box>
+          ),
+          code: (props: any) => (
+            <Text
+              as="code"
+              bg="rgba(255,255,255,0.1)"
+              px={2}
+              py={1}
+              borderRadius="sm"
+              fontSize="sm"
+              fontFamily="mono"
+              color="rgba(255,255,255,0.95)"
+            >
+              {props.children}
+            </Text>
+          ),
+          pre: (props: any) => (
+            <Box
+              as="pre"
+              bg="rgba(255,255,255,0.1)"
+              p={4}
+              borderRadius="md"
+              mb={4}
+              overflow="auto"
+              fontSize="sm"
+              fontFamily="mono"
+              color="rgba(255,255,255,0.95)"
+            >
+              {props.children}
+            </Box>
+          ),
         }}
       />
     );
