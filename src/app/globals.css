@@ -1,12 +1,61 @@
-body {
-  margin: 0;
-  padding: 0;
-  background-color: #03170e;
-}
-html {
-  background-color: #03170e;
+@font-face {
+  font-family: 'MOS-Black';
+  src: url('/fonts/mos-black.otf') format('opentype');
+  font-weight: 900;
+  font-style: normal;
 }
 
-.grecaptcha-badge {
-  display: none !important;
+@font-face {
+  font-family: 'MOS';
+  src: url('/fonts/mos-regular.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'MOS';
+  src: url('/fonts/mos-bold.otf') format('opentype');
+  font-weight: bold;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'MOS-Light';
+  src: url('/fonts/mos-light.otf') format('opentype');
+  font-weight: 300;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'MOS-Thin';
+  src: url('/fonts/mos-thin.otf') format('opentype');
+  font-weight: 100;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Roboto';
+  src: url('/fonts/roboto.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+body {
+  font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: black;
+  color: white;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'MOS', sans-serif;
+}
+
+.asia-text {
+  font-family: 'MOS-Thin', sans-serif !important;
+  font-weight: 100;
+  letter-spacing: 0.05em;
 }
