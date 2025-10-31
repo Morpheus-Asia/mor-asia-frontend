@@ -111,18 +111,10 @@ export default function HomePage() {
             fontSize="3.5rem"
             fontWeight="normal"
             letterSpacing="0.02em"
+            lineHeight="1.3"
+            maxW="900px"
           >
-            Join Layer <Box 
-              as="span" 
-              className="asia-text"
-              position="relative"
-              display="inline-block"
-              color="white"
-              textDecoration="underline"
-              textDecorationColor="white"
-              textDecorationThickness="2px"
-              textUnderlineOffset="2px"
-            >Asia</Box> Of <Box as="span" fontWeight="bold">Morpheus</Box>
+            Join The Asia Layer Of <Box as="span" fontWeight="bold">Morpheus</Box>
           </Heading>
           <Text
             fontSize="1.5rem"

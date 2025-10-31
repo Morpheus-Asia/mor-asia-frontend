@@ -28,25 +28,36 @@ export default function RootLayout({
             position: 'relative',
             zIndex: 10,
           }}>
-            <Image
-              src="/ma-logo-dark-2.png"
-              alt="Morpheus Asia Logo"
-              width={55}
-              height={55}
-              priority
-            />
-            <Link href="/events" style={{ color: "white", textDecoration: "none", fontSize: "1.25rem", fontWeight: 'bold', fontFamily: 'MOS, sans-serif', letterSpacing: '0.01em' }}>
-              Events
-            </Link>
-            <Link href="/invest" style={{ color: "white", textDecoration: "none", fontSize: "1.25rem", fontWeight: 'bold', fontFamily: 'MOS, sans-serif', letterSpacing: '0.01em' }}>
-              Invest
-            </Link>
-            <Link href="/learn" style={{ color: "white", textDecoration: "none", fontSize: "1.25rem", fontWeight: 'bold', fontFamily: 'MOS, sans-serif', letterSpacing: '0.01em' }}>
-              Learn
-            </Link>
-            <Link href="/blog" style={{ color: "white", textDecoration: "none", fontSize: "1.25rem", fontWeight: 'bold', fontFamily: 'MOS, sans-serif', letterSpacing: '0.01em' }}>
-              Blog
-            </Link>
+            <nav style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '3rem',
+              paddingRight: '4rem',
+              background: 'rgba(255, 255, 255, 0.08)',
+              backdropFilter: 'blur(10px)',
+              WebkitBackdropFilter: 'blur(10px)',
+              borderRadius: '50px',
+            }}>
+              <Image
+                src="/ma-logo-dark-2.png"
+                alt="Morpheus Asia Logo"
+                width={55}
+                height={55}
+                priority
+              />
+              <Link href="/events" style={{ color: "white", textDecoration: "none", fontSize: "1.25rem", fontWeight: 'bold', fontFamily: 'MOS, sans-serif', letterSpacing: '0.01em' }}>
+                Events
+              </Link>
+              <Link href="/invest" style={{ color: "white", textDecoration: "none", fontSize: "1.25rem", fontWeight: 'bold', fontFamily: 'MOS, sans-serif', letterSpacing: '0.01em' }}>
+                Invest
+              </Link>
+              <Link href="/learn" style={{ color: "white", textDecoration: "none", fontSize: "1.25rem", fontWeight: 'bold', fontFamily: 'MOS, sans-serif', letterSpacing: '0.01em' }}>
+                Learn
+              </Link>
+              <Link href="/blog" style={{ color: "white", textDecoration: "none", fontSize: "1.25rem", fontWeight: 'bold', fontFamily: 'MOS, sans-serif', letterSpacing: '0.01em' }}>
+                Blog
+              </Link>
+            </nav>
           </header>
           <div style={{ position: 'relative', zIndex: 1 }}>
             {children}
