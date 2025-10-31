@@ -1,6 +1,6 @@
 'use client';
 
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRef, useState, useEffect } from 'react';
@@ -17,7 +17,11 @@ const linkStyle = {
 
 export function AnimatedHeader() {
   const navRef = useRef<HTMLElement>(null);
+  const investButtonRef = useRef<HTMLButtonElement>(null);
   const [navWidth, setNavWidth] = useState<number | null>(null);
+  const [isInvestOpen, setIsInvestOpen] = useState(false);
+  const [dropdownPosition, setDropdownPosition] = useState({ top: 0, left: 0 });
+  const closeTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
     if (navRef.current) {
@@ -26,6 +30,30 @@ export function AnimatedHeader() {
     }
   }, []);
 
+  useEffect(() => {
+    if (investButtonRef.current && isInvestOpen) {
+      const rect = investButtonRef.current.getBoundingClientRect();
+      setDropdownPosition({
+        top: rect.bottom + 15,
+        left: rect.left - 25,
+      });
+    }
+  }, [isInvestOpen]);
+
+  const handleMouseEnter = () => {
+    if (closeTimeoutRef.current) {
+      clearTimeout(closeTimeoutRef.current);
+      closeTimeoutRef.current = null;
+    }
+    setIsInvestOpen(true);
+  };
+
+  const handleMouseLeave = () => {
+    closeTimeoutRef.current = setTimeout(() => {
+      setIsInvestOpen(false);
+    }, 150);
+  };
+
   return (
     <header style={{ 
       padding: "1.5rem clamp(1rem, 6vw, 2rem)", 
@@ -33,8 +61,9 @@ export function AnimatedHeader() {
       alignItems: "center",
       justifyContent: "center",
       background: 'transparent',
-      position: 'relative',
-      zIndex: 10,
+      position: 'sticky',
+      top: 0,
+      zIndex: 1000,
     }}>
       <div style={{ 
         position: 'relative',
@@ -57,13 +86,15 @@ export function AnimatedHeader() {
               zIndex: 1,
             }}
           >
-            <Image
-              src="/ma-logo-dark-2.png"
-              alt="Morpheus Asia Logo"
-              width={55}
-              height={55}
-              priority
-            />
+            <Link href="/" style={{ display: 'block', cursor: 'pointer' }}>
+              <Image
+                src="/ma-logo-dark-2.png"
+                alt="Morpheus Asia Logo"
+                width={55}
+                height={55}
+                priority
+              />
+            </Link>
           </motion.div>
         )}
 
@@ -89,14 +120,36 @@ export function AnimatedHeader() {
             WebkitBackdropFilter: 'blur(10px)',
             borderRadius: '50px',
             position: 'relative',
+            overflow: 'visible',
           }}
         >
           <Link href="/events" style={linkStyle}>
             Events
           </Link>
-          <Link href="/invest" style={linkStyle}>
+          <button
+            ref={investButtonRef}
+            style={{
+              ...linkStyle,
+              background: 'transparent',
+              border: 'none',
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '0.3rem',
+            }}
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}
+            onClick={() => setIsInvestOpen(!isInvestOpen)}
+          >
             Invest
-          </Link>
+            <span style={{ 
+              fontSize: '1.25rem',
+              transition: 'transform 0.2s',
+              transform: isInvestOpen ? 'rotate(180deg)' : 'rotate(0deg)',
+            }}>
+              ⌄
+            </span>
+          </button>
           <Link href="/learn" style={linkStyle}>
             Learn
           </Link>
@@ -105,6 +158,101 @@ export function AnimatedHeader() {
           </Link>
         </motion.nav>
       </div>
+      
+      {/* Dropdown Menu - Outside nav container */}
+      <AnimatePresence>
+        {isInvestOpen && (
+          <motion.div
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.2, ease: 'easeOut' }}
+            style={{
+              position: 'fixed',
+              top: `${dropdownPosition.top}px`,
+              left: `${dropdownPosition.left}px`,
+              background: 'rgba(255, 255, 255, 0.08)',
+              backdropFilter: 'blur(10px)',
+              WebkitBackdropFilter: 'blur(10px)',
+              border: 'none',
+              borderRadius: '12px',
+              padding: '0.5rem',
+            minWidth: '200px',
+            boxShadow: 'none',
+            zIndex: 9999,
+          }}
+          onMouseEnter={handleMouseEnter}
+          onMouseLeave={handleMouseLeave}
+        >
+          <Link 
+            href="/invest/staking-dashboard" 
+            style={{
+              color: 'white',
+              textDecoration: 'none',
+              display: 'block',
+              padding: '0.75rem 1rem',
+              fontSize: '1rem',
+              fontWeight: 'bold',
+              fontFamily: 'MOS, sans-serif',
+              borderRadius: '8px',
+              transition: 'background 0.2s',
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.background = 'rgba(31, 220, 143, 0.15)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.background = 'transparent';
+            }}
+          >
+            Staking Dashboard
+          </Link>
+          <Link 
+            href="/invest/mor-token" 
+            style={{
+              color: 'white',
+              textDecoration: 'none',
+              display: 'block',
+              padding: '0.75rem 1rem',
+              fontSize: '1rem',
+              fontWeight: 'bold',
+              fontFamily: 'MOS, sans-serif',
+              borderRadius: '8px',
+              transition: 'background 0.2s',
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.background = 'rgba(31, 220, 143, 0.15)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.background = 'transparent';
+            }}
+          >
+            MOR Token
+          </Link>
+          <Link 
+            href="/invest/what-is-this" 
+            style={{
+              color: 'white',
+              textDecoration: 'none',
+              display: 'block',
+              padding: '0.75rem 1rem',
+              fontSize: '1rem',
+              fontWeight: 'bold',
+              fontFamily: 'MOS, sans-serif',
+              borderRadius: '8px',
+              transition: 'background 0.2s',
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.background = 'rgba(31, 220, 143, 0.15)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.background = 'transparent';
+            }}
+          >
+            What Do I Get?
+          </Link>
+        </motion.div>
+        )}
+      </AnimatePresence>
     </header>
   );
 }

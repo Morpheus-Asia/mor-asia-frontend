@@ -1,7 +1,7 @@
 'use client';
 
 import Image from "next/image";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Box, Container, Heading, Text, Grid, VStack, Button, HStack, Link } from "@chakra-ui/react";
 import { Tooltip } from "../components/ui/tooltip";
 
@@ -79,6 +79,90 @@ const MatrixRain = () => {
         pointerEvents: 'none',
       }}
     />
+  );
+};
+
+interface FAQItem {
+  question: string;
+  answer: string;
+}
+
+const faqs: FAQItem[] = [
+  {
+    question: "What is Morpheus?",
+    answer: "Morpheus is a decentralized AI network that enables developers and users to build, deploy, and interact with intelligent agents. It combines blockchain technology with artificial intelligence to create a permissionless ecosystem for Smart Agents and Personal AI."
+  },
+  {
+    question: "What is the MOR token?",
+    answer: "MOR is the native token of the Morpheus network. It's distributed to participants who contribute to the network through four pillars: Capital (staking stETH), Code (developing the protocol), Compute (providing processing power), and Community (building applications and content)."
+  },
+  {
+    question: "How can I earn MOR tokens?",
+    answer: "You can earn MOR tokens by contributing to the network in various ways: stake stETH as a capital provider, contribute code to the protocol, provide compute resources to run AI agents, or build applications and content for the community."
+  },
+  {
+    question: "What is Morpheus Asia?",
+    answer: "Morpheus Asia is the regional hub for the Morpheus network in Asia. We bring together developers, researchers, and enthusiasts interested in decentralized AI, hosting events, workshops, and fostering collaboration across the Asian community."
+  },
+  {
+    question: "How do I get started with Morpheus?",
+    answer: "Start by joining our community channels on Telegram and Discord. Explore our Learn section for documentation and tutorials. If you're a developer, check out the SDK and API documentation. If you want to contribute capital or compute, visit our Invest section."
+  },
+  {
+    question: "What are Smart Agents?",
+    answer: "Smart Agents are AI-powered programs that can autonomously interact with blockchain networks, execute tasks, and make decisions on behalf of users. They combine the intelligence of AI models with the trustless execution of smart contracts."
+  },
+];
+
+const FAQAccordion = ({ faq }: { faq: FAQItem }) => {
+  const [isOpen, setIsOpen] = useState(false);
+
+  return (
+    <Box
+      border="1px solid"
+      borderColor={isOpen ? "#1fdc8f" : "rgba(255, 255, 255, 0.2)"}
+      transition="all 0.3s"
+      bg={isOpen ? "rgba(31, 220, 143, 0.05)" : "transparent"}
+    >
+      <Button
+        w="100%"
+        h="auto"
+        p="1.5rem"
+        bg="transparent"
+        color="white"
+        fontSize="1.25rem"
+        fontWeight="bold"
+        textAlign="left"
+        display="flex"
+        justifyContent="space-between"
+        alignItems="center"
+        borderRadius="0"
+        _hover={{ bg: "rgba(31, 220, 143, 0.05)" }}
+        onClick={() => setIsOpen(!isOpen)}
+      >
+        <Text flex="1" pr="1rem">{faq.question}</Text>
+        <Text
+          fontSize="1.5rem"
+          fontWeight="bold"
+          color="#1fdc8f"
+          transition="transform 0.3s"
+          transform={isOpen ? "rotate(45deg)" : "rotate(0deg)"}
+        >
+          +
+        </Text>
+      </Button>
+      {isOpen && (
+        <Box
+          p="1.5rem"
+          pt="0"
+          fontSize="1.125rem"
+          lineHeight="1.8"
+          color="rgba(255, 255, 255, 0.85)"
+        >
+          {faq.answer}
+        </Box>
+      )}
+    </Box>
   );
 };
 
@@ -210,22 +294,22 @@ export default function HomePage() {
         </Container>
         <Grid
           as="section"
-          templateColumns="1fr 1fr 1fr"
-          gap="2rem"
+          templateColumns="1fr 0.2fr 1fr"
+          gap="3rem"
           alignItems="center"
           mb="4rem"
-          maxW="1200px"
+          maxW="1600px"
           mx="auto"
           px="2rem"
         >
           <VStack gap="2rem" justify="center" align="center">
-            <Tooltip content="Capital providers stake stETH to earn yield and MOR tokens" showArrow openDelay={0}>
+            <Tooltip content="Capital providers stake stETH to earn yield and MOR tokens" showArrow openDelay={0} closeDelay={0} positioning={{ placement: "right" }}>
               <Box cursor="pointer">
                 <Image
                   src="/1-capital.png"
                   alt="Capital"
-                  width={300}
-                  height={200}
+                  width={450}
+                  height={300}
                   style={{
                     maxWidth: "100%",
                     height: "auto",
@@ -233,13 +317,13 @@ export default function HomePage() {
                 />
               </Box>
             </Tooltip>
-            <Tooltip content="Compute providers contribute processing power to run AI agents" showArrow openDelay={0}>
+            <Tooltip content="Compute providers contribute processing power to run AI agents" showArrow openDelay={0} closeDelay={0} positioning={{ placement: "right" }}>
               <Box cursor="pointer">
                 <Image
                   src="/3-compute.png"
                   alt="Computer"
-                  width={300}
-                  height={200}
+                  width={450}
+                  height={300}
                   style={{
                     maxWidth: "100%",
                     height: "auto",
@@ -261,14 +345,14 @@ export default function HomePage() {
               }}
             />
           </Box>
-          <VStack gap="2rem" justify="center" align="center">
-            <Tooltip content="Code contributors develop and maintain the Morpheus protocol" showArrow openDelay={0}>
+                    <VStack gap="2rem" justify="center" align="center">
+            <Tooltip content="Code contributors develop and maintain the Morpheus protocol" showArrow openDelay={0} closeDelay={0} positioning={{ placement: "left" }}>
               <Box cursor="pointer">
                 <Image
                   src="/2-coders.png"
                   alt="Coders"
-                  width={300}
-                  height={200}
+                  width={450}
+                  height={300}
                   style={{
                     maxWidth: "100%",
                     height: "auto",
@@ -276,13 +360,13 @@ export default function HomePage() {
                 />
               </Box>
             </Tooltip>
-            <Tooltip content="Builders create applications and agents on the Morpheus network" showArrow openDelay={0}>
+            <Tooltip content="Builders create applications and agents on the Morpheus network" showArrow openDelay={0} closeDelay={0} positioning={{ placement: "left" }}>
               <Box cursor="pointer">
                 <Image
                   src="/4-builders.png"
                   alt="Builders"
-                  width={300}
-                  height={200}
+                  width={450}
+                  height={300}
                   style={{
                     maxWidth: "100%",
                     height: "auto",
@@ -306,8 +390,24 @@ export default function HomePage() {
             fontSize="3rem"
             fontWeight="bold"
             mb="2.5rem"
+            display="flex"
+            alignItems="center"
+            justifyContent="center"
+            gap="0rem"
           >
-            What is Morpheus?
+            What is{' '}
+            <Image
+              src="/mor_horiz_logo_white.png"
+              alt="Morpheus"
+              width={500}
+              height={100}
+              style={{
+                display: 'inline-block',
+                marginLeft: '-1rem',
+                marginRight: '-2rem'
+              }}
+            />
+            ?
           </Heading>
           <Text
             fontSize="1.5rem"
@@ -317,6 +417,38 @@ export default function HomePage() {
           >
             Morpheus is a decentralized AI network that empowers developers and users to build, deploy, and interact with intelligent agents. It combines the power of blockchain technology with artificial intelligence to create a new paradigm for Smart Agents and Personal AI.
           </Text>
+        </Container>
+
+        {/* FAQ Section */}
+        <Container
+          as="section"
+          maxW="1000px"
+          my="5rem"
+          px="2rem"
+        >
+          <Heading
+            as="h2"
+            fontSize="3rem"
+            fontWeight="bold"
+            mb="1.5rem"
+            textAlign="center"
+          >
+            Frequently Asked Questions
+          </Heading>
+          <Text
+            fontSize="1.25rem"
+            color="rgba(255, 255, 255, 0.8)"
+            textAlign="center"
+            mb="3rem"
+            lineHeight="1.7"
+          >
+            Get answers to common questions about Morpheus and Morpheus Asia
+          </Text>
+          <VStack gap="1rem" align="stretch">
+            {faqs.map((faq, index) => (
+              <FAQAccordion key={index} faq={faq} />
+            ))}
+          </VStack>
         </Container>
       </Box>
     </Box>
