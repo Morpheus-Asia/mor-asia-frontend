@@ -2,7 +2,8 @@
 
 import Image from "next/image";
 import { useEffect, useRef } from "react";
-import { Box, Container, Heading, Text, Grid, VStack } from "@chakra-ui/react";
+import { Box, Container, Heading, Text, Grid, VStack, Button, HStack, Link } from "@chakra-ui/react";
+import { Tooltip } from "../components/ui/tooltip";
 
 const MatrixRain = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -83,7 +84,7 @@ const MatrixRain = () => {
 
 export default function HomePage() {
   return (
-    <Box as="main" position="relative" minH="100vh" pt="4rem">
+    <Box as="main" position="relative" minH="100vh" pt="0rem">
       <MatrixRain />
       <Box position="relative" w="100%" zIndex={1}>
         {/* bg-1.png absolutely positioned above hero, but above stars */}
@@ -120,43 +121,132 @@ export default function HomePage() {
             fontSize="1.5rem"
             maxW="800px"
             lineHeight="1.6"
+            mb="2rem"
           >
             Morpheus Asia is a community of the best Smart Agent, DeAI, Personal AI minds in Asia
           </Text>
+          <HStack gap="1rem" flexWrap="wrap" justify="center">
+            <Link href="https://t.me/MorpheusAsia" target="_blank" rel="noopener noreferrer" _hover={{ textDecoration: 'none' }}>
+              <Button
+                size="md"
+                bg="#1fdc8f"
+                color="black"
+                fontSize="1rem"
+                fontWeight="bold"
+                fontFamily="MOS"
+                px="1.5rem"
+                py="1rem"
+                h="auto"
+                borderRadius="0"
+                textTransform="uppercase"
+                _hover={{ bg: "#18c57d" }}
+              >
+                Join Our Telegram Group
+              </Button>
+            </Link>
+            <Link href="https://twitter.com/MorpheusAsia" target="_blank" rel="noopener noreferrer" _hover={{ textDecoration: 'none' }}>
+              <Button
+                size="md"
+                bg="#1fdc8f"
+                color="black"
+                fontSize="1rem"
+                fontWeight="bold"
+                fontFamily="MOS"
+                px="1.5rem"
+                py="1rem"
+                h="auto"
+                borderRadius="0"
+                textTransform="uppercase"
+                _hover={{ bg: "#18c57d" }}
+              >
+                Follow Us On X
+              </Button>
+            </Link>
+            <Link href="https://discord.gg/morpheus" target="_blank" rel="noopener noreferrer" _hover={{ textDecoration: 'none' }}>
+              <Button
+                size="md"
+                bg="#1fdc8f"
+                color="black"
+                fontSize="1rem"
+                fontWeight="bold"
+                fontFamily="MOS"
+                px="1.5rem"
+                py="1rem"
+                h="auto"
+                borderRadius="0"
+                textTransform="uppercase"
+                _hover={{ bg: "#18c57d" }}
+              >
+                Join The Morpheus Discord
+              </Button>
+            </Link>
+          </HStack>
         </Container>
 
         {/* Exclamation section */}
+        <Container
+          as="section"
+          maxW="1200px"
+          textAlign="center"
+          mt="12rem"
+        >
+          <Heading
+            as="h2"
+            fontSize="3.5rem"
+            fontWeight="bold"
+            mb="2rem"
+          >
+            Morpheus Smart Contracts
+          </Heading>
+          <Text 
+            fontSize="1.5rem" 
+            maxW="800px"
+            lineHeight="1.6"
+            mb="3rem"
+            mx="auto"
+          >
+            Hover On Each To Learn More
+          </Text>
+        </Container>
         <Grid
           as="section"
           templateColumns="1fr 1fr 1fr"
           gap="2rem"
           alignItems="center"
-          my="4rem"
+          mb="4rem"
           maxW="1200px"
           mx="auto"
           px="2rem"
         >
           <VStack gap="2rem" justify="center" align="center">
-            <Image
-              src="/1-capital.png"
-              alt="Capital"
-              width={300}
-              height={200}
-              style={{
-                maxWidth: "100%",
-                height: "auto",
-              }}
-            />
-            <Image
-              src="/3-compute.png"
-              alt="Computer"
-              width={300}
-              height={200}
-              style={{
-                maxWidth: "100%",
-                height: "auto",
-              }}
-            />
+            <Tooltip content="Capital providers stake stETH to earn yield and MOR tokens" showArrow openDelay={0}>
+              <Box cursor="pointer">
+                <Image
+                  src="/1-capital.png"
+                  alt="Capital"
+                  width={300}
+                  height={200}
+                  style={{
+                    maxWidth: "100%",
+                    height: "auto",
+                  }}
+                />
+              </Box>
+            </Tooltip>
+            <Tooltip content="Compute providers contribute processing power to run AI agents" showArrow openDelay={0}>
+              <Box cursor="pointer">
+                <Image
+                  src="/3-compute.png"
+                  alt="Computer"
+                  width={300}
+                  height={200}
+                  style={{
+                    maxWidth: "100%",
+                    height: "auto",
+                  }}
+                />
+              </Box>
+            </Tooltip>
           </VStack>
           <Box display="flex" justifyContent="center" alignItems="center">
             <Image
@@ -172,26 +262,34 @@ export default function HomePage() {
             />
           </Box>
           <VStack gap="2rem" justify="center" align="center">
-            <Image
-              src="/2-coders.png"
-              alt="Coders"
-              width={300}
-              height={200}
-              style={{
-                maxWidth: "100%",
-                height: "auto",
-              }}
-            />
-            <Image
-              src="/4-builders.png"
-              alt="Builders"
-              width={300}
-              height={200}
-              style={{
-                maxWidth: "100%",
-                height: "auto",
-              }}
-            />
+            <Tooltip content="Code contributors develop and maintain the Morpheus protocol" showArrow openDelay={0}>
+              <Box cursor="pointer">
+                <Image
+                  src="/2-coders.png"
+                  alt="Coders"
+                  width={300}
+                  height={200}
+                  style={{
+                    maxWidth: "100%",
+                    height: "auto",
+                  }}
+                />
+              </Box>
+            </Tooltip>
+            <Tooltip content="Builders create applications and agents on the Morpheus network" showArrow openDelay={0}>
+              <Box cursor="pointer">
+                <Image
+                  src="/4-builders.png"
+                  alt="Builders"
+                  width={300}
+                  height={200}
+                  style={{
+                    maxWidth: "100%",
+                    height: "auto",
+                  }}
+                />
+              </Box>
+            </Tooltip>
           </VStack>
         </Grid>
 

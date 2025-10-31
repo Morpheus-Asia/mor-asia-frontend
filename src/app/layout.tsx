@@ -2,6 +2,7 @@ import "./globals.css";
 import Image from "next/image";
 import Link from "next/link";
 import { Providers } from "morpheus-asia/components/providers";
+import { AnimatedHeader } from "morpheus-asia/components/animated-header";
 
 export const metadata = {
   title: "Morpheus Asia",
@@ -17,48 +18,7 @@ export default function RootLayout({
     <html lang="en">
       <body style={{ position: 'relative', minHeight: '100vh' }}>
         <Providers>
-          <header style={{ 
-            padding: "1.5rem 2rem", 
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            gap: "3rem",
-            background: 'transparent',
-            boxShadow: 'none',
-            position: 'relative',
-            zIndex: 10,
-          }}>
-            <nav style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '3rem',
-              paddingRight: '4rem',
-              background: 'rgba(255, 255, 255, 0.08)',
-              backdropFilter: 'blur(10px)',
-              WebkitBackdropFilter: 'blur(10px)',
-              borderRadius: '50px',
-            }}>
-              <Image
-                src="/ma-logo-dark-2.png"
-                alt="Morpheus Asia Logo"
-                width={55}
-                height={55}
-                priority
-              />
-              <Link href="/events" style={{ color: "white", textDecoration: "none", fontSize: "1.25rem", fontWeight: 'bold', fontFamily: 'MOS, sans-serif', letterSpacing: '0.01em' }}>
-                Events
-              </Link>
-              <Link href="/invest" style={{ color: "white", textDecoration: "none", fontSize: "1.25rem", fontWeight: 'bold', fontFamily: 'MOS, sans-serif', letterSpacing: '0.01em' }}>
-                Invest
-              </Link>
-              <Link href="/learn" style={{ color: "white", textDecoration: "none", fontSize: "1.25rem", fontWeight: 'bold', fontFamily: 'MOS, sans-serif', letterSpacing: '0.01em' }}>
-                Learn
-              </Link>
-              <Link href="/blog" style={{ color: "white", textDecoration: "none", fontSize: "1.25rem", fontWeight: 'bold', fontFamily: 'MOS, sans-serif', letterSpacing: '0.01em' }}>
-                Blog
-              </Link>
-            </nav>
-          </header>
+          <AnimatedHeader />
           <div style={{ position: 'relative', zIndex: 1 }}>
             {children}
           </div>
