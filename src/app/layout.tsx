@@ -1,6 +1,5 @@
 import "./globals.css";
 import Image from "next/image";
-import Link from "next/link";
 import { Providers } from "morpheus-asia/components/providers";
 import { AnimatedHeader } from "morpheus-asia/components/animated-header";
 
@@ -15,8 +14,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
-      <body style={{ position: 'relative', minHeight: '100vh' }}>
+    <html lang="en" style={{ overflowX: 'hidden' }}>
+      <body style={{ position: 'relative', minHeight: '100vh', overflowX: 'hidden', margin: 0 }}>
         <Providers>
           <AnimatedHeader />
           <div style={{ position: 'relative', zIndex: 1 }}>
@@ -32,26 +31,6 @@ export default function RootLayout({
             alignItems: 'center',
             gap: '2rem',
           }}>
-            <div style={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              gap: '3rem',
-              flexWrap: 'wrap',
-            }}>
-              <Link href="/events" style={{ color: "white", textDecoration: "none", fontSize: "1rem", fontFamily: 'MOS, sans-serif' }}>
-                Events
-              </Link>
-              <Link href="/invest" style={{ color: "white", textDecoration: "none", fontSize: "1rem", fontFamily: 'MOS, sans-serif' }}>
-                Invest
-              </Link>
-              <Link href="/learn" style={{ color: "white", textDecoration: "none", fontSize: "1rem", fontFamily: 'MOS, sans-serif' }}>
-                Learn
-              </Link>
-              <Link href="/blog" style={{ color: "white", textDecoration: "none", fontSize: "1rem", fontFamily: 'MOS, sans-serif' }}>
-                Blog
-              </Link>
-            </div>
             <div style={{
               display: 'flex',
               alignItems: 'center',
