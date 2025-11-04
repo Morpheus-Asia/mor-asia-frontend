@@ -179,7 +179,20 @@ const FAQAccordion = ({ faq }: { faq: FAQItem }) => {
   );
 };
 
-export default function HomePage() {
+export default function Home() {
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 1024);
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
   return (
     <Box as="main" position="relative" minH="100vh" pt="0rem" overflowX="hidden">
       <MatrixRain />
@@ -225,6 +238,256 @@ export default function HomePage() {
           >
             Morpheus Asia is a community of the best Smart Agent, DeAI, Personal AI minds in Asia
           </Text>
+        </Container>
+
+        {/* Exclamation section */}
+        <Container
+          as="section"
+          maxW="1200px"
+          textAlign="center"
+          mt={{ base: "6rem", md: "12rem" }}
+          px={{ base: "1rem", md: "2rem" }}
+        >
+          <Heading
+            as="h2"
+            fontSize={{ base: "2rem", sm: "2.5rem", md: "3rem", lg: "3.5rem" }}
+            fontWeight="bold"
+            mb="2rem"
+          >
+            Morpheus Smart Contracts
+          </Heading>
+          <Text 
+            fontSize={{ base: "1.125rem", sm: "1.25rem", md: "1.5rem" }}
+            maxW="800px"
+            lineHeight="1.6"
+            mb="3rem"
+            mx="auto"
+            px={{ base: "1rem", md: "0" }}
+          >
+            <Box as="span" display={{ base: "inline", md: "none" }}>Tap On Each To Learn More</Box>
+            <Box as="span" display={{ base: "none", md: "inline" }}>Hover On Each To Learn More</Box>
+          </Text>
+        </Container>
+        <Grid
+          as="section"
+          templateColumns={{ base: "1fr", lg: "1fr 0.2fr 1fr" }}
+          gap={{ base: "2rem", md: "3rem" }}
+          alignItems="center"
+          mb="4rem"
+          maxW="1600px"
+          mx="auto"
+          px={{ base: "1rem", md: "2rem" }}
+        >
+          <VStack gap="2rem" justify="center" align="center">
+            <Tooltip 
+              content="Capital providers stake stETH to earn yield and MOR tokens" 
+              showArrow 
+              openDelay={0} 
+              closeDelay={0} 
+              positioning={{ placement: isMobile ? "top" : "right" }}
+              interactive
+            >
+              <Box 
+                cursor="pointer" 
+                onClick={(e) => e.stopPropagation()}
+                tabIndex={0}
+              >
+                <Image
+                  src="/1-capital.png"
+                  alt="Capital"
+                  width={450}
+                  height={300}
+                  style={{
+                    maxWidth: "100%",
+                    height: "auto",
+                  }}
+                />
+              </Box>
+            </Tooltip>
+            <Tooltip 
+              content="Compute providers contribute processing power to run AI agents" 
+              showArrow 
+              openDelay={0} 
+              closeDelay={0} 
+              positioning={{ placement: isMobile ? "top" : "right" }}
+              interactive
+            >
+              <Box 
+                cursor="pointer"
+                onClick={(e) => e.stopPropagation()}
+                tabIndex={0}
+              >
+                <Image
+                  src="/3-compute.png"
+                  alt="Computer"
+                  width={450}
+                  height={300}
+                  style={{
+                    maxWidth: "100%",
+                    height: "auto",
+                  }}
+                />
+              </Box>
+            </Tooltip>
+          </VStack>
+          <Box display={{ base: "none", lg: "flex" }} justifyContent="center" alignItems="center">
+            <Image
+              src="/exclamation-nobg.png"
+              alt="Exclamation"
+              width={200}
+              height={400}
+              style={{
+                width: "auto",
+                height: "400px",
+                maxHeight: "400px",
+              }}
+            />
+          </Box>
+                    <VStack gap="2rem" justify="center" align="center">
+            <Tooltip 
+              content="Code contributors develop and maintain the Morpheus protocol" 
+              showArrow 
+              openDelay={0} 
+              closeDelay={0} 
+              positioning={{ placement: isMobile ? "top" : "left" }}
+              interactive
+            >
+              <Box 
+                cursor="pointer"
+                onClick={(e) => e.stopPropagation()}
+                tabIndex={0}
+              >
+                <Image
+                  src="/2-coders.png"
+                  alt="Coders"
+                  width={450}
+                  height={300}
+                  style={{
+                    maxWidth: "100%",
+                    height: "auto",
+                  }}
+                />
+              </Box>
+            </Tooltip>
+            <Tooltip 
+              content="Builders create applications and agents on the Morpheus network" 
+              showArrow 
+              openDelay={0} 
+              closeDelay={0} 
+              positioning={{ placement: isMobile ? "top" : "left" }}
+              interactive
+            >
+              <Box 
+                cursor="pointer"
+                onClick={(e) => e.stopPropagation()}
+                tabIndex={0}
+              >
+                <Image
+                  src="/4-builders.png"
+                  alt="Builders"
+                  width={450}
+                  height={300}
+                  style={{
+                    maxWidth: "100%",
+                    height: "auto",
+                  }}
+                />
+              </Box>
+            </Tooltip>
+          </VStack>
+        </Grid>
+
+        {/* What is Morpheus section */}
+        <Container
+          as="section"
+          maxW="1300px"
+          my="5rem"
+          px={{ base: "1rem", md: "2rem" }}
+          textAlign="center"
+        >
+          <Heading
+            as="h2"
+            fontSize={{ base: "2rem", sm: "2.5rem", md: "3rem" }}
+            fontWeight="bold"
+            mb="2.5rem"
+            display="flex"
+            flexDirection={{ base: "column", sm: "row" }}
+            alignItems="center"
+            justifyContent="center"
+            gap={{ base: "0.5rem", sm: "0rem" }}
+          >
+            What is{' '}
+            <Image
+              src="/mor_horiz_logo_white.png"
+              alt="Morpheus"
+              width={500}
+              height={100}
+              style={{
+                display: 'inline-block',
+                maxWidth: '100%',
+                height: 'auto',
+              }}
+            />
+            ?
+          </Heading>
+          <Text
+            fontSize={{ base: "1.125rem", sm: "1.25rem", md: "1.5rem" }}
+            lineHeight="1.9"
+            maxW="1000px"
+            mx="auto"
+          >
+            Morpheus is a decentralized AI network that empowers developers and users to build, deploy, and interact with intelligent agents. It combines the power of blockchain technology with artificial intelligence to create a new paradigm for Smart Agents and Personal AI.
+          </Text>
+        </Container>
+
+        {/* FAQ Section */}
+        <Container
+          as="section"
+          maxW="1000px"
+          my="5rem"
+          px={{ base: "1rem", md: "2rem" }}
+        >
+          <Heading
+            as="h2"
+            fontSize={{ base: "2rem", sm: "2.5rem", md: "3rem" }}
+            fontWeight="bold"
+            mb="1.5rem"
+            textAlign="center"
+          >
+            FAQ
+          </Heading>
+          <Text
+            fontSize={{ base: "1rem", md: "1.25rem" }}
+            color="rgba(255, 255, 255, 0.8)"
+            textAlign="center"
+            mb="3rem"
+            lineHeight="1.7"
+          >
+            Get answers to common questions about Morpheus and Morpheus Asia
+          </Text>
+          <VStack gap="1rem" align="stretch">
+            {faqs.map((faq, index) => (
+              <FAQAccordion key={index} faq={faq} />
+            ))}
+          </VStack>
+        </Container>
+
+        {/* Community Links Section */}
+        <Container
+          as="section"
+          maxW="1200px"
+          my="5rem"
+          px={{ base: "1rem", md: "2rem" }}
+          textAlign="center"
+        >
+          <Heading
+            as="h2"
+            fontSize={{ base: "2rem", sm: "2.5rem", md: "3rem" }}
+            fontWeight="bold"
+            mb="2rem"
+          >
+            Join Our Community
+          </Heading>
           <HStack gap={{ base: "0.75rem", md: "1rem" }} flexWrap="wrap" justify="center">
             <Link href="https://t.me/MorpheusAsia" target="_blank" rel="noopener noreferrer" _hover={{ textDecoration: 'none' }}>
               <Button
@@ -317,193 +580,6 @@ export default function HomePage() {
               </Button>
             </Link>
           </HStack>
-        </Container>
-
-        {/* Exclamation section */}
-        <Container
-          as="section"
-          maxW="1200px"
-          textAlign="center"
-          mt={{ base: "6rem", md: "12rem" }}
-          px={{ base: "1rem", md: "2rem" }}
-        >
-          <Heading
-            as="h2"
-            fontSize={{ base: "2rem", sm: "2.5rem", md: "3rem", lg: "3.5rem" }}
-            fontWeight="bold"
-            mb="2rem"
-          >
-            Morpheus Smart Contracts
-          </Heading>
-          <Text 
-            fontSize={{ base: "1.125rem", sm: "1.25rem", md: "1.5rem" }}
-            maxW="800px"
-            lineHeight="1.6"
-            mb="3rem"
-            mx="auto"
-            px={{ base: "1rem", md: "0" }}
-          >
-            Hover On Each To Learn More
-          </Text>
-        </Container>
-        <Grid
-          as="section"
-          templateColumns={{ base: "1fr", lg: "1fr 0.2fr 1fr" }}
-          gap={{ base: "2rem", md: "3rem" }}
-          alignItems="center"
-          mb="4rem"
-          maxW="1600px"
-          mx="auto"
-          px={{ base: "1rem", md: "2rem" }}
-        >
-          <VStack gap="2rem" justify="center" align="center">
-            <Tooltip content="Capital providers stake stETH to earn yield and MOR tokens" showArrow openDelay={0} closeDelay={0} positioning={{ placement: "right" }}>
-              <Box cursor="pointer">
-                <Image
-                  src="/1-capital.png"
-                  alt="Capital"
-                  width={450}
-                  height={300}
-                  style={{
-                    maxWidth: "100%",
-                    height: "auto",
-                  }}
-                />
-              </Box>
-            </Tooltip>
-            <Tooltip content="Compute providers contribute processing power to run AI agents" showArrow openDelay={0} closeDelay={0} positioning={{ placement: "right" }}>
-              <Box cursor="pointer">
-                <Image
-                  src="/3-compute.png"
-                  alt="Computer"
-                  width={450}
-                  height={300}
-                  style={{
-                    maxWidth: "100%",
-                    height: "auto",
-                  }}
-                />
-              </Box>
-            </Tooltip>
-          </VStack>
-          <Box display={{ base: "none", lg: "flex" }} justifyContent="center" alignItems="center">
-            <Image
-              src="/exclamation-nobg.png"
-              alt="Exclamation"
-              width={200}
-              height={400}
-              style={{
-                width: "auto",
-                height: "400px",
-                maxHeight: "400px",
-              }}
-            />
-          </Box>
-                    <VStack gap="2rem" justify="center" align="center">
-            <Tooltip content="Code contributors develop and maintain the Morpheus protocol" showArrow openDelay={0} closeDelay={0} positioning={{ placement: "left" }}>
-              <Box cursor="pointer">
-                <Image
-                  src="/2-coders.png"
-                  alt="Coders"
-                  width={450}
-                  height={300}
-                  style={{
-                    maxWidth: "100%",
-                    height: "auto",
-                  }}
-                />
-              </Box>
-            </Tooltip>
-            <Tooltip content="Builders create applications and agents on the Morpheus network" showArrow openDelay={0} closeDelay={0} positioning={{ placement: "left" }}>
-              <Box cursor="pointer">
-                <Image
-                  src="/4-builders.png"
-                  alt="Builders"
-                  width={450}
-                  height={300}
-                  style={{
-                    maxWidth: "100%",
-                    height: "auto",
-                  }}
-                />
-              </Box>
-            </Tooltip>
-          </VStack>
-        </Grid>
-
-        {/* What is Morpheus section */}
-        <Container
-          as="section"
-          maxW="1300px"
-          my="5rem"
-          px={{ base: "1rem", md: "2rem" }}
-          textAlign="center"
-        >
-          <Heading
-            as="h2"
-            fontSize={{ base: "2rem", sm: "2.5rem", md: "3rem" }}
-            fontWeight="bold"
-            mb="2.5rem"
-            display="flex"
-            flexDirection={{ base: "column", sm: "row" }}
-            alignItems="center"
-            justifyContent="center"
-            gap={{ base: "0.5rem", sm: "0rem" }}
-          >
-            What is{' '}
-            <Image
-              src="/mor_horiz_logo_white.png"
-              alt="Morpheus"
-              width={500}
-              height={100}
-              style={{
-                display: 'inline-block',
-                maxWidth: '100%',
-                height: 'auto',
-              }}
-            />
-            ?
-          </Heading>
-          <Text
-            fontSize={{ base: "1.125rem", sm: "1.25rem", md: "1.5rem" }}
-            lineHeight="1.9"
-            maxW="1000px"
-            mx="auto"
-          >
-            Morpheus is a decentralized AI network that empowers developers and users to build, deploy, and interact with intelligent agents. It combines the power of blockchain technology with artificial intelligence to create a new paradigm for Smart Agents and Personal AI.
-          </Text>
-        </Container>
-
-        {/* FAQ Section */}
-        <Container
-          as="section"
-          maxW="1000px"
-          my="5rem"
-          px={{ base: "1rem", md: "2rem" }}
-        >
-          <Heading
-            as="h2"
-            fontSize={{ base: "2rem", sm: "2.5rem", md: "3rem" }}
-            fontWeight="bold"
-            mb="1.5rem"
-            textAlign="center"
-          >
-            Frequently Asked Questions
-          </Heading>
-          <Text
-            fontSize={{ base: "1rem", md: "1.25rem" }}
-            color="rgba(255, 255, 255, 0.8)"
-            textAlign="center"
-            mb="3rem"
-            lineHeight="1.7"
-          >
-            Get answers to common questions about Morpheus and Morpheus Asia
-          </Text>
-          <VStack gap="1rem" align="stretch">
-            {faqs.map((faq, index) => (
-              <FAQAccordion key={index} faq={faq} />
-            ))}
-          </VStack>
         </Container>
 
         {/* Our Team Section */}
