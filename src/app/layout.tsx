@@ -14,8 +14,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" style={{ overflowX: 'hidden' }}>
-      <body style={{ position: 'relative', minHeight: '100vh', overflowX: 'hidden', margin: 0 }}>
+    <html lang="en">
+      <body style={{ position: 'relative', minHeight: '100vh', margin: 0 }}>
         <Providers>
           <AnimatedHeader />
           <div style={{ position: 'relative', zIndex: 1 }}>

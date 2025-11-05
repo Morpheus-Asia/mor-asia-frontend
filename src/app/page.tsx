@@ -181,6 +181,7 @@ const FAQAccordion = ({ faq }: { faq: FAQItem }) => {
 
 export default function Home() {
   const [isMobile, setIsMobile] = useState(false);
+  const [openTooltip, setOpenTooltip] = useState<string | null>(null);
 
   useEffect(() => {
     const checkMobile = () => {
@@ -192,6 +193,12 @@ export default function Home() {
     
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
+
+  const handleTooltipToggle = (id: string) => {
+    if (isMobile) {
+      setOpenTooltip(openTooltip === id ? null : id);
+    }
+  };
 
   return (
     <Box as="main" position="relative" minH="100vh" pt="0rem" overflowX="hidden">
@@ -233,11 +240,21 @@ export default function Home() {
             fontSize={{ base: "1.125rem", sm: "1.25rem", md: "1.5rem" }}
             maxW="800px"
             lineHeight="1.6"
-            mb="2rem"
+            mb="1rem"
             px={{ base: "1rem", md: "0" }}
           >
             Morpheus Asia is a community of the best Smart Agent, DeAI, Personal AI minds in Asia
           </Text>
+          <Link 
+            href="/learn"
+            fontSize={{ base: "1rem", md: "1.125rem" }}
+            color="#1fdc8f"
+            fontWeight="bold"
+            textDecoration="underline"
+            _hover={{ color: "#18c57d" }}
+          >
+            Learn About Morpheus
+          </Link>
         </Container>
 
         {/* Exclamation section */}
@@ -245,7 +262,7 @@ export default function Home() {
           as="section"
           maxW="1200px"
           textAlign="center"
-          mt={{ base: "6rem", md: "12rem" }}
+          mt={{ base: "3rem", md: "6rem" }}
           px={{ base: "1rem", md: "2rem" }}
         >
           <Heading
@@ -286,11 +303,12 @@ export default function Home() {
               closeDelay={0} 
               positioning={{ placement: isMobile ? "top" : "right" }}
               interactive
+              open={isMobile ? openTooltip === 'capital' : undefined}
             >
               <Box 
                 cursor="pointer" 
-                onClick={(e) => e.stopPropagation()}
-                onTouchStart={(e) => e.stopPropagation()}
+                onClick={() => handleTooltipToggle('capital')}
+                onTouchStart={() => handleTooltipToggle('capital')}
                 tabIndex={0}
               >
                 <Image
@@ -312,11 +330,12 @@ export default function Home() {
               closeDelay={0} 
               positioning={{ placement: isMobile ? "top" : "right" }}
               interactive
+              open={isMobile ? openTooltip === 'compute' : undefined}
             >
               <Box 
                 cursor="pointer"
-                onClick={(e) => e.stopPropagation()}
-                onTouchStart={(e) => e.stopPropagation()}
+                onClick={() => handleTooltipToggle('compute')}
+                onTouchStart={() => handleTooltipToggle('compute')}
                 tabIndex={0}
               >
                 <Image
@@ -353,11 +372,12 @@ export default function Home() {
               closeDelay={0} 
               positioning={{ placement: isMobile ? "top" : "left" }}
               interactive
+              open={isMobile ? openTooltip === 'coders' : undefined}
             >
               <Box 
                 cursor="pointer"
-                onClick={(e) => e.stopPropagation()}
-                onTouchStart={(e) => e.stopPropagation()}
+                onClick={() => handleTooltipToggle('coders')}
+                onTouchStart={() => handleTooltipToggle('coders')}
                 tabIndex={0}
               >
                 <Image
@@ -379,11 +399,12 @@ export default function Home() {
               closeDelay={0} 
               positioning={{ placement: isMobile ? "top" : "left" }}
               interactive
+              open={isMobile ? openTooltip === 'builders' : undefined}
             >
               <Box 
                 cursor="pointer"
-                onClick={(e) => e.stopPropagation()}
-                onTouchStart={(e) => e.stopPropagation()}
+                onClick={() => handleTooltipToggle('builders')}
+                onTouchStart={() => handleTooltipToggle('builders')}
                 tabIndex={0}
               >
                 <Image
@@ -493,24 +514,6 @@ export default function Home() {
             Join Our Community
           </Heading>
           <HStack gap={{ base: "0.75rem", md: "1rem" }} flexWrap="wrap" justify="center">
-            <Link href="https://t.me/MorpheusAsia" target="_blank" rel="noopener noreferrer" _hover={{ textDecoration: 'none' }}>
-              <Button
-                size={{ base: "sm", md: "md" }}
-                bg="#1fdc8f"
-                color="black"
-                fontSize={{ base: "0.875rem", md: "1rem" }}
-                fontWeight="bold"
-                fontFamily="MOS"
-                px={{ base: "1rem", md: "1.5rem" }}
-                py={{ base: "0.875rem", md: "1rem" }}
-                h="auto"
-                borderRadius="0"
-                textTransform="uppercase"
-                _hover={{ bg: "#18c57d" }}
-              >
-                Join Our Telegram Group
-              </Button>
-            </Link>
             <Link href="https://twitter.com/MorpheusAsia" target="_blank" rel="noopener noreferrer" _hover={{ textDecoration: 'none' }}>
               <Button
                 size={{ base: "sm", md: "md" }}
@@ -581,6 +584,24 @@ export default function Home() {
                 _hover={{ bg: "#18c57d" }}
               >
                 Morpheus Asia On YouTube
+              </Button>
+            </Link>
+            <Link href="https://t.me/MorpheusAsia" target="_blank" rel="noopener noreferrer" _hover={{ textDecoration: 'none' }}>
+              <Button
+                size={{ base: "sm", md: "md" }}
+                bg="#1fdc8f"
+                color="black"
+                fontSize={{ base: "0.875rem", md: "1rem" }}
+                fontWeight="bold"
+                fontFamily="MOS"
+                px={{ base: "1rem", md: "1.5rem" }}
+                py={{ base: "0.875rem", md: "1rem" }}
+                h="auto"
+                borderRadius="0"
+                textTransform="uppercase"
+                _hover={{ bg: "#18c57d" }}
+              >
+                Join Our Telegram Group
               </Button>
             </Link>
           </HStack>
