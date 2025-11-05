@@ -84,7 +84,6 @@ export function AnimatedHeader() {
       display: "flex",
       alignItems: "center",
       justifyContent: isMobile ? "space-between" : "center",
-      background: 'transparent',
       position: 'sticky',
       top: 0,
       zIndex: 1000,

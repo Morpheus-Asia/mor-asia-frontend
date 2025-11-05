@@ -1,6 +1,7 @@
 'use client';
 
 import { Box, Container, Heading, Text, VStack, Link } from "@chakra-ui/react";
+import Image from "next/image";
 
 export default function LearnPage() {
   return (
