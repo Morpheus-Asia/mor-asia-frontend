@@ -6,6 +6,24 @@ import { AnimatedHeader } from "morpheus-asia/components/animated-header";
 export const metadata = {
   title: "Morpheus Asia",
   description: "Welcome to Morpheus Asia",
+  openGraph: {
+    title: "Morpheus Asia",
+    description: "Welcome to Morpheus Asia",
+    images: [
+      {
+        url: "/ma-logo-dark-2.png",
+        width: 512,
+        height: 512,
+        alt: "Morpheus Asia Logo",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary",
+    title: "Morpheus Asia",
+    description: "Welcome to Morpheus Asia",
+    images: ["/ma-logo-dark-2.png"],
+  },
 };
 
 export default function RootLayout({
