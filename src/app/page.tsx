@@ -290,6 +290,7 @@ export default function Home() {
               <Box 
                 cursor="pointer" 
                 onClick={(e) => e.stopPropagation()}
+                onTouchStart={(e) => e.stopPropagation()}
                 tabIndex={0}
               >
                 <Image
@@ -315,6 +316,7 @@ export default function Home() {
               <Box 
                 cursor="pointer"
                 onClick={(e) => e.stopPropagation()}
+                onTouchStart={(e) => e.stopPropagation()}
                 tabIndex={0}
               >
                 <Image
@@ -355,6 +357,7 @@ export default function Home() {
               <Box 
                 cursor="pointer"
                 onClick={(e) => e.stopPropagation()}
+                onTouchStart={(e) => e.stopPropagation()}
                 tabIndex={0}
               >
                 <Image
@@ -380,6 +383,7 @@ export default function Home() {
               <Box 
                 cursor="pointer"
                 onClick={(e) => e.stopPropagation()}
+                onTouchStart={(e) => e.stopPropagation()}
                 tabIndex={0}
               >
                 <Image
