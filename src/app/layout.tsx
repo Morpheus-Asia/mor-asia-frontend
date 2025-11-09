@@ -1,7 +1,7 @@
 import "./globals.css";
-import Image from "next/image";
 import { Providers } from "morpheus-asia/components/providers";
 import { AnimatedHeader } from "morpheus-asia/components/animated-header";
+import { Footer } from "morpheus-asia/components/footer";
 
 export const metadata = {
   title: "Morpheus Asia",
@@ -39,36 +39,7 @@ export default function RootLayout({
           <div style={{ position: 'relative', zIndex: 1 }}>
             {children}
           </div>
-          <footer style={{
-            position: 'relative',
-            zIndex: 10,
-            padding: '3rem 2rem',
-            marginTop: '4rem',
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            gap: '2rem',
-          }}>
-            <div style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '1.5rem',
-            }}>
-              <Image
-                src="/ma-logo-dark-2.png"
-                alt="Morpheus Asia Logo"
-                width={40}
-                height={40}
-              />
-              <p style={{ 
-                fontSize: '0.875rem', 
-                color: 'rgba(255, 255, 255, 0.7)',
-                fontFamily: 'Roboto, sans-serif',
-              }}>
-                © {new Date().getFullYear()} Morpheus Asia. All rights reserved.
-              </p>
-            </div>
-          </footer>
+          <Footer />
         </Providers>
       </body>
     </html>
