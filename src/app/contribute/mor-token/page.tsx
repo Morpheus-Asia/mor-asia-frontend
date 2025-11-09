@@ -396,6 +396,87 @@ export default function MORTokenPage() {
             </VStack>
           </Box>
 
+          {/* Start HODLing MOR Section */}
+          <Box
+            p="3rem"
+            bg="rgba(255, 255, 255, 0.03)"
+            border="2px solid rgba(255, 255, 255, 0.1)"
+            borderRadius="16px"
+            textAlign="center"
+          >
+            <Heading
+              as="h2"
+              fontSize="2.5rem"
+              fontWeight="bold"
+              mb="1.5rem"
+              color="white"
+            >
+              Start HODLing MOR
+            </Heading>
+            <Text
+              fontSize="1.25rem"
+              color="white"
+              lineHeight="1.8"
+              mb="2.5rem"
+              maxW="800px"
+              mx="auto"
+            >
+              Purchase MOR tokens on your preferred exchange and join the decentralized AI revolution.
+            </Text>
+            <HStack justify="center" gap="1.5rem" flexWrap="wrap">
+              <Link
+                href="https://www.coinbase.com/price/morpheus"
+                target="_blank"
+                rel="noopener noreferrer"
+                _hover={{ textDecoration: 'none' }}
+              >
+                <Box
+                  as="button"
+                  px="2.5rem"
+                  py="1rem"
+                  bg="#0052FF"
+                  color="white"
+                  fontSize="1.125rem"
+                  fontWeight="bold"
+                  borderRadius="8px"
+                  transition="all 0.3s"
+                  _hover={{
+                    transform: "translateY(-2px)",
+                    boxShadow: "0 8px 20px rgba(0, 82, 255, 0.4)",
+                    bg: "#0041CC",
+                  }}
+                >
+                  Coinbase
+                </Box>
+              </Link>
+              <Link
+                href="https://app.uniswap.org/explore/tokens/arbitrum/0x092baadb7def4c3981454dd9c0a0d7ff07bcfc86"
+                target="_blank"
+                rel="noopener noreferrer"
+                _hover={{ textDecoration: 'none' }}
+              >
+                <Box
+                  as="button"
+                  px="2.5rem"
+                  py="1rem"
+                  bg="#FF007A"
+                  color="white"
+                  fontSize="1.125rem"
+                  fontWeight="bold"
+                  borderRadius="8px"
+                  transition="all 0.3s"
+                  _hover={{
+                    transform: "translateY(-2px)",
+                    boxShadow: "0 8px 20px rgba(255, 0, 122, 0.4)",
+                    bg: "#E6006D",
+                  }}
+                >
+                  Uniswap
+                </Box>
+              </Link>
+            </HStack>
+          </Box>
+
           {/* CTA Section */}
           <Box
             p="3rem"
