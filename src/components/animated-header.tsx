@@ -329,7 +329,7 @@ export function AnimatedHeader() {
                     Staking Dashboard
                   </Link>
                   <Link 
-                    href="/invest/mor-token" 
+                    href="/contribute/mor-token" 
                     style={{
                       ...linkStyle,
                       fontSize: '1rem',
@@ -436,7 +436,7 @@ export function AnimatedHeader() {
               Staking Dashboard
             </Link>
             <Link 
-              href="/invest/mor-token" 
+              href="/contribute/mor-token" 
               style={{
                 color: 'white',
                 textDecoration: 'none',
