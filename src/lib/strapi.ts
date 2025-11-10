@@ -93,3 +93,10 @@ export async function getTags() {
 export async function getAuthors() {
   return fetchStrapi('/api/authors');
 }
+
+/**
+ * Fetch all events with relations
+ */
+export async function getEvents() {
+  return fetchStrapi('/api/events?populate=*&sort[0]=Date:asc');
+}
