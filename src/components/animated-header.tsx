@@ -225,13 +225,25 @@ export function AnimatedHeader() {
               onClick={() => setIsInvestOpen(!isInvestOpen)}
             >
               Contribute
-              <span style={{ 
-                fontSize: '1.25rem',
-                transition: 'transform 0.2s',
-                transform: isInvestOpen ? 'rotate(180deg)' : 'rotate(0deg)',
-              }}>
-                ⌄
-              </span>
+              <svg 
+                width="16" 
+                height="16" 
+                viewBox="0 0 16 16" 
+                fill="none" 
+                xmlns="http://www.w3.org/2000/svg"
+                style={{
+                  flexShrink: 0,
+                  marginTop: '2px',
+                }}
+              >
+                <path 
+                  d="M4 6L8 10L12 6" 
+                  stroke="white" 
+                  strokeWidth="2" 
+                  strokeLinecap="round" 
+                  strokeLinejoin="round"
+                />
+              </svg>
             </button>
             <Link href="/learn" style={linkStyle}>
               Learn
@@ -299,13 +311,25 @@ export function AnimatedHeader() {
                 onClick={() => setIsInvestOpen(!isInvestOpen)}
               >
                 Contribute
-                <span style={{ 
-                  fontSize: '1.25rem',
-                  transition: 'transform 0.2s',
-                  transform: isInvestOpen ? 'rotate(180deg)' : 'rotate(0deg)',
-                }}>
-                  ⌄
-                </span>
+                <svg 
+                  width="16" 
+                  height="16" 
+                  viewBox="0 0 16 16" 
+                  fill="none" 
+                  xmlns="http://www.w3.org/2000/svg"
+                  style={{
+                    flexShrink: 0,
+                    marginTop: '2px',
+                  }}
+                >
+                  <path 
+                    d="M4 6L8 10L12 6" 
+                    stroke="white" 
+                    strokeWidth="2" 
+                    strokeLinecap="round" 
+                    strokeLinejoin="round"
+                  />
+                </svg>
               </button>
               
               {isInvestOpen && (
@@ -317,7 +341,7 @@ export function AnimatedHeader() {
                   marginTop: '0.5rem',
                 }}>
                   <Link 
-                    href="/invest/staking-dashboard" 
+                    href="/contribute/staking-dashboard" 
                     style={{
                       ...linkStyle,
                       fontSize: '1rem',
@@ -414,7 +438,7 @@ export function AnimatedHeader() {
             onMouseLeave={handleMouseLeave}
           >
             <Link 
-              href="/invest/staking-dashboard" 
+              href="/contribute/staking-dashboard" 
               style={{
                 color: 'white',
                 textDecoration: 'none',
