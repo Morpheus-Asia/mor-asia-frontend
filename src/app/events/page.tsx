@@ -73,6 +73,12 @@ const EventCard = ({ event }: { event: Event }) => {
   // Check if event is past (only if date is valid and not TBA)
   const isPast = dateTime !== 'TBA' && eventDate && new Date(eventDate) < new Date();
 
+  // Truncate description for card display
+  const MAX_DESCRIPTION_LENGTH = 150;
+  const truncatedDescription = Description && Description.length > MAX_DESCRIPTION_LENGTH
+    ? Description.substring(0, MAX_DESCRIPTION_LENGTH).trim() + '...'
+    : Description;
+
   // Get cover image URL
   const imageUrl = Cover?.url 
     ? (Cover.url.startsWith('http') 
@@ -153,7 +159,7 @@ const EventCard = ({ event }: { event: Event }) => {
             color="rgba(255, 255, 255, 0.9)"
             whiteSpace="pre-wrap"
           >
-            {Description || 'N/A'}
+            {truncatedDescription || 'N/A'}
           </Text>
 
           <HStack gap={{ base: "1rem", md: "2rem" }} pt="1rem" flexWrap="wrap">
