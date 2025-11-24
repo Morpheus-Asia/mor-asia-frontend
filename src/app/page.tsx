@@ -4,6 +4,8 @@ import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { Box, Container, Heading, Text, Grid, VStack, Button, HStack, Link } from "@chakra-ui/react";
 import { Tooltip } from "../components/ui/tooltip";
+import { FaXTwitter } from "react-icons/fa6";
+import { FaDiscord, FaInstagram, FaYoutube, FaTelegram } from "react-icons/fa6";
 
 const MatrixRain = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -257,6 +259,141 @@ export default function Home() {
           </Link>
         </Container>
 
+        {/* Community Links Section */}
+        <Container
+          as="section"
+          maxW="1200px"
+          my="5rem"
+          px={{ base: "1rem", md: "2rem" }}
+          textAlign="center"
+        >
+          <Heading
+            as="h2"
+            fontSize={{ base: "2rem", sm: "2.5rem", md: "3rem" }}
+            fontWeight="bold"
+            mb="2rem"
+          >
+            Join Our Community
+          </Heading>
+          <HStack gap={{ base: "0.75rem", md: "1rem" }} flexWrap="wrap" justify="center">
+            <Link href="https://twitter.com/MorpheusAsia" target="_blank" rel="noopener noreferrer" _hover={{ textDecoration: 'none' }}>
+              <Button
+                size={{ base: "sm", md: "md" }}
+                bg="#1fdc8f"
+                color="black"
+                fontSize={{ base: "0.875rem", md: "1rem" }}
+                fontWeight="bold"
+                fontFamily="MOS"
+                px={{ base: "1rem", md: "1.5rem" }}
+                py={{ base: "0.875rem", md: "1rem" }}
+                h="auto"
+                borderRadius="0"
+                textTransform="uppercase"
+                _hover={{ bg: "#18c57d", transform: "translateY(-2px)", boxShadow: "0 4px 12px rgba(31, 220, 143, 0.3)" }}
+                transition="all 0.2s"
+                display="flex"
+                alignItems="center"
+                gap="0.5rem"
+              >
+                <FaXTwitter size={18} />
+                Follow Us On X
+              </Button>
+            </Link>
+            <Link href="https://discord.gg/morpheus" target="_blank" rel="noopener noreferrer" _hover={{ textDecoration: 'none' }}>
+              <Button
+                size={{ base: "sm", md: "md" }}
+                bg="#1fdc8f"
+                color="black"
+                fontSize={{ base: "0.875rem", md: "1rem" }}
+                fontWeight="bold"
+                fontFamily="MOS"
+                px={{ base: "1rem", md: "1.5rem" }}
+                py={{ base: "0.875rem", md: "1rem" }}
+                h="auto"
+                borderRadius="0"
+                textTransform="uppercase"
+                _hover={{ bg: "#18c57d", transform: "translateY(-2px)", boxShadow: "0 4px 12px rgba(31, 220, 143, 0.3)" }}
+                transition="all 0.2s"
+                display="flex"
+                alignItems="center"
+                gap="0.5rem"
+              >
+                <FaDiscord size={18} />
+                Join The Morpheus Discord
+              </Button>
+            </Link>
+            <Link href="https://www.instagram.com/morpheusasia/" target="_blank" rel="noopener noreferrer" _hover={{ textDecoration: 'none' }}>
+              <Button
+                size={{ base: "sm", md: "md" }}
+                bg="#1fdc8f"
+                color="black"
+                fontSize={{ base: "0.875rem", md: "1rem" }}
+                fontWeight="bold"
+                fontFamily="MOS"
+                px={{ base: "1rem", md: "1.5rem" }}
+                py={{ base: "0.875rem", md: "1rem" }}
+                h="auto"
+                borderRadius="0"
+                textTransform="uppercase"
+                _hover={{ bg: "#18c57d", transform: "translateY(-2px)", boxShadow: "0 4px 12px rgba(31, 220, 143, 0.3)" }}
+                transition="all 0.2s"
+                display="flex"
+                alignItems="center"
+                gap="0.5rem"
+              >
+                <FaInstagram size={18} />
+                Check Out Our Instagram
+              </Button>
+            </Link>
+            <Link href="https://www.youtube.com/@MorpheusAsia" target="_blank" rel="noopener noreferrer" _hover={{ textDecoration: 'none' }}>
+              <Button
+                size={{ base: "sm", md: "md" }}
+                bg="#1fdc8f"
+                color="black"
+                fontSize={{ base: "0.875rem", md: "1rem" }}
+                fontWeight="bold"
+                fontFamily="MOS"
+                px={{ base: "1rem", md: "1.5rem" }}
+                py={{ base: "0.875rem", md: "1rem" }}
+                h="auto"
+                borderRadius="0"
+                textTransform="uppercase"
+                _hover={{ bg: "#18c57d", transform: "translateY(-2px)", boxShadow: "0 4px 12px rgba(31, 220, 143, 0.3)" }}
+                transition="all 0.2s"
+                display="flex"
+                alignItems="center"
+                gap="0.5rem"
+              >
+                <FaYoutube size={18} />
+                Morpheus Asia On YouTube
+              </Button>
+            </Link>
+            <Link href="https://t.me/MorpheusAsia" target="_blank" rel="noopener noreferrer" _hover={{ textDecoration: 'none' }}>
+              <Button
+                size={{ base: "sm", md: "md" }}
+                bg="#1fdc8f"
+                color="black"
+                fontSize={{ base: "0.875rem", md: "1rem" }}
+                fontWeight="bold"
+                fontFamily="MOS"
+                px={{ base: "1rem", md: "1.5rem" }}
+                py={{ base: "0.875rem", md: "1rem" }}
+                h="auto"
+                borderRadius="0"
+                textTransform="uppercase"
+                _hover={{ bg: "#18c57d", transform: "translateY(-2px)", boxShadow: "0 4px 12px rgba(31, 220, 143, 0.3)" }}
+                transition="all 0.2s"
+                display="flex"
+                alignItems="center"
+                gap="0.5rem"
+              >
+                <FaTelegram size={18} />
+                Join Our Telegram Group
+              </Button>
+            </Link>
+          </HStack>
+        </Container>
+
         {/* Exclamation section */}
         <Container
           as="section"
@@ -495,116 +632,6 @@ export default function Home() {
               <FAQAccordion key={index} faq={faq} />
             ))}
           </VStack>
-        </Container>
-
-        {/* Community Links Section */}
-        <Container
-          as="section"
-          maxW="1200px"
-          my="5rem"
-          px={{ base: "1rem", md: "2rem" }}
-          textAlign="center"
-        >
-          <Heading
-            as="h2"
-            fontSize={{ base: "2rem", sm: "2.5rem", md: "3rem" }}
-            fontWeight="bold"
-            mb="2rem"
-          >
-            Join Our Community
-          </Heading>
-          <HStack gap={{ base: "0.75rem", md: "1rem" }} flexWrap="wrap" justify="center">
-            <Link href="https://twitter.com/MorpheusAsia" target="_blank" rel="noopener noreferrer" _hover={{ textDecoration: 'none' }}>
-              <Button
-                size={{ base: "sm", md: "md" }}
-                bg="#1fdc8f"
-                color="black"
-                fontSize={{ base: "0.875rem", md: "1rem" }}
-                fontWeight="bold"
-                fontFamily="MOS"
-                px={{ base: "1rem", md: "1.5rem" }}
-                py={{ base: "0.875rem", md: "1rem" }}
-                h="auto"
-                borderRadius="0"
-                textTransform="uppercase"
-                _hover={{ bg: "#18c57d" }}
-              >
-                Follow Us On X
-              </Button>
-            </Link>
-            <Link href="https://discord.gg/morpheus" target="_blank" rel="noopener noreferrer" _hover={{ textDecoration: 'none' }}>
-              <Button
-                size={{ base: "sm", md: "md" }}
-                bg="#1fdc8f"
-                color="black"
-                fontSize={{ base: "0.875rem", md: "1rem" }}
-                fontWeight="bold"
-                fontFamily="MOS"
-                px={{ base: "1rem", md: "1.5rem" }}
-                py={{ base: "0.875rem", md: "1rem" }}
-                h="auto"
-                borderRadius="0"
-                textTransform="uppercase"
-                _hover={{ bg: "#18c57d" }}
-              >
-                Join The Morpheus Discord
-              </Button>
-            </Link>
-            <Link href="https://www.instagram.com/morpheusasia/" target="_blank" rel="noopener noreferrer" _hover={{ textDecoration: 'none' }}>
-              <Button
-                size={{ base: "sm", md: "md" }}
-                bg="#1fdc8f"
-                color="black"
-                fontSize={{ base: "0.875rem", md: "1rem" }}
-                fontWeight="bold"
-                fontFamily="MOS"
-                px={{ base: "1rem", md: "1.5rem" }}
-                py={{ base: "0.875rem", md: "1rem" }}
-                h="auto"
-                borderRadius="0"
-                textTransform="uppercase"
-                _hover={{ bg: "#18c57d" }}
-              >
-                Check Out Our Instagram
-              </Button>
-            </Link>
-            <Link href="https://www.youtube.com/@MorpheusAsia" target="_blank" rel="noopener noreferrer" _hover={{ textDecoration: 'none' }}>
-              <Button
-                size={{ base: "sm", md: "md" }}
-                bg="#1fdc8f"
-                color="black"
-                fontSize={{ base: "0.875rem", md: "1rem" }}
-                fontWeight="bold"
-                fontFamily="MOS"
-                px={{ base: "1rem", md: "1.5rem" }}
-                py={{ base: "0.875rem", md: "1rem" }}
-                h="auto"
-                borderRadius="0"
-                textTransform="uppercase"
-                _hover={{ bg: "#18c57d" }}
-              >
-                Morpheus Asia On YouTube
-              </Button>
-            </Link>
-            <Link href="https://t.me/MorpheusAsia" target="_blank" rel="noopener noreferrer" _hover={{ textDecoration: 'none' }}>
-              <Button
-                size={{ base: "sm", md: "md" }}
-                bg="#1fdc8f"
-                color="black"
-                fontSize={{ base: "0.875rem", md: "1rem" }}
-                fontWeight="bold"
-                fontFamily="MOS"
-                px={{ base: "1rem", md: "1.5rem" }}
-                py={{ base: "0.875rem", md: "1rem" }}
-                h="auto"
-                borderRadius="0"
-                textTransform="uppercase"
-                _hover={{ bg: "#18c57d" }}
-              >
-                Join Our Telegram Group
-              </Button>
-            </Link>
-          </HStack>
         </Container>
 
         {/* Our Team Section */}

@@ -1,14 +1,16 @@
 'use client';
 
-import { Box, Container, Heading, Text, VStack, HStack, Spinner, Image, Link } from "@chakra-ui/react";
+import { Box, Container, Heading, Text, VStack, HStack, Spinner, Image, Link as ChakraLink, Grid, Button } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 
 interface Event {
   id: number;
   documentId: string;
   Title: string;
-  Date: string;
+  Date: string | null;
   Description: string;
+  slug: string;
   Register_Link?: string;
   createdAt: string;
   updatedAt: string;
@@ -33,13 +35,24 @@ interface EventsResponse {
 }
 
 const EventCard = ({ event }: { event: Event }) => {
-  const { Title, Date: eventDate, Description, Cover, Register_Link } = event;
+  const router = useRouter();
+  const { Title, Date: eventDate, Description, Cover, Register_Link, slug } = event;
+  
+  const handleCardClick = () => {
+    router.push(`/events/${slug}`);
+  };
   
   // Format date and time
-  const formatDateTime = (dateString: string) => {
-    if (!dateString) return 'N/A';
+  const formatDateTime = (dateString: string | null | undefined) => {
+    if (!dateString || dateString === 'null' || dateString === 'undefined') {
+      return 'TBA';
+    }
     try {
       const date = new Date(dateString);
+      // Check if date is valid
+      if (isNaN(date.getTime())) {
+        return 'TBA';
+      }
       const formattedDate = date.toLocaleDateString('en-US', {
         year: 'numeric',
         month: 'long',
@@ -51,11 +64,14 @@ const EventCard = ({ event }: { event: Event }) => {
       });
       return { date: formattedDate, time: formattedTime };
     } catch {
-      return { date: 'N/A', time: 'N/A' };
+      return 'TBA';
     }
   };
 
   const dateTime = formatDateTime(eventDate);
+  
+  // Check if event is past (only if date is valid and not TBA)
+  const isPast = dateTime !== 'TBA' && eventDate && new Date(eventDate) < new Date();
 
   // Get cover image URL
   const imageUrl = Cover?.url 
@@ -66,13 +82,21 @@ const EventCard = ({ event }: { event: Event }) => {
 
   return (
     <Box
+      onClick={handleCardClick}
       bg="rgba(255, 255, 255, 0.03)"
-      border="2px solid #1fdc8f"
+      border="2px solid"
+      borderColor={isPast ? "rgba(255, 255, 255, 0.2)" : "#1fdc8f"}
       overflow="hidden"
       transition="all 0.3s"
+      opacity={isPast ? 0.7 : 1}
+      cursor="pointer"
+      textDecoration="none"
       _hover={{
-        bg: "rgba(31, 220, 143, 0.05)",
-        transform: { base: "none", md: "translateY(-4px)" },
+        bg: isPast ? "rgba(255, 255, 255, 0.05)" : "rgba(31, 220, 143, 0.08)",
+        borderColor: isPast ? "rgba(255, 255, 255, 0.3)" : "#1fdc8f",
+        transform: { base: "none", md: isPast ? "scale(1.02)" : "translateY(-8px) scale(1.02)" },
+        boxShadow: isPast ? "0 4px 12px rgba(255, 255, 255, 0.1)" : "0 8px 24px rgba(31, 220, 143, 0.3)",
+        textDecoration: "none",
       }}
     >
       {/* Cover Image */}
@@ -109,7 +133,7 @@ const EventCard = ({ event }: { event: Event }) => {
               Event
             </Box>
             <Text fontSize={{ base: "0.875rem", md: "1rem" }} color="rgba(255, 255, 255, 0.7)">
-              {typeof dateTime === 'object' ? dateTime.date : dateTime}
+              {typeof dateTime === 'object' ? dateTime.date : dateTime === 'TBA' ? 'TBA' : dateTime}
             </Text>
           </HStack>
 
@@ -147,12 +171,11 @@ const EventCard = ({ event }: { event: Event }) => {
 
           {/* Register Button */}
           {Register_Link && Register_Link !== 'N/A' && (
-            <Box pt="1rem">
-              <Link href={Register_Link} target="_blank" rel="noopener noreferrer" _hover={{ textDecoration: 'none' }}>
-                <Box
-                  as="button"
-                  bg="#1fdc8f"
-                  color="black"
+            <Box pt="1rem" onClick={(e) => e.stopPropagation()}>
+              {isPast ? (
+                <Button
+                  bg="rgba(255, 255, 255, 0.2)"
+                  color="rgba(255, 255, 255, 0.5)"
                   fontSize={{ base: "0.875rem", md: "1rem" }}
                   fontWeight="bold"
                   fontFamily="MOS"
@@ -162,11 +185,35 @@ const EventCard = ({ event }: { event: Event }) => {
                   textTransform="uppercase"
                   transition="all 0.2s"
                   w={{ base: "100%", md: "auto" }}
-                  _hover={{ bg: "#18c57d" }}
+                  cursor="not-allowed"
+                  disabled
+                  _disabled={{
+                    opacity: 1,
+                    cursor: "not-allowed",
+                  }}
                 >
                   Register Now
-                </Box>
-              </Link>
+                </Button>
+              ) : (
+                <ChakraLink href={Register_Link} target="_blank" rel="noopener noreferrer" _hover={{ textDecoration: 'none' }} onClick={(e) => e.stopPropagation()}>
+                  <Button
+                    bg="#1fdc8f"
+                    color="black"
+                    fontSize={{ base: "0.875rem", md: "1rem" }}
+                    fontWeight="bold"
+                    fontFamily="MOS"
+                    px={{ base: "1.5rem", md: "2rem" }}
+                    py={{ base: "1rem", md: "1.25rem" }}
+                    borderRadius="0"
+                    textTransform="uppercase"
+                    transition="all 0.2s"
+                    w={{ base: "100%", md: "auto" }}
+                    _hover={{ bg: "#18c57d" }}
+                  >
+                    Register Now
+                  </Button>
+                </ChakraLink>
+              )}
             </Box>
           )}
         </VStack>
@@ -208,14 +255,29 @@ export default function EventsPage() {
     fetchEvents();
   }, []);
 
-  // Separate upcoming and past events
-  const now = new Date();
-  const upcomingEvents = events.filter(event => new Date(event.Date) >= now);
-  const pastEvents = events.filter(event => new Date(event.Date) < now);
+  // Sort events by date (newest first, TBA dates appear first)
+  const sortedEvents = [...events].sort((a, b) => {
+    // Handle null/undefined dates - TBA events appear first
+    if (!a.Date || a.Date === 'null' || a.Date === 'undefined') {
+      return -1; // TBA events first
+    }
+    if (!b.Date || b.Date === 'null' || b.Date === 'undefined') {
+      return 1; // TBA events first
+    }
+    
+    const dateA = new Date(a.Date).getTime();
+    const dateB = new Date(b.Date).getTime();
+    
+    // Check for invalid dates
+    if (isNaN(dateA)) return -1;
+    if (isNaN(dateB)) return 1;
+    
+    return dateB - dateA; // Newest first
+  });
 
   return (
-    <Box as="main" position="relative" minH="100vh" pt={{ base: "4rem", md: "8rem" }} pb="4rem">
-      <Container maxW="1200px" px={{ base: "1rem", md: "2rem" }}>
+    <Box as="main" position="relative" minH="100vh" pt={{ base: "2rem", md: "3rem" }} pb="4rem">
+      <Container maxW="1400px" px={{ base: "1rem", md: "2rem" }}>
         <VStack gap="4rem" align="stretch">
           {/* Header */}
           <Box textAlign="center">
@@ -266,46 +328,16 @@ export default function EventsPage() {
             </Box>
           )}
 
-          {/* Upcoming Events */}
-          {!loading && !error && upcomingEvents.length > 0 && (
-            <Box>
-              <Heading
-                as="h2"
-                fontSize={{ base: "1.5rem", sm: "1.75rem", md: "2rem" }}
-                fontWeight="bold"
-                mb="2rem"
-                color="white"
-              >
-                Upcoming Events
-              </Heading>
-
-              <VStack gap="2rem" align="stretch">
-                {upcomingEvents.map(event => (
-                  <EventCard key={event.id} event={event} />
-                ))}
-              </VStack>
-            </Box>
-          )}
-
-          {/* Past Events */}
-          {!loading && !error && pastEvents.length > 0 && (
-            <Box>
-              <Heading
-                as="h2"
-                fontSize={{ base: "1.5rem", sm: "1.75rem", md: "2rem" }}
-                fontWeight="bold"
-                mb="2rem"
-                color="white"
-              >
-                Past Events
-              </Heading>
-
-              <VStack gap="2rem" align="stretch">
-                {pastEvents.map(event => (
-                  <EventCard key={event.id} event={event} />
-                ))}
-              </VStack>
-            </Box>
+          {/* Events Grid */}
+          {!loading && !error && sortedEvents.length > 0 && (
+            <Grid
+              templateColumns={{ base: "1fr", md: "repeat(2, 1fr)", lg: "repeat(3, 1fr)" }}
+              gap={{ base: "2rem", md: "2.5rem" }}
+            >
+              {sortedEvents.map(event => (
+                <EventCard key={event.id} event={event} />
+              ))}
+            </Grid>
           )}
 
           {/* No Events State */}

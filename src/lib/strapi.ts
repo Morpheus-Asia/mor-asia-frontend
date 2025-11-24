@@ -100,3 +100,20 @@ export async function getAuthors() {
 export async function getEvents() {
   return fetchStrapi('/api/events?populate=*&sort[0]=Date:asc');
 }
+
+/**
+ * Fetch a single event by slug
+ */
+export async function getEventBySlug(slug: string) {
+  const response = await fetchStrapi<any[]>(`/api/events?filters[slug][$eq]=${slug}&populate=*`);
+  
+  // Strapi returns an array, so we need to get the first item
+  if (response.data && response.data.length > 0) {
+    return {
+      data: response.data[0],
+      meta: response.meta,
+    };
+  }
+  
+  throw new Error('Event not found');
+}
