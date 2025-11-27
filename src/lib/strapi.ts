@@ -117,3 +117,10 @@ export async function getEventBySlug(slug: string) {
   
   throw new Error('Event not found');
 }
+
+/**
+ * Fetch all clubs with relations
+ */
+export async function getClubs() {
+  return fetchStrapi('/api/clubs?populate=*&sort[0]=Region:asc');
+}

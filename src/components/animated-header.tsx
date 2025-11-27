@@ -18,11 +18,15 @@ const linkStyle = {
 export function AnimatedHeader() {
   const navRef = useRef<HTMLElement>(null);
   const investButtonRef = useRef<HTMLButtonElement>(null);
+  const communityButtonRef = useRef<HTMLButtonElement>(null);
   const [navWidth, setNavWidth] = useState<number | null>(null);
   const [isInvestOpen, setIsInvestOpen] = useState(false);
+  const [isCommunityOpen, setIsCommunityOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [dropdownPosition, setDropdownPosition] = useState({ top: 0, left: 0 });
+  const [communityDropdownPosition, setCommunityDropdownPosition] = useState({ top: 0, left: 0 });
   const closeTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const communityCloseTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
@@ -53,6 +57,16 @@ export function AnimatedHeader() {
     }
   }, [isInvestOpen, isMobile]);
 
+  useEffect(() => {
+    if (communityButtonRef.current && isCommunityOpen && !isMobile) {
+      const rect = communityButtonRef.current.getBoundingClientRect();
+      setCommunityDropdownPosition({
+        top: rect.bottom + 15,
+        left: rect.left - 25,
+      });
+    }
+  }, [isCommunityOpen, isMobile]);
+
   const handleMouseEnter = () => {
     if (isMobile) return;
     if (closeTimeoutRef.current) {
@@ -69,6 +83,22 @@ export function AnimatedHeader() {
     }, 150);
   };
 
+  const handleCommunityMouseEnter = () => {
+    if (isMobile) return;
+    if (communityCloseTimeoutRef.current) {
+      clearTimeout(communityCloseTimeoutRef.current);
+      communityCloseTimeoutRef.current = null;
+    }
+    setIsCommunityOpen(true);
+  };
+
+  const handleCommunityMouseLeave = () => {
+    if (isMobile) return;
+    communityCloseTimeoutRef.current = setTimeout(() => {
+      setIsCommunityOpen(false);
+    }, 150);
+  };
+
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
   };
@@ -76,6 +106,7 @@ export function AnimatedHeader() {
   const closeMobileMenu = () => {
     setIsMobileMenuOpen(false);
     setIsInvestOpen(false);
+    setIsCommunityOpen(false);
   };
 
   return (
@@ -206,9 +237,42 @@ export function AnimatedHeader() {
               overflow: 'visible',
             }}
           >
-            <Link href="/events" style={linkStyle}>
-              Events
-            </Link>
+            <button
+              ref={communityButtonRef}
+              style={{
+                ...linkStyle,
+                background: 'transparent',
+                border: 'none',
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '0.3rem',
+              }}
+              onMouseEnter={handleCommunityMouseEnter}
+              onMouseLeave={handleCommunityMouseLeave}
+              onClick={() => setIsCommunityOpen(!isCommunityOpen)}
+            >
+              Community
+              <svg 
+                width="16" 
+                height="16" 
+                viewBox="0 0 16 16" 
+                fill="none" 
+                xmlns="http://www.w3.org/2000/svg"
+                style={{
+                  flexShrink: 0,
+                  marginTop: '2px',
+                }}
+              >
+                <path 
+                  d="M4 6L8 10L12 6" 
+                  stroke="white" 
+                  strokeWidth="2" 
+                  strokeLinecap="round" 
+                  strokeLinejoin="round"
+                />
+              </svg>
+            </button>
             <button
               ref={investButtonRef}
               style={{
@@ -281,18 +345,90 @@ export function AnimatedHeader() {
               borderLeft: '1px solid rgba(255, 255, 255, 0.1)',
             }}
           >
-            <Link 
-              href="/events" 
-              style={{
-                ...linkStyle,
-                display: 'block',
-                padding: '1rem 0',
-                borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
-              }}
-              onClick={closeMobileMenu}
-            >
-              Events
-            </Link>
+            <div>
+              <button
+                style={{
+                  ...linkStyle,
+                  background: 'transparent',
+                  border: 'none',
+                  cursor: 'pointer',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  width: '100%',
+                  padding: '1rem 0',
+                  borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
+                }}
+                onClick={() => setIsCommunityOpen(!isCommunityOpen)}
+              >
+                Community
+                <svg 
+                  width="16" 
+                  height="16" 
+                  viewBox="0 0 16 16" 
+                  fill="none" 
+                  xmlns="http://www.w3.org/2000/svg"
+                  style={{
+                    flexShrink: 0,
+                    marginTop: '2px',
+                  }}
+                >
+                  <path 
+                    d="M4 6L8 10L12 6" 
+                    stroke="white" 
+                    strokeWidth="2" 
+                    strokeLinecap="round" 
+                    strokeLinejoin="round"
+                  />
+                </svg>
+              </button>
+              
+              {isCommunityOpen && (
+                <div style={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: '0.5rem',
+                  paddingLeft: '1rem',
+                  marginTop: '0.5rem',
+                }}>
+                  <Link 
+                    href="/events" 
+                    style={{
+                      ...linkStyle,
+                      fontSize: '1rem',
+                      padding: '0.75rem 0',
+                      borderBottom: '1px solid rgba(255, 255, 255, 0.05)',
+                    }}
+                    onClick={closeMobileMenu}
+                  >
+                    Events
+                  </Link>
+                  <Link 
+                    href="/ambassadors" 
+                    style={{
+                      ...linkStyle,
+                      fontSize: '1rem',
+                      padding: '0.75rem 0',
+                      borderBottom: '1px solid rgba(255, 255, 255, 0.05)',
+                    }}
+                    onClick={closeMobileMenu}
+                  >
+                    Ambassadors
+                  </Link>
+                  <Link 
+                    href="/clubs" 
+                    style={{
+                      ...linkStyle,
+                      fontSize: '1rem',
+                      padding: '0.75rem 0',
+                    }}
+                    onClick={closeMobileMenu}
+                  >
+                    Clubs
+                  </Link>
+                </div>
+              )}
+            </div>
             
             <div>
               <button
@@ -412,7 +548,102 @@ export function AnimatedHeader() {
         />
       )}
 
-      {/* Desktop Dropdown Menu */}
+      {/* Desktop Dropdown Menu - Community */}
+      <AnimatePresence>
+        {!isMobile && isCommunityOpen && (
+          <motion.div
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.2, ease: 'easeOut' }}
+            style={{
+              position: 'fixed',
+              top: `${communityDropdownPosition.top}px`,
+              left: `${communityDropdownPosition.left}px`,
+              background: 'rgba(255, 255, 255, 0.08)',
+              backdropFilter: 'blur(10px)',
+              WebkitBackdropFilter: 'blur(10px)',
+              border: 'none',
+              borderRadius: '12px',
+              padding: '0.5rem',
+              minWidth: '200px',
+              boxShadow: 'none',
+              zIndex: 9999,
+            }}
+            onMouseEnter={handleCommunityMouseEnter}
+            onMouseLeave={handleCommunityMouseLeave}
+          >
+            <Link 
+              href="/events" 
+              style={{
+                color: 'white',
+                textDecoration: 'none',
+                display: 'block',
+                padding: '0.75rem 1rem',
+                fontSize: '1rem',
+                fontWeight: 'bold',
+                fontFamily: 'MOS, sans-serif',
+                borderRadius: '8px',
+                transition: 'background 0.2s',
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.background = 'rgba(31, 220, 143, 0.15)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = 'transparent';
+              }}
+            >
+              Events
+            </Link>
+            <Link 
+              href="/ambassadors" 
+              style={{
+                color: 'white',
+                textDecoration: 'none',
+                display: 'block',
+                padding: '0.75rem 1rem',
+                fontSize: '1rem',
+                fontWeight: 'bold',
+                fontFamily: 'MOS, sans-serif',
+                borderRadius: '8px',
+                transition: 'background 0.2s',
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.background = 'rgba(31, 220, 143, 0.15)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = 'transparent';
+              }}
+            >
+              Ambassadors
+            </Link>
+            <Link 
+              href="/clubs" 
+              style={{
+                color: 'white',
+                textDecoration: 'none',
+                display: 'block',
+                padding: '0.75rem 1rem',
+                fontSize: '1rem',
+                fontWeight: 'bold',
+                fontFamily: 'MOS, sans-serif',
+                borderRadius: '8px',
+                transition: 'background 0.2s',
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.background = 'rgba(31, 220, 143, 0.15)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = 'transparent';
+              }}
+            >
+              Clubs
+            </Link>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Desktop Dropdown Menu - Contribute */}
       <AnimatePresence>
         {!isMobile && isInvestOpen && (
           <motion.div
