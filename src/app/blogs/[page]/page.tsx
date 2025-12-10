@@ -101,7 +101,7 @@ const BlogCard = ({ post }: { post: BlogPost }) => {
             h="250px"
             overflow="hidden"
             position="relative"
-            bg="rgba(0, 0, 0, 0.3)"
+            bg="rgba(9, 13, 14, 0.3)"
           >
             <Image
               src={imageUrl}
@@ -259,7 +259,7 @@ export default function BlogsPage() {
   };
 
   return (
-    <Box as="main" position="relative" minH="100vh" p={{ base: "1.5rem", md: "3rem" }} pb="4rem">
+    <Box as="main" position="relative" minH="100vh" pt={{ base: "2rem", md: "3rem" }} pb="4rem">
       <Container maxW="1200px" px={{ base: "1rem", md: "2rem" }}>
         <VStack gap="4rem" align="stretch">
           {/* Header Section */}
@@ -269,7 +269,6 @@ export default function BlogsPage() {
               fontSize={{ base: "2.5rem", sm: "3rem", md: "4rem" }}
               fontWeight="bold"
               mb="1.5rem"
-              pt={{ base: "2rem", md: "3rem" }}
               letterSpacing="0.02em"
             >
               Blog

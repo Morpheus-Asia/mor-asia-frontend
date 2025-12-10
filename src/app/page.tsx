@@ -35,7 +35,7 @@ const MatrixRain = () => {
     }
 
     const draw = () => {
-      ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+      ctx.fillStyle = 'rgba(9, 13, 14, 0.05)';
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
       ctx.fillStyle = '#0F0';
@@ -255,7 +255,7 @@ export default function Home() {
             textDecoration="underline"
             _hover={{ color: "#18c57d" }}
           >
-            Learn About Morpheus
+            CONFUSED? CLICK HERE
           </Link>
         </Container>
 
@@ -299,7 +299,7 @@ export default function Home() {
                 Follow Us On X
               </Button>
             </Link>
-            <Link href="https://discord.gg/morpheus" target="_blank" rel="noopener noreferrer" _hover={{ textDecoration: 'none' }}>
+            <Link href="https://discord.com/invite/ztPxPwwMuA" target="_blank" rel="noopener noreferrer" _hover={{ textDecoration: 'none' }}>
               <Button
                 size={{ base: "sm", md: "md" }}
                 bg="#1fdc8f"

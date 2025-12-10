@@ -180,7 +180,7 @@ export default function ClubsPage() {
                                   display="flex"
                                   alignItems="center"
                                   justifyContent="center"
-                                  bg="rgba(0, 0, 0, 0.3)"
+                                  bg="rgba(9, 13, 14, 0.3)"
                                   borderRadius="8px"
                                   overflow="hidden"
                                 >

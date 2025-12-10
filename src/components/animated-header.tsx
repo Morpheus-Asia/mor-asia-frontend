@@ -309,11 +309,12 @@ export function AnimatedHeader() {
                 />
               </svg>
             </button>
-            <Link href="/learn" style={linkStyle}>
-              Learn
-            </Link>
-            <Link href="/blogs/1" style={linkStyle}>
-              Blog
+            <Link href="/learn" style={{
+              ...linkStyle,
+              color: '#1FDC8F',
+              textShadow: '0 0 20px rgba(31, 220, 143, 0.4)',
+            }}>
+              New Here?
             </Link>
           </motion.nav>
         </div>
@@ -421,10 +422,22 @@ export function AnimatedHeader() {
                       ...linkStyle,
                       fontSize: '1rem',
                       padding: '0.75rem 0',
+                      borderBottom: '1px solid rgba(255, 255, 255, 0.05)',
                     }}
                     onClick={closeMobileMenu}
                   >
                     Clubs
+                  </Link>
+                  <Link 
+                    href="/blogs/1" 
+                    style={{
+                      ...linkStyle,
+                      fontSize: '1rem',
+                      padding: '0.75rem 0',
+                    }}
+                    onClick={closeMobileMenu}
+                  >
+                    Blog
                   </Link>
                 </div>
               )}
@@ -510,23 +523,12 @@ export function AnimatedHeader() {
                 display: 'block',
                 padding: '1rem 0',
                 borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
+                color: '#1FDC8F',
+                textShadow: '0 0 20px rgba(31, 220, 143, 0.4)',
               }}
               onClick={closeMobileMenu}
             >
-              Learn
-            </Link>
-            
-            <Link 
-              href="/blogs/1" 
-              style={{
-                ...linkStyle,
-                display: 'block',
-                padding: '1rem 0',
-                borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
-              }}
-              onClick={closeMobileMenu}
-            >
-              Blog
+              New Here?
             </Link>
           </motion.div>
         )}
@@ -638,6 +640,28 @@ export function AnimatedHeader() {
               }}
             >
               Clubs
+            </Link>
+            <Link 
+              href="/blogs/1" 
+              style={{
+                color: 'white',
+                textDecoration: 'none',
+                display: 'block',
+                padding: '0.75rem 1rem',
+                fontSize: '1rem',
+                fontWeight: 'bold',
+                fontFamily: 'MOS, sans-serif',
+                borderRadius: '8px',
+                transition: 'background 0.2s',
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.background = 'rgba(31, 220, 143, 0.15)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = 'transparent';
+              }}
+            >
+              Blog
             </Link>
           </motion.div>
         )}

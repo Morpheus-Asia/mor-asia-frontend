@@ -124,3 +124,72 @@ export async function getEventBySlug(slug: string) {
 export async function getClubs() {
   return fetchStrapi('/api/clubs?populate=*&sort[0]=Region:asc');
 }
+
+/**
+ * Fetch all doc sections with their related docs
+ */
+export async function getDocSections() {
+  return fetchStrapi<DocSection[]>('/api/doc-sections?populate[docs][populate]=*');
+}
+
+/**
+ * Fetch a single doc section by slug
+ */
+export async function getDocSectionBySlug(slug: string) {
+  const response = await fetchStrapi<DocSection[]>(`/api/doc-sections?filters[Slug][$eq]=${slug}&populate[docs][populate]=*`);
+  
+  if (response.data && response.data.length > 0) {
+    return {
+      data: response.data[0],
+      meta: response.meta,
+    };
+  }
+  
+  throw new Error('Doc section not found');
+}
+
+/**
+ * Fetch all docs
+ */
+export async function getDocs() {
+  return fetchStrapi<Doc[]>('/api/docs?populate=*');
+}
+
+/**
+ * Fetch a single doc by slug
+ */
+export async function getDocBySlug(slug: string) {
+  const response = await fetchStrapi<Doc[]>(`/api/docs?filters[Slug][$eq]=${slug}&populate=*`);
+  
+  if (response.data && response.data.length > 0) {
+    return {
+      data: response.data[0],
+      meta: response.meta,
+    };
+  }
+  
+  throw new Error('Doc not found');
+}
+
+// Types for Doc Sections and Docs
+export interface Doc {
+  id: number;
+  documentId: string;
+  Title: string;
+  Slug: string;
+  Content: string;
+  createdAt: string;
+  updatedAt: string;
+  publishedAt: string;
+}
+
+export interface DocSection {
+  id: number;
+  documentId: string;
+  Title: string;
+  Slug: string;
+  docs?: Doc[];
+  createdAt: string;
+  updatedAt: string;
+  publishedAt: string;
+}

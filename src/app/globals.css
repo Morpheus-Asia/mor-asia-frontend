@@ -40,13 +40,17 @@
   font-style: normal;
 }
 
+:root {
+  --bg-primary: #090d0e;
+}
+
 body {
   font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: black;
+  background-color: var(--bg-primary);
   color: white;
 }
 
@@ -58,4 +62,31 @@ h1, h2, h3, h4, h5, h6 {
   font-family: 'MOS-Thin', sans-serif !important;
   font-weight: 100;
   letter-spacing: 0.05em;
+}
+
+.learn-sidebar-scroll,
+.learn-content-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
+}
+
+.learn-sidebar-scroll::-webkit-scrollbar,
+.learn-content-scroll::-webkit-scrollbar {
+  width: 6px;
+}
+
+.learn-sidebar-scroll::-webkit-scrollbar-track,
+.learn-content-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.learn-sidebar-scroll::-webkit-scrollbar-thumb,
+.learn-content-scroll::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 3px;
+}
+
+.learn-sidebar-scroll::-webkit-scrollbar-thumb:hover,
+.learn-content-scroll::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.3);
 }

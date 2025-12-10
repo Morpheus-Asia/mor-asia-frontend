@@ -183,7 +183,7 @@ export default function EventPage() {
               h={{ base: "250px", md: "400px", lg: "500px" }}
               overflow="hidden"
               position="relative"
-              bg="rgba(0, 0, 0, 0.3)"
+              bg="rgba(9, 13, 14, 0.3)"
               borderRadius="8px"
             >
               <Image

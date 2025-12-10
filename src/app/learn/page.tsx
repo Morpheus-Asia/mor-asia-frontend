@@ -1,375 +1,134 @@
-'use client';
+import { Box, Heading, Text, VStack, SimpleGrid } from "@chakra-ui/react";
+import { getDocSections, DocSection } from "morpheus-asia/lib/strapi";
+import Link from "next/link";
 
-import { Box, Container, Heading, Text, VStack, Link, Grid, HStack } from "@chakra-ui/react";
+export default async function LearnOverviewPage() {
+  let sections: DocSection[] = [];
 
-export default function LearnPage() {
+  try {
+    const response = await getDocSections();
+    if (response.data) {
+      sections = response.data;
+    }
+  } catch (error) {
+    console.error('Error fetching doc sections:', error);
+  }
+
   return (
-    <Box as="main" position="relative" minH="100vh" pt={{ base: "2rem", md: "3rem" }} pb="4rem">
-      <Container maxW="1200px" px={{ base: "1rem", md: "2rem" }}>
-        <VStack gap="3rem" align="stretch">
-          {/* Foundational Concepts Section */}
-          <Box>
-            <Heading
-              as="h1"
-              fontSize={{ base: "2.5rem", sm: "3rem", md: "3.5rem" }}
-              fontWeight="bold"
-              mb="1rem"
-              letterSpacing="0.02em"
-              lineHeight="1.3"
-            >
-              Learn The Foundational Morpheus Concepts
-            </Heading>
-            <Box 
-              h="4px" 
-              w="80px" 
-              bg="#1fdc8f" 
-              mb="2rem"
-            />
-            
-            <Grid 
-              templateColumns={{ base: "1fr", md: "repeat(3, 1fr)" }} 
-              gap="2rem"
-              mb="2rem"
-            >
-              {/* Morpheus GitBook Documentation Card */}
-              <Link
-                href="https://gitbook.mor.org/"
-                target="_blank"
-                rel="noopener noreferrer"
-                _hover={{ textDecoration: 'none' }}
-              >
-                <Box
-                  h="100%"
-                  p="2rem"
-                  bg="rgba(255, 255, 255, 0.03)"
-                  border="2px solid rgba(255, 255, 255, 0.1)"
-                  borderRadius="12px"
-                  transition="all 0.3s"
-                  _hover={{
-                    bg: "rgba(31, 220, 143, 0.05)",
-                    borderColor: "#1fdc8f",
-                    transform: "translateY(-4px)",
-                  }}
-                >
-                  <Heading
-                    as="h3"
-                    fontSize={{ base: "1.25rem", md: "1.5rem" }}
-                    fontWeight="bold"
-                    mb="1rem"
-                    color="#1fdc8f"
-                  >
-                    Morpheus GitBook Documentation
-                  </Heading>
-                  <Text
-                    fontSize={{ base: "0.875rem", md: "1rem" }}
-                    color="white"
-                    lineHeight="1.7"
-                  >
-                    The primary documentation resource covering foundational concepts, architecture, tokenomics, and implementation details of the Morpheus ecosystem.
-                  </Text>
-                </Box>
-              </Link>
+    <VStack gap="3rem" align="stretch" w="100%">
+      {/* Page Header */}
+      <Box>
+        <Heading
+          as="h1"
+          fontSize={{ base: "2.25rem", md: "2.75rem", lg: "3.25rem" }}
+          fontWeight="bold"
+          mb="1rem"
+          color="white"
+          lineHeight="1.2"
+          letterSpacing="-0.02em"
+        >
+          Welcome To Morpheus Asia
+        </Heading>
+        <Text
+          fontSize={{ base: "1.125rem", md: "1.25rem" }}
+          color="rgba(255, 255, 255, 0.7)"
+          lineHeight="1.6"
+          maxW="700px"
+        >
+          Explore comprehensive guides, API documentation, and resources to build on the Morpheus decentralized AI network. 
+          Whether you&apos;re a developer, builder, or community member, find everything you need to get started.
+        </Text>
+      </Box>
 
-              {/* Lumerin Compute Infrastructure Card */}
-              <Link
-                href="https://gitbook.mor.lumerin.io/"
-                target="_blank"
-                rel="noopener noreferrer"
-                _hover={{ textDecoration: 'none' }}
-              >
-                <Box
-                  h="100%"
-                  p="2rem"
-                  bg="rgba(255, 255, 255, 0.03)"
-                  border="2px solid rgba(255, 255, 255, 0.1)"
-                  borderRadius="12px"
-                  transition="all 0.3s"
-                  _hover={{
-                    bg: "rgba(31, 220, 143, 0.05)",
-                    borderColor: "#1fdc8f",
-                    transform: "translateY(-4px)",
-                  }}
-                >
-                  <Heading
-                    as="h3"
-                    fontSize={{ base: "1.25rem", md: "1.5rem" }}
-                    fontWeight="bold"
-                    mb="1rem"
-                    color="#1fdc8f"
-                  >
-                    Lumerin Compute Infrastructure
-                  </Heading>
-                  <Text
-                    fontSize={{ base: "0.875rem", md: "1rem" }}
-                    color="white"
-                    lineHeight="1.7"
-                  >
-                    Learn about the compute layer powering Morpheus&apos;s decentralized AI capabilities, compute provider setup, and distributed infrastructure.
-                  </Text>
-                </Box>
-              </Link>
+      {/* Quick Start Tip */}
+      {sections.length > 0 && (
+        <Box
+          p="1.5rem"
+          bg="rgba(31, 220, 143, 0.05)"
+          borderLeft="3px solid #1fdc8f"
+          borderRadius="4px"
+        >
+          <Text
+            fontSize="1rem"
+            color="rgba(255, 255, 255, 0.9)"
+            lineHeight="1.75"
+          >
+            <strong>New to Morpheus?</strong> Start by exploring the sections below to understand 
+            the foundational concepts and architecture of the decentralized AI network.
+          </Text>
+        </Box>
+      )}
 
-              {/* Brainpower Podcast Card */}
-              <Link
-                href="https://www.youtube.com/@brainpower_podcast"
-                target="_blank"
-                rel="noopener noreferrer"
-                _hover={{ textDecoration: 'none' }}
-              >
-                <Box
-                  h="100%"
-                  p="2rem"
-                  bg="rgba(255, 255, 255, 0.03)"
-                  border="2px solid rgba(255, 255, 255, 0.1)"
-                  borderRadius="12px"
-                  transition="all 0.3s"
-                  _hover={{
-                    bg: "rgba(31, 220, 143, 0.05)",
-                    borderColor: "#1fdc8f",
-                    transform: "translateY(-4px)",
-                  }}
-                >
-                  <Heading
-                    as="h3"
-                    fontSize={{ base: "1.25rem", md: "1.5rem" }}
-                    fontWeight="bold"
-                    mb="1rem"
-                    color="#1fdc8f"
-                  >
-                    Brainpower Podcast
-                  </Heading>
-                  <Text
-                    fontSize={{ base: "0.875rem", md: "1rem" }}
-                    color="white"
-                    lineHeight="1.7"
-                  >
-                    Dive deeper into decentralized AI with conversations featuring industry leaders, technical deep dives, and the future of AI and blockchain.
-                  </Text>
-                </Box>
-              </Link>
-            </Grid>
-
-            {/* Community Support Section */}
-            <Box
-              p={{ base: "1.5rem", md: "2rem" }}
-              bg="rgba(31, 220, 143, 0.05)"
-              border="1px solid rgba(31, 220, 143, 0.2)"
-              borderRadius="12px"
-            >
-              <Text
-                fontSize={{ base: "1rem", md: "1.125rem" }}
-                color="white"
-                lineHeight="1.7"
-                mb="1rem"
-              >
-                Have questions? Join our community on Discord and Telegram for support and discussions.
-              </Text>
-              <HStack gap="1rem" flexWrap="wrap">
+      {/* Doc Sections Grid */}
+      {sections.length > 0 && (
+        <VStack gap="1.5rem" align="stretch">
+          <Text
+            fontSize="1rem"
+            color="rgba(255, 255, 255, 0.7)"
+            textTransform="uppercase"
+            letterSpacing="0.05em"
+            fontWeight="600"
+          >
+            Documentation Sections
+          </Text>
+          <SimpleGrid columns={{ base: 1, md: 2 }} gap="1rem">
+            {sections.map((section) => {
+              const docCount = section.docs?.length || 0;
+              
+              return (
                 <Link
-                  href="https://discord.gg/morpheus"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  _hover={{ textDecoration: 'none' }}
+                  key={section.documentId}
+                  href={`/learn/${section.Slug}`}
+                  style={{ textDecoration: 'none' }}
                 >
                   <Box
-                    as="button"
-                    px="1.5rem"
-                    py="0.75rem"
-                    bg="#1fdc8f"
-                    color="black"
-                    fontSize={{ base: "0.875rem", md: "1rem" }}
-                    fontWeight="bold"
+                    p="1.5rem"
+                    bg="rgba(255, 255, 255, 0.03)"
                     borderRadius="8px"
-                    transition="all 0.3s"
+                    border="1px solid rgba(255, 255, 255, 0.1)"
+                    transition="all 0.2s"
                     _hover={{
-                      transform: "translateY(-2px)",
-                      boxShadow: "0 4px 12px rgba(31, 220, 143, 0.4)",
-                    }}
-                  >
-                    Join Discord
-                  </Box>
-                </Link>
-                <Link
-                  href="https://t.me/MorpheusAsia"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  _hover={{ textDecoration: 'none' }}
-                >
-                  <Box
-                    as="button"
-                    px="1.5rem"
-                    py="0.75rem"
-                    bg="transparent"
-                    color="white"
-                    fontSize={{ base: "0.875rem", md: "1rem" }}
-                    fontWeight="bold"
-                    border="2px solid #1fdc8f"
-                    borderRadius="8px"
-                    transition="all 0.3s"
-                    _hover={{
-                      bg: "rgba(31, 220, 143, 0.1)",
+                      bg: "rgba(31, 220, 143, 0.08)",
+                      borderColor: "rgba(31, 220, 143, 0.3)",
                       transform: "translateY(-2px)",
                     }}
                   >
-                    Join Telegram
+                    <Text
+                      fontSize="1.25rem"
+                      fontWeight="600"
+                      color="white"
+                      mb="0.5rem"
+                    >
+                      {section.Title}
+                    </Text>
+                    <Text
+                      fontSize="0.875rem"
+                      color="rgba(255, 255, 255, 0.5)"
+                    >
+                      {docCount} {docCount === 1 ? 'document' : 'documents'}
+                    </Text>
                   </Box>
                 </Link>
-              </HStack>
-            </Box>
-          </Box>
-
-          {/* API Documentation Section */}
-          <Box
-            p={{ base: "2rem", md: "3rem" }}
-            bg="rgba(255, 255, 255, 0.03)"
-            border="2px solid rgba(255, 255, 255, 0.1)"
-            borderRadius="12px"
-          >
-            <Heading
-              as="h2"
-              fontSize={{ base: "1.75rem", md: "2.25rem" }}
-              fontWeight="bold"
-              mb="1.5rem"
-              color="white"
-            >
-              Decentralized AI Inference
-            </Heading>
-            <Text
-              fontSize={{ base: "1rem", md: "1.25rem" }}
-              color="white"
-              lineHeight="1.8"
-              mb="2rem"
-            >
-              Are you trying to create an application that needs decentralized AI inference?
-            </Text>
-            <Text
-              fontSize={{ base: "1rem", md: "1.125rem" }}
-              color="rgba(255, 255, 255, 0.9)"
-              lineHeight="1.8"
-              mb="2rem"
-            >
-              Our comprehensive API documentation provides everything you need to integrate Morpheus&apos;s decentralized AI capabilities into your application. Access detailed endpoint documentation, authentication methods, request/response formats, and code examples to get started quickly.
-            </Text>
-            <Link
-              href="https://apidocs.mor.org/"
-              target="_blank"
-              rel="noopener noreferrer"
-              _hover={{ textDecoration: 'none' }}
-            >
-              <Box
-                as="button"
-                px="2.5rem"
-                py="1rem"
-                bg="#1fdc8f"
-                color="black"
-                fontSize={{ base: "1rem", md: "1.125rem" }}
-                fontWeight="bold"
-                borderRadius="8px"
-                transition="all 0.3s"
-                _hover={{
-                  transform: "translateY(-2px)",
-                  boxShadow: "0 8px 20px rgba(31, 220, 143, 0.4)",
-                }}
-              >
-                View API Documentation →
-              </Box>
-            </Link>
-          </Box>
-
-          {/* MOR Builders Section */}
-          <Box
-            p={{ base: "2rem", md: "3rem" }}
-            bg="rgba(31, 220, 143, 0.05)"
-            border="2px solid rgba(31, 220, 143, 0.2)"
-            borderRadius="12px"
-          >
-            <Heading
-              as="h2"
-              fontSize={{ base: "1.75rem", md: "2.25rem" }}
-              fontWeight="bold"
-              mb="1.5rem"
-              color="white"
-            >
-              Asia Builder Projects
-            </Heading>
-            <Text
-              fontSize={{ base: "1rem", md: "1.25rem" }}
-              color="white"
-              lineHeight="1.8"
-              mb="1.5rem"
-            >
-              Do you have a company or organization with a tech-savvy market, and want a new method to sell and increase conversions?
-            </Text>
-            <Text
-              fontSize={{ base: "1rem", md: "1.125rem" }}
-              color="rgba(255, 255, 255, 0.9)"
-              lineHeight="1.8"
-              mb="1.5rem"
-            >
-              MorBuilders is our partner that helps to do this and will provide white-glove assistance to get your company registered. This is a new method to sell services, where instead of asking for a monthly subscription, you ask for a stake of MOR tokens for your subnet.
-            </Text>
-            <Text
-              fontSize={{ base: "1rem", md: "1.125rem" }}
-              color="rgba(255, 255, 255, 0.9)"
-              lineHeight="1.8"
-              mb="2rem"
-            >
-              By becoming a registered builder, your organization can leverage the power of token staking to drive engagement and create a sustainable revenue model that aligns with the decentralized ecosystem, and the Morpheus decentralized community to obtain funding for your organization without giving away any equity. You&apos;ll be listed alongside other builders who are pioneering this new approach.
-            </Text>
-            <HStack gap="1rem" flexWrap="wrap">
-              <Link
-                href="https://morbuilders.xyz/"
-                target="_blank"
-                rel="noopener noreferrer"
-                _hover={{ textDecoration: 'none' }}
-              >
-                <Box
-                  as="button"
-                  px="2.5rem"
-                  py="1rem"
-                  bg="#1fdc8f"
-                  color="black"
-                  fontSize={{ base: "1rem", md: "1.125rem" }}
-                  fontWeight="bold"
-                  borderRadius="8px"
-                  transition="all 0.3s"
-                  _hover={{
-                    transform: "translateY(-2px)",
-                    boxShadow: "0 8px 20px rgba(31, 220, 143, 0.4)",
-                  }}
-                >
-                  Get Started with MorBuilders →
-                </Box>
-              </Link>
-              <Link
-                href="https://dashboard.mor.org/builders?sort=totalStaked-desc"
-                target="_blank"
-                rel="noopener noreferrer"
-                _hover={{ textDecoration: 'none' }}
-              >
-                <Box
-                  as="button"
-                  px="2.5rem"
-                  py="1rem"
-                  bg="transparent"
-                  color="white"
-                  fontSize={{ base: "1rem", md: "1.125rem" }}
-                  fontWeight="bold"
-                  border="2px solid #1fdc8f"
-                  borderRadius="8px"
-                  transition="all 0.3s"
-                  _hover={{
-                    bg: "rgba(31, 220, 143, 0.1)",
-                    transform: "translateY(-2px)",
-                  }}
-                >
-                  View Builders List →
-                </Box>
-              </Link>
-            </HStack>
-          </Box>
+              );
+            })}
+          </SimpleGrid>
         </VStack>
-      </Container>
-    </Box>
+      )}
+
+      {/* Fallback when no sections */}
+      {sections.length === 0 && (
+        <Box
+          p="2rem"
+          bg="rgba(255, 255, 255, 0.03)"
+          borderRadius="8px"
+          border="1px solid rgba(255, 255, 255, 0.1)"
+          textAlign="center"
+        >
+          <Text color="rgba(255, 255, 255, 0.6)" fontSize="1rem">
+            Documentation coming soon. Check back later for comprehensive guides and resources.
+          </Text>
+        </Box>
+      )}
+    </VStack>
   );
 }

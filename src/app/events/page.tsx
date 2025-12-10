@@ -90,18 +90,17 @@ const EventCard = ({ event }: { event: Event }) => {
     <Box
       onClick={handleCardClick}
       bg="rgba(255, 255, 255, 0.03)"
-      border="2px solid"
-      borderColor={isPast ? "rgba(255, 255, 255, 0.2)" : "#1fdc8f"}
+      border="1px solid rgba(255, 255, 255, 0.1)"
       overflow="hidden"
+      h="100%"
       transition="all 0.3s"
       opacity={isPast ? 0.7 : 1}
       cursor="pointer"
       textDecoration="none"
       _hover={{
-        bg: isPast ? "rgba(255, 255, 255, 0.05)" : "rgba(31, 220, 143, 0.08)",
-        borderColor: isPast ? "rgba(255, 255, 255, 0.3)" : "#1fdc8f",
-        transform: { base: "none", md: isPast ? "scale(1.02)" : "translateY(-8px) scale(1.02)" },
-        boxShadow: isPast ? "0 4px 12px rgba(255, 255, 255, 0.1)" : "0 8px 24px rgba(31, 220, 143, 0.3)",
+        bg: "rgba(31, 220, 143, 0.05)",
+        borderColor: "#1fdc8f",
+        transform: "translateY(-4px)",
         textDecoration: "none",
       }}
     >
@@ -109,43 +108,43 @@ const EventCard = ({ event }: { event: Event }) => {
       {imageUrl && (
         <Box
           w="100%"
-          h="300px"
+          h="250px"
           overflow="hidden"
           position="relative"
-          bg="rgba(0, 0, 0, 0.3)"
+          bg="rgba(9, 13, 14, 0.3)"
         >
           <Image
             src={imageUrl}
             alt={Cover?.alternativeText || Title || 'Event cover'}
             w="100%"
             h="100%"
-            objectFit="cover"
+            objectFit="contain"
           />
         </Box>
       )}
 
-      <Box p={{ base: "1.5rem", md: "3rem" }}>
-        <VStack align="stretch" gap="1.5rem">
-          <HStack gap="1rem" flexWrap="wrap">
+      <Box p="2rem">
+        <VStack align="stretch" gap="1rem" h="100%">
+          <HStack justify="space-between" flexWrap="wrap" gap="0.5rem">
             <Box
               bg="rgba(31, 220, 143, 0.2)"
-              px="1rem"
-              py="0.5rem"
-              fontSize="0.875rem"
+              px="0.75rem"
+              py="0.25rem"
+              fontSize="0.75rem"
               fontWeight="bold"
               textTransform="uppercase"
               color="#1fdc8f"
             >
               Event
             </Box>
-            <Text fontSize={{ base: "0.875rem", md: "1rem" }} color="rgba(255, 255, 255, 0.7)">
+            <Text fontSize="0.875rem" color="rgba(255, 255, 255, 0.5)">
               {typeof dateTime === 'object' ? dateTime.date : dateTime === 'TBA' ? 'TBA' : dateTime}
             </Text>
           </HStack>
 
           <Heading
             as="h3"
-            fontSize={{ base: "1.5rem", sm: "2rem", md: "2.5rem" }}
+            fontSize="1.75rem"
             fontWeight="bold"
             color="white"
             lineHeight="1.3"
@@ -154,74 +153,73 @@ const EventCard = ({ event }: { event: Event }) => {
           </Heading>
 
           <Text
-            fontSize={{ base: "1rem", md: "1.25rem" }}
-            lineHeight="1.8"
-            color="rgba(255, 255, 255, 0.9)"
+            fontSize="1.125rem"
+            lineHeight="1.7"
+            color="rgba(255, 255, 255, 0.7)"
+            flex="1"
             whiteSpace="pre-wrap"
           >
             {truncatedDescription || 'N/A'}
           </Text>
 
-          <HStack gap={{ base: "1rem", md: "2rem" }} pt="1rem" flexWrap="wrap">
+          <HStack
+            pt="1rem"
+            borderTop="1px solid rgba(255, 255, 255, 0.1)"
+            justify="space-between"
+            flexWrap="wrap"
+            gap="0.5rem"
+          >
             {typeof dateTime === 'object' && (
-              <HStack gap="0.5rem">
-                <Text fontSize={{ base: "0.875rem", md: "1rem" }} fontWeight="bold" color="#1fdc8f">
-                  🕐 Time:
-                </Text>
-                <Text fontSize={{ base: "0.875rem", md: "1rem" }} color="white">
-                  {dateTime.time}
-                </Text>
-              </HStack>
+              <Text fontSize="0.875rem" color="rgba(255, 255, 255, 0.6)">
+                🕐 {dateTime.time}
+              </Text>
             )}
-          </HStack>
-
-          {/* Register Button */}
-          {Register_Link && Register_Link !== 'N/A' && (
-            <Box pt="1rem" onClick={(e) => e.stopPropagation()}>
-              {isPast ? (
-                <Button
-                  bg="rgba(255, 255, 255, 0.2)"
-                  color="rgba(255, 255, 255, 0.5)"
-                  fontSize={{ base: "0.875rem", md: "1rem" }}
-                  fontWeight="bold"
-                  fontFamily="MOS"
-                  px={{ base: "1.5rem", md: "2rem" }}
-                  py={{ base: "1rem", md: "1.25rem" }}
-                  borderRadius="0"
-                  textTransform="uppercase"
-                  transition="all 0.2s"
-                  w={{ base: "100%", md: "auto" }}
-                  cursor="not-allowed"
-                  disabled
-                  _disabled={{
-                    opacity: 1,
-                    cursor: "not-allowed",
-                  }}
-                >
-                  Register Now
-                </Button>
-              ) : (
-                <ChakraLink href={Register_Link} target="_blank" rel="noopener noreferrer" _hover={{ textDecoration: 'none' }} onClick={(e) => e.stopPropagation()}>
+            {/* Register Button */}
+            {Register_Link && Register_Link !== 'N/A' && (
+              <Box onClick={(e) => e.stopPropagation()}>
+                {isPast ? (
                   <Button
-                    bg="#1fdc8f"
-                    color="black"
-                    fontSize={{ base: "0.875rem", md: "1rem" }}
+                    bg="rgba(255, 255, 255, 0.2)"
+                    color="rgba(255, 255, 255, 0.5)"
+                    fontSize="0.875rem"
                     fontWeight="bold"
                     fontFamily="MOS"
-                    px={{ base: "1.5rem", md: "2rem" }}
-                    py={{ base: "1rem", md: "1.25rem" }}
+                    px="1rem"
+                    py="0.5rem"
                     borderRadius="0"
                     textTransform="uppercase"
                     transition="all 0.2s"
-                    w={{ base: "100%", md: "auto" }}
-                    _hover={{ bg: "#18c57d" }}
+                    cursor="not-allowed"
+                    disabled
+                    _disabled={{
+                      opacity: 1,
+                      cursor: "not-allowed",
+                    }}
                   >
                     Register Now
                   </Button>
-                </ChakraLink>
-              )}
-            </Box>
-          )}
+                ) : (
+                  <ChakraLink href={Register_Link} target="_blank" rel="noopener noreferrer" _hover={{ textDecoration: 'none' }} onClick={(e) => e.stopPropagation()}>
+                    <Button
+                      bg="#1fdc8f"
+                      color="black"
+                      fontSize="0.875rem"
+                      fontWeight="bold"
+                      fontFamily="MOS"
+                      px="1rem"
+                      py="0.5rem"
+                      borderRadius="0"
+                      textTransform="uppercase"
+                      transition="all 0.2s"
+                      _hover={{ bg: "#18c57d" }}
+                    >
+                      Register Now
+                    </Button>
+                  </ChakraLink>
+                )}
+              </Box>
+            )}
+          </HStack>
         </VStack>
       </Box>
     </Box>
@@ -283,7 +281,7 @@ export default function EventsPage() {
 
   return (
     <Box as="main" position="relative" minH="100vh" pt={{ base: "2rem", md: "3rem" }} pb="4rem">
-      <Container maxW="1400px" px={{ base: "1rem", md: "2rem" }}>
+      <Container maxW="1200px" px={{ base: "1rem", md: "2rem" }}>
         <VStack gap="4rem" align="stretch">
           {/* Header */}
           <Box textAlign="center">
@@ -337,8 +335,8 @@ export default function EventsPage() {
           {/* Events Grid */}
           {!loading && !error && sortedEvents.length > 0 && (
             <Grid
-              templateColumns={{ base: "1fr", md: "repeat(2, 1fr)", lg: "repeat(3, 1fr)" }}
-              gap={{ base: "2rem", md: "2.5rem" }}
+              templateColumns={{ base: "1fr", md: "repeat(2, 1fr)" }}
+              gap="2rem"
             >
               {sortedEvents.map(event => (
                 <EventCard key={event.id} event={event} />
