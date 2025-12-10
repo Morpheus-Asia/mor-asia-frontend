@@ -171,6 +171,13 @@ export async function getDocBySlug(slug: string) {
   throw new Error('Doc not found');
 }
 
+/**
+ * Fetch learn page single type
+ */
+export async function getLearnPage() {
+  return fetchStrapi<LearnPage>('/api/learn-page');
+}
+
 // Types for Doc Sections and Docs
 export interface Doc {
   id: number;
@@ -189,6 +196,16 @@ export interface DocSection {
   Title: string;
   Slug: string;
   docs?: Doc[];
+  createdAt: string;
+  updatedAt: string;
+  publishedAt: string;
+}
+
+export interface LearnPage {
+  id: number;
+  documentId: string;
+  Title: string;
+  Content: string;
   createdAt: string;
   updatedAt: string;
   publishedAt: string;

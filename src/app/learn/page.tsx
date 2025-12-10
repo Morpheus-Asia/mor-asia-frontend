@@ -1,8 +1,11 @@
 'use client';
 
-import { Box, Heading, Text, VStack, SimpleGrid, Spinner } from "@chakra-ui/react";
+import { Box, Heading, Text, VStack, SimpleGrid, Spinner, Link as ChakraLink } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
+import rehypeRaw from 'rehype-raw';
 
 interface Doc {
   id: number;
@@ -38,29 +41,50 @@ interface DocSectionsResponse {
   };
 }
 
+interface LearnPage {
+  Title: string;
+  Content: string;
+}
+
+interface LearnPageResponse {
+  data: LearnPage;
+  meta: {};
+}
+
 export default function LearnOverviewPage() {
   const [sections, setSections] = useState<DocSection[]>([]);
+  const [learnPage, setLearnPage] = useState<LearnPage | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    async function fetchDocSections() {
+    async function fetchData() {
       try {
         setLoading(true);
-        const response = await fetch('/api/doc-sections');
         
-        if (!response.ok) {
-          const errorData = await response.json().catch(() => ({}));
+        // Fetch learn page content
+        const learnPageResponse = await fetch('/api/learn-page');
+        if (learnPageResponse.ok) {
+          const learnPageData: LearnPageResponse = await learnPageResponse.json();
+          setLearnPage(learnPageData.data || null);
+        } else {
+          console.error('Failed to fetch learn page');
+        }
+        
+        // Fetch doc sections
+        const sectionsResponse = await fetch('/api/doc-sections');
+        if (!sectionsResponse.ok) {
+          const errorData = await sectionsResponse.json().catch(() => ({}));
           console.error('API Error:', errorData);
           throw new Error(errorData.error || 'Failed to fetch documentation');
         }
         
-        const data: DocSectionsResponse = await response.json();
-        console.log('Fetched doc sections:', data);
-        setSections(data.data || []);
+        const sectionsData: DocSectionsResponse = await sectionsResponse.json();
+        console.log('Fetched doc sections:', sectionsData);
+        setSections(sectionsData.data || []);
         setError(null);
       } catch (err) {
-        console.error('Error fetching doc sections:', err);
+        console.error('Error fetching data:', err);
         const errorMessage = err instanceof Error ? err.message : 'Failed to load documentation. Please try again later.';
         setError(errorMessage);
       } finally {
@@ -68,34 +92,49 @@ export default function LearnOverviewPage() {
       }
     }
 
-    fetchDocSections();
+    fetchData();
   }, []);
 
   return (
     <VStack gap="3rem" align="stretch" w="100%">
       {/* Page Header */}
-      <Box>
-        <Heading
-          as="h1"
-          fontSize={{ base: "2.25rem", md: "2.75rem", lg: "3.25rem" }}
-          fontWeight="bold"
-          mb="1rem"
-          color="white"
-          lineHeight="1.2"
-          letterSpacing="-0.02em"
-        >
-          Welcome To Morpheus Asia
-        </Heading>
-        <Text
-          fontSize={{ base: "1.125rem", md: "1.25rem" }}
-          color="rgba(255, 255, 255, 0.7)"
-          lineHeight="1.6"
-          maxW="700px"
-        >
-          Explore comprehensive guides, API documentation, and resources to build on the Morpheus decentralized AI network. 
-          Whether you&apos;re a developer, builder, or community member, find everything you need to get started.
-        </Text>
-      </Box>
+      {learnPage && (
+        <Box>
+          <Heading
+            as="h1"
+            fontSize={{ base: "2.25rem", md: "2.75rem", lg: "3.25rem" }}
+            fontWeight="bold"
+            mb="1rem"
+            color="white"
+            lineHeight="1.2"
+            letterSpacing="-0.02em"
+          >
+            {learnPage.Title}
+          </Heading>
+          <Text
+            fontSize={{ base: "1.125rem", md: "1.25rem" }}
+            color="rgba(255, 255, 255, 0.7)"
+            lineHeight="1.6"
+            maxW="700px"
+            as="div"
+          >
+            <ReactMarkdown
+              remarkPlugins={[remarkGfm]}
+              rehypePlugins={[rehypeRaw]}
+              components={{
+                p: ({ children }) => <Text as="p" mb="1rem" _last={{ mb: 0 }}>{children}</Text>,
+                a: ({ href, children }) => (
+                  <ChakraLink href={href} target="_blank" rel="noopener noreferrer" color="#1fdc8f">
+                    {children}
+                  </ChakraLink>
+                ),
+              }}
+            >
+              {learnPage.Content || ''}
+            </ReactMarkdown>
+          </Text>
+        </Box>
+      )}
 
       {/* Loading State */}
       {loading && (
@@ -120,94 +159,6 @@ export default function LearnOverviewPage() {
             {error}
           </Text>
         </Box>
-      )}
-
-      {/* Quick Start Tip */}
-      {!loading && !error && sections.length > 0 && (
-        <Box
-          p="1.5rem"
-          bg="rgba(31, 220, 143, 0.05)"
-          borderLeft="3px solid #1fdc8f"
-          borderRadius="4px"
-        >
-          <Text
-            fontSize="1rem"
-            color="rgba(255, 255, 255, 0.9)"
-            lineHeight="1.75"
-          >
-            <strong>New to Morpheus?</strong> Start by exploring the sections below to understand 
-            the foundational concepts and architecture of the decentralized AI network.
-          </Text>
-        </Box>
-      )}
-
-      {/* Doc Sections Grid */}
-      {!loading && !error && sections.length > 0 && (
-        <VStack gap="1.5rem" align="stretch">
-          <Text
-            fontSize="1rem"
-            color="rgba(255, 255, 255, 0.7)"
-            textTransform="uppercase"
-            letterSpacing="0.05em"
-            fontWeight="600"
-          >
-            Documentation Sections
-          </Text>
-          <SimpleGrid columns={{ base: 1, md: 2 }} gap="1rem">
-            {sections.map((section) => {
-              const docCount = section.docs?.length || 0;
-              const firstDoc = section.docs && section.docs.length > 0 ? section.docs[0] : null;
-              const href = firstDoc ? `/learn/${section.Slug}/${firstDoc.Slug}` : undefined;
-              
-              const cardContent = (
-                <Box
-                  p="1.5rem"
-                  bg="rgba(255, 255, 255, 0.03)"
-                  borderRadius="8px"
-                  border="1px solid rgba(255, 255, 255, 0.1)"
-                  transition="all 0.2s"
-                  {...(href ? {
-                    _hover: {
-                      bg: "rgba(31, 220, 143, 0.08)",
-                      borderColor: "rgba(31, 220, 143, 0.3)",
-                      transform: "translateY(-2px)",
-                    },
-                    cursor: "pointer"
-                  } : {})}
-                >
-                  <Text
-                    fontSize="1.25rem"
-                    fontWeight="600"
-                    color="white"
-                    mb="0.5rem"
-                  >
-                    {section.Title}
-                  </Text>
-                  <Text
-                    fontSize="0.875rem"
-                    color="rgba(255, 255, 255, 0.5)"
-                  >
-                    {docCount} {docCount === 1 ? 'document' : 'documents'}
-                  </Text>
-                </Box>
-              );
-              
-              return href ? (
-                <Link
-                  key={section.documentId}
-                  href={href}
-                  style={{ textDecoration: 'none' }}
-                >
-                  {cardContent}
-                </Link>
-              ) : (
-                <Box key={section.documentId}>
-                  {cardContent}
-                </Box>
-              );
-            })}
-          </SimpleGrid>
-        </VStack>
       )}
 
       {/* Fallback when no sections */}

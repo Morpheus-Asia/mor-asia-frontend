@@ -123,7 +123,7 @@ export function LearnLayoutClient({ children }: LearnLayoutClientProps) {
   return (
     <Box>
       {/* Header with Documentation title */}
-      <Box pb="1rem" mb="1.5rem" borderBottom="1px solid rgba(255, 255, 255, 0.1)">
+      <Box pb="1rem" borderBottom="1px solid rgba(255, 255, 255, 0.1)">
         <HStack gap="0.75rem" align="center">
           {/* Mobile Menu Button */}
           <Button
@@ -187,7 +187,7 @@ export function LearnLayoutClient({ children }: LearnLayoutClientProps) {
         </Box>
 
         {/* Main Content - uses page scroll */}
-        <Box flex="1" minW="0">
+        <Box flex="1" minW="0" pt="1.5rem">
           {children}
         </Box>
       </Flex>
