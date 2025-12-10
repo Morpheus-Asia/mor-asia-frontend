@@ -1,18 +1,75 @@
-import { Box, Heading, Text, VStack, SimpleGrid } from "@chakra-ui/react";
-import { getDocSections, DocSection } from "morpheus-asia/lib/strapi";
+'use client';
+
+import { Box, Heading, Text, VStack, SimpleGrid, Spinner } from "@chakra-ui/react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 
-export default async function LearnOverviewPage() {
-  let sections: DocSection[] = [];
+interface Doc {
+  id: number;
+  documentId: string;
+  Title: string;
+  Slug: string;
+  Content: string;
+  createdAt: string;
+  updatedAt: string;
+  publishedAt: string;
+}
 
-  try {
-    const response = await getDocSections();
-    if (response.data) {
-      sections = response.data;
+interface DocSection {
+  id: number;
+  documentId: string;
+  Title: string;
+  Slug: string;
+  docs?: Doc[];
+  createdAt: string;
+  updatedAt: string;
+  publishedAt: string;
+}
+
+interface DocSectionsResponse {
+  data: DocSection[];
+  meta: {
+    pagination?: {
+      page: number;
+      pageSize: number;
+      pageCount: number;
+      total: number;
+    };
+  };
+}
+
+export default function LearnOverviewPage() {
+  const [sections, setSections] = useState<DocSection[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    async function fetchDocSections() {
+      try {
+        setLoading(true);
+        const response = await fetch('/api/doc-sections');
+        
+        if (!response.ok) {
+          const errorData = await response.json().catch(() => ({}));
+          console.error('API Error:', errorData);
+          throw new Error(errorData.error || 'Failed to fetch documentation');
+        }
+        
+        const data: DocSectionsResponse = await response.json();
+        console.log('Fetched doc sections:', data);
+        setSections(data.data || []);
+        setError(null);
+      } catch (err) {
+        console.error('Error fetching doc sections:', err);
+        const errorMessage = err instanceof Error ? err.message : 'Failed to load documentation. Please try again later.';
+        setError(errorMessage);
+      } finally {
+        setLoading(false);
+      }
     }
-  } catch (error) {
-    console.error('Error fetching doc sections:', error);
-  }
+
+    fetchDocSections();
+  }, []);
 
   return (
     <VStack gap="3rem" align="stretch" w="100%">
@@ -40,8 +97,33 @@ export default async function LearnOverviewPage() {
         </Text>
       </Box>
 
+      {/* Loading State */}
+      {loading && (
+        <Box textAlign="center" py="4rem">
+          <Spinner size="xl" color="#1fdc8f" />
+          <Text mt="1rem" fontSize="1.25rem" color="rgba(255, 255, 255, 0.7)">
+            Loading documentation...
+          </Text>
+        </Box>
+      )}
+
+      {/* Error State */}
+      {error && (
+        <Box
+          textAlign="center"
+          py="4rem"
+          bg="rgba(255, 0, 0, 0.1)"
+          border="1px solid rgba(255, 0, 0, 0.3)"
+          borderRadius="8px"
+        >
+          <Text fontSize="1.25rem" color="rgba(255, 255, 255, 0.9)">
+            {error}
+          </Text>
+        </Box>
+      )}
+
       {/* Quick Start Tip */}
-      {sections.length > 0 && (
+      {!loading && !error && sections.length > 0 && (
         <Box
           p="1.5rem"
           bg="rgba(31, 220, 143, 0.05)"
@@ -60,7 +142,7 @@ export default async function LearnOverviewPage() {
       )}
 
       {/* Doc Sections Grid */}
-      {sections.length > 0 && (
+      {!loading && !error && sections.length > 0 && (
         <VStack gap="1.5rem" align="stretch">
           <Text
             fontSize="1rem"
@@ -129,7 +211,7 @@ export default async function LearnOverviewPage() {
       )}
 
       {/* Fallback when no sections */}
-      {sections.length === 0 && (
+      {!loading && !error && sections.length === 0 && (
         <Box
           p="2rem"
           bg="rgba(255, 255, 255, 0.03)"

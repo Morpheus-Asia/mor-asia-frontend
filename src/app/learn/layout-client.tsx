@@ -1,16 +1,89 @@
 'use client';
 
-import { Box, Flex, Button, Text, HStack } from "@chakra-ui/react";
+import { Box, Flex, Button, Text, HStack, Spinner, VStack } from "@chakra-ui/react";
 import { useState, useEffect } from "react";
 import { LearnSidebar, NavItem } from "morpheus-asia/components/learn-sidebar";
 
-interface LearnLayoutClientProps {
-  children: React.ReactNode;
-  navItems?: NavItem[];
+interface Doc {
+  id: number;
+  documentId: string;
+  Title: string;
+  Slug: string;
+  Content: string;
+  createdAt: string;
+  updatedAt: string;
+  publishedAt: string;
 }
 
-export function LearnLayoutClient({ children, navItems }: LearnLayoutClientProps) {
+interface DocSection {
+  id: number;
+  documentId: string;
+  Title: string;
+  Slug: string;
+  docs?: Doc[];
+  createdAt: string;
+  updatedAt: string;
+  publishedAt: string;
+}
+
+interface DocSectionsResponse {
+  data: DocSection[];
+  meta: {
+    pagination?: {
+      page: number;
+      pageSize: number;
+      pageCount: number;
+      total: number;
+    };
+  };
+}
+
+// Transform Strapi doc sections to nav items
+function transformToNavItems(sections: DocSection[]): NavItem[] {
+  const navItems: NavItem[] = [
+    {
+      id: 'overview',
+      label: 'Overview',
+      href: '/learn',
+    },
+  ];
+
+  sections.forEach((section) => {
+    const sectionItem: NavItem = {
+      id: section.Slug || section.documentId,
+      label: section.Title,
+      href: `/learn/${section.Slug}`,
+    };
+
+    // Add child docs if they exist
+    if (section.docs && section.docs.length > 0) {
+      sectionItem.children = section.docs.map((doc) => ({
+        id: doc.Slug || doc.documentId,
+        label: doc.Title,
+        href: `/learn/${section.Slug}/${doc.Slug}`,
+      }));
+    }
+
+    navItems.push(sectionItem);
+  });
+
+  return navItems;
+}
+
+interface LearnLayoutClientProps {
+  children: React.ReactNode;
+}
+
+export function LearnLayoutClient({ children }: LearnLayoutClientProps) {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [navItems, setNavItems] = useState<NavItem[]>([
+    {
+      id: 'overview',
+      label: 'Overview',
+      href: '/learn',
+    },
+  ]);
+  const [sidebarLoading, setSidebarLoading] = useState(true);
 
   useEffect(() => {
     const handleResize = () => {
@@ -20,6 +93,31 @@ export function LearnLayoutClient({ children, navItems }: LearnLayoutClientProps
     };
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  useEffect(() => {
+    async function fetchNavItems() {
+      try {
+        setSidebarLoading(true);
+        const response = await fetch('/api/doc-sections');
+        
+        if (!response.ok) {
+          throw new Error('Failed to fetch navigation');
+        }
+        
+        const data: DocSectionsResponse = await response.json();
+        if (data.data) {
+          setNavItems(transformToNavItems(data.data));
+        }
+      } catch (err) {
+        console.error('Error fetching nav items:', err);
+        // Keep default nav items on error
+      } finally {
+        setSidebarLoading(false);
+      }
+    }
+
+    fetchNavItems();
   }, []);
 
   return (
@@ -71,7 +169,16 @@ export function LearnLayoutClient({ children, navItems }: LearnLayoutClientProps
           borderRight="1px solid rgba(255, 255, 255, 0.1)"
           className="learn-sidebar-scroll"
         >
-          <LearnSidebar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} navItems={navItems} />
+          {sidebarLoading ? (
+            <VStack py="2rem" gap="1rem">
+              <Spinner size="md" color="#1fdc8f" />
+              <Text fontSize="0.875rem" color="rgba(255, 255, 255, 0.5)">
+                Loading...
+              </Text>
+            </VStack>
+          ) : (
+            <LearnSidebar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} navItems={navItems} />
+          )}
         </Box>
 
         {/* Mobile Sidebar */}
