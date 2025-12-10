@@ -89,7 +89,7 @@ export default function DocPage() {
           <Text fontSize="1rem" color="rgba(255, 255, 255, 0.8)" mb="2rem">
             The document you&apos;re looking for doesn&apos;t exist or has been removed.
           </Text>
-          <Link href={`/learn/${sectionSlug}`}>
+          <Link href="/learn">
             <Box
               as="button"
               bg="#1fdc8f"
@@ -104,7 +104,7 @@ export default function DocPage() {
               transition="all 0.2s"
               _hover={{ bg: "#18c57d" }}
             >
-              Back to Section
+              Back to Learn
             </Box>
           </Link>
         </Box>
@@ -116,17 +116,13 @@ export default function DocPage() {
     <VStack gap="2rem" align="stretch" maxW="900px">
       {/* Breadcrumb */}
       <Text fontSize="0.875rem" color="rgba(255, 255, 255, 0.6)">
-        <Link href="/learn">
-          <ChakraLink color="#1fdc8f" _hover={{ textDecoration: 'underline' }}>
-            Learn
-          </ChakraLink>
-        </Link>
+        <ChakraLink as={Link} href="/learn" color="#1fdc8f" _hover={{ textDecoration: 'underline' }}>
+          Learn
+        </ChakraLink>
         {' / '}
-        <Link href={`/learn/${sectionSlug}`}>
-          <ChakraLink color="#1fdc8f" _hover={{ textDecoration: 'underline' }}>
-            {sectionSlug.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}
-          </ChakraLink>
-        </Link>
+        <Text as="span" color="rgba(255, 255, 255, 0.6)">
+          {sectionSlug.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}
+        </Text>
         {' / '}
         <Text as="span" color="rgba(255, 255, 255, 0.9)">{doc.Title}</Text>
       </Text>

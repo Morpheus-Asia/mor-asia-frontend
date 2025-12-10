@@ -1,11 +1,11 @@
 'use client';
 
-import { Box, Container, Heading, Text, VStack, HStack, Link, Grid } from "@chakra-ui/react";
+import { Box, Heading, Text, VStack, HStack, Link, Grid } from "@chakra-ui/react";
 
 export default function MORTokenPage() {
   return (
     <Box as="main" position="relative" minH="100vh" pt="3rem" pb="4rem">
-      <Container maxW="1200px" px="2rem">
+      <Box px="1rem" w="100%">
         <VStack gap="4rem" align="stretch">
           {/* Header Section */}
           <Box textAlign="center">
@@ -556,7 +556,7 @@ export default function MORTokenPage() {
             </HStack>
           </Box>
         </VStack>
-      </Container>
+      </Box>
     </Box>
   );
 }

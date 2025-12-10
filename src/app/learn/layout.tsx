@@ -1,5 +1,5 @@
 import { Metadata } from 'next';
-import { Box, Container } from "@chakra-ui/react";
+import { Box } from "@chakra-ui/react";
 import { LearnLayoutClient } from "./layout-client";
 import { getDocSections, DocSection } from "morpheus-asia/lib/strapi";
 import { NavItem } from "morpheus-asia/components/learn-sidebar";
@@ -83,12 +83,10 @@ export default async function LearnLayout({
   }
 
   return (
-    <Box as="main" position="relative" minH="100vh" pt={{ base: "1rem", md: "1.5rem" }} pb="4rem">
-      <Container maxW="100%" px={{ base: "1rem", md: "2rem", lg: "3rem" }}>
-        <LearnLayoutClient navItems={navItems}>
-          {children}
-        </LearnLayoutClient>
-      </Container>
+    <Box as="main" position="relative" minH="100vh" pb="4rem" px={{ base: "1rem"}}>
+      <LearnLayoutClient navItems={navItems}>
+        {children}
+      </LearnLayoutClient>
     </Box>
   );
 }

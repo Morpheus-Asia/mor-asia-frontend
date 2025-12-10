@@ -80,7 +80,7 @@ export function LearnLayoutClient({ children, navItems }: LearnLayoutClientProps
         </Box>
 
         {/* Main Content - uses page scroll */}
-        <Box flex="1" maxW={{ base: "100%", lg: "calc(100% - 300px)" }}>
+        <Box flex="1" minW="0">
           {children}
         </Box>
       </Flex>

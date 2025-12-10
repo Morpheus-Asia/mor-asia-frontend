@@ -42,35 +42,60 @@ export function LearnSidebar({ isOpen, onClose, navItems = defaultNavItems }: Le
 
     return (
       <Box key={item.id} w="100%">
-        {/* Section header as a link */}
-        <Link href={item.href} onClick={handleLinkClick} style={{ textDecoration: 'none' }}>
-          <HStack
+        {/* Section header - non-clickable if it has children, clickable if it doesn't */}
+        {hasChildren ? (
+          // Section title (non-clickable)
+          <Box
             w="100%"
-            py="0.5rem"
+            py="0.75rem"
             px={level > 0 ? "1.5rem" : "1rem"}
-            borderRadius="8px"
-            transition="all 0.2s"
-            align="flex-start"
-            _hover={{
-              bg: "rgba(31, 220, 143, 0.1)",
-            }}
-            bg={isActive ? "rgba(31, 220, 143, 0.15)" : "transparent"}
-            borderLeft={isActive ? "3px solid #1fdc8f" : "3px solid transparent"}
-            cursor="pointer"
+            mt={level === 0 ? "0.5rem" : "0"}
+            mb={level === 0 ? "0.25rem" : "0"}
           >
             <Text
-              fontSize={level > 0 ? "0.875rem" : "0.9375rem"}
-              fontWeight={level > 0 ? "normal" : "bold"}
-              color={isActive ? "#1fdc8f" : "rgba(255, 255, 255, 0.9)"}
+              fontSize="0.875rem"
+              fontWeight="600"
+              color="rgba(255, 255, 255, 0.6)"
+              textTransform="uppercase"
+              letterSpacing="0.05em"
               textAlign="left"
-              pl={level > 0 ? "0.5rem" : "0"}
               lineHeight="1.6"
               wordBreak="break-word"
             >
               {item.label}
             </Text>
-          </HStack>
-        </Link>
+          </Box>
+        ) : (
+          // Clickable link (for items without children like Overview or individual docs)
+          <Link href={item.href} onClick={handleLinkClick} style={{ textDecoration: 'none' }}>
+            <HStack
+              w="100%"
+              py="0.5rem"
+              px={level > 0 ? "1.5rem" : "1rem"}
+              borderRadius="8px"
+              transition="all 0.2s"
+              align="flex-start"
+              _hover={{
+                bg: "rgba(31, 220, 143, 0.1)",
+              }}
+              bg={isActive ? "rgba(31, 220, 143, 0.15)" : "transparent"}
+              borderLeft={isActive ? "3px solid #1fdc8f" : "3px solid transparent"}
+              cursor="pointer"
+            >
+              <Text
+                fontSize={level > 0 ? "0.875rem" : "0.9375rem"}
+                fontWeight={level > 0 ? "normal" : "bold"}
+                color={isActive ? "#1fdc8f" : "rgba(255, 255, 255, 0.9)"}
+                textAlign="left"
+                pl={level > 0 ? "0.5rem" : "0"}
+                lineHeight="1.6"
+                wordBreak="break-word"
+              >
+                {item.label}
+              </Text>
+            </HStack>
+          </Link>
+        )}
 
         {/* Always show children (no collapse) */}
         {hasChildren && (

@@ -74,41 +74,54 @@ export default async function LearnOverviewPage() {
           <SimpleGrid columns={{ base: 1, md: 2 }} gap="1rem">
             {sections.map((section) => {
               const docCount = section.docs?.length || 0;
+              const firstDoc = section.docs && section.docs.length > 0 ? section.docs[0] : null;
+              const href = firstDoc ? `/learn/${section.Slug}/${firstDoc.Slug}` : undefined;
               
-              return (
-                <Link
-                  key={section.documentId}
-                  href={`/learn/${section.Slug}`}
-                  style={{ textDecoration: 'none' }}
-                >
-                  <Box
-                    p="1.5rem"
-                    bg="rgba(255, 255, 255, 0.03)"
-                    borderRadius="8px"
-                    border="1px solid rgba(255, 255, 255, 0.1)"
-                    transition="all 0.2s"
-                    _hover={{
+              const cardContent = (
+                <Box
+                  p="1.5rem"
+                  bg="rgba(255, 255, 255, 0.03)"
+                  borderRadius="8px"
+                  border="1px solid rgba(255, 255, 255, 0.1)"
+                  transition="all 0.2s"
+                  {...(href ? {
+                    _hover: {
                       bg: "rgba(31, 220, 143, 0.08)",
                       borderColor: "rgba(31, 220, 143, 0.3)",
                       transform: "translateY(-2px)",
-                    }}
+                    },
+                    cursor: "pointer"
+                  } : {})}
+                >
+                  <Text
+                    fontSize="1.25rem"
+                    fontWeight="600"
+                    color="white"
+                    mb="0.5rem"
                   >
-                    <Text
-                      fontSize="1.25rem"
-                      fontWeight="600"
-                      color="white"
-                      mb="0.5rem"
-                    >
-                      {section.Title}
-                    </Text>
-                    <Text
-                      fontSize="0.875rem"
-                      color="rgba(255, 255, 255, 0.5)"
-                    >
-                      {docCount} {docCount === 1 ? 'document' : 'documents'}
-                    </Text>
-                  </Box>
+                    {section.Title}
+                  </Text>
+                  <Text
+                    fontSize="0.875rem"
+                    color="rgba(255, 255, 255, 0.5)"
+                  >
+                    {docCount} {docCount === 1 ? 'document' : 'documents'}
+                  </Text>
+                </Box>
+              );
+              
+              return href ? (
+                <Link
+                  key={section.documentId}
+                  href={href}
+                  style={{ textDecoration: 'none' }}
+                >
+                  {cardContent}
                 </Link>
+              ) : (
+                <Box key={section.documentId}>
+                  {cardContent}
+                </Box>
               );
             })}
           </SimpleGrid>
