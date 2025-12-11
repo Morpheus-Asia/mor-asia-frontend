@@ -149,6 +149,7 @@ export function LearnSidebar({ isOpen, onClose, navItems = defaultNavItems }: Le
                 zIndex: 10001,
                 overflowY: 'auto',
                 borderRight: '1px solid rgba(255, 255, 255, 0.1)',
+                background: '#090d0e',
               }}
               className="learn-sidebar-scroll"
             >
