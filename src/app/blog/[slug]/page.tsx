@@ -157,7 +157,7 @@ export default function BlogPostPage() {
   return (
     <Box as="main" position="relative" minH="100vh" pt={{ base: "2rem", md: "3rem" }} pb="4rem">
       <Container maxW="1200px" px={{ base: "1rem", md: "2rem" }}>
-        <VStack gap={{ base: "2rem", md: "3rem" }} align="stretch">
+        <VStack align="stretch">
           {/* Back Button */}
           <Link href="/blogs/1">
             <Text
@@ -198,7 +198,7 @@ export default function BlogPostPage() {
               as="h1"
               fontSize={{ base: "1.75rem", sm: "2.25rem", md: "3rem", lg: "3.5rem" }}
               fontWeight="bold"
-              mb="2rem"
+              mb="1rem"
               lineHeight="1.2"
               color="white"
             >
@@ -208,7 +208,7 @@ export default function BlogPostPage() {
             {/* Meta Info */}
             <HStack
               gap={{ base: "1rem", md: "1.5rem" }}
-              pb="2rem"
+              pb="1rem"
               borderBottom="2px solid rgba(255, 255, 255, 0.1)"
               flexWrap="wrap"
               fontSize={{ base: "0.875rem", md: "1rem" }}
@@ -236,6 +236,7 @@ export default function BlogPostPage() {
             fontSize={{ base: "1rem", md: "1.125rem" }}
             lineHeight="1.8"
             color="white"
+            fontFamily="'Helvetica Neue', Helvetica, sans-serif"
             css={{
               '& h1': {
                 fontSize: 'clamp(1.75rem, 5vw, 2.5rem)',
@@ -244,6 +245,7 @@ export default function BlogPostPage() {
                 marginTop: '3rem',
                 marginBottom: '1.5rem',
                 lineHeight: '1.3',
+                fontFamily: "'Helvetica Neue', Helvetica, sans-serif",
               },
               '& h2': {
                 fontSize: 'clamp(1.5rem, 4vw, 2rem)',
@@ -252,6 +254,7 @@ export default function BlogPostPage() {
                 marginTop: '2.5rem',
                 marginBottom: '1.25rem',
                 lineHeight: '1.3',
+                fontFamily: "'Helvetica Neue', Helvetica, sans-serif",
               },
               '& h3': {
                 fontSize: 'clamp(1.25rem, 3.5vw, 1.5rem)',
@@ -260,6 +263,7 @@ export default function BlogPostPage() {
                 marginTop: '2rem',
                 marginBottom: '1rem',
                 lineHeight: '1.4',
+                fontFamily: "'Helvetica Neue', Helvetica, sans-serif",
               },
               '& h4': {
                 fontSize: 'clamp(1.125rem, 3vw, 1.25rem)',
@@ -268,11 +272,13 @@ export default function BlogPostPage() {
                 marginTop: '1.5rem',
                 marginBottom: '0.75rem',
                 lineHeight: '1.4',
+                fontFamily: "'Helvetica Neue', Helvetica, sans-serif",
               },
               '& p': {
                 marginBottom: '1.5rem',
                 color: 'white',
                 lineHeight: '1.8',
+                fontFamily: "'Helvetica Neue', Helvetica, sans-serif",
               },
               '& a': {
                 color: '#1fdc8f',
@@ -300,6 +306,7 @@ export default function BlogPostPage() {
                 color: 'white',
                 lineHeight: '1.7',
                 paddingLeft: '0.5rem',
+                fontFamily: "'Helvetica Neue', Helvetica, sans-serif",
               },
               '& li::marker': {
                 color: '#1fdc8f',
@@ -321,10 +328,12 @@ export default function BlogPostPage() {
               '& strong': {
                 fontWeight: 'bold',
                 color: 'white',
+                fontFamily: "'Helvetica Neue', Helvetica, sans-serif",
               },
               '& em': {
                 fontStyle: 'italic',
                 color: 'white',
+                fontFamily: "'Helvetica Neue', Helvetica, sans-serif",
               },
               '& code': {
                 background: 'rgba(31, 220, 143, 0.1)',
@@ -359,13 +368,14 @@ export default function BlogPostPage() {
                 color: 'white',
                 fontStyle: 'italic',
                 background: 'rgba(31, 220, 143, 0.05)',
+                fontFamily: "'Helvetica Neue', Helvetica, sans-serif",
               },
               '& blockquote p': {
                 marginBottom: '0.5rem',
               },
               '& img': {
-                maxWidth: '100%',
-                width: '100%',
+                maxWidth: 'min(100%, 600px)',
+                height: 'auto',
                 borderRadius: '8px',
                 marginTop: '2rem',
                 marginBottom: '2rem',
@@ -380,11 +390,13 @@ export default function BlogPostPage() {
                 borderCollapse: 'collapse',
                 display: 'block',
                 overflowX: 'auto',
+                fontFamily: "'Helvetica Neue', Helvetica, sans-serif",
               },
               '& th, & td': {
                 border: '1px solid rgba(255, 255, 255, 0.2)',
                 padding: 'clamp(0.5rem, 2vw, 0.75rem)',
                 textAlign: 'left',
+                color: 'white',
               },
               '& th': {
                 background: 'rgba(31, 220, 143, 0.1)',
@@ -447,10 +459,11 @@ export default function BlogPostPage() {
             <Text
               fontSize={{ base: "1rem", md: "1.25rem" }}
               mb="2rem"
-              color="rgba(255, 255, 255, 0.9)"
+              color="white"
               lineHeight="1.7"
               maxW="700px"
               mx="auto"
+              fontFamily="'Helvetica Neue', Helvetica, sans-serif"
             >
               Connect with fellow developers and AI enthusiasts. 
               Share your thoughts and stay updated with the latest from Morpheus Asia.

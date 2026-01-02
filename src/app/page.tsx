@@ -255,7 +255,7 @@ export default function Home() {
             textDecoration="underline"
             _hover={{ color: "#18c57d" }}
           >
-            CONFUSED? CLICK HERE
+            NEW TO MORPHEUS & CONFUSED? CLICK HERE
           </Link>
         </Container>
 

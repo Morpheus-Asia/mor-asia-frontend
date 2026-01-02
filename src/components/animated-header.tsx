@@ -489,18 +489,30 @@ export function AnimatedHeader() {
                   paddingLeft: '1rem',
                   marginTop: '0.5rem',
                 }}>
-                  <Link 
-                    href="/contribute/staking-dashboard" 
+                  <span 
                     style={{
                       ...linkStyle,
                       fontSize: '1rem',
                       padding: '0.75rem 0',
                       borderBottom: '1px solid rgba(255, 255, 255, 0.05)',
+                      color: 'rgba(255, 255, 255, 0.4)',
+                      cursor: 'not-allowed',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '0.5rem',
                     }}
-                    onClick={closeMobileMenu}
                   >
                     Staking Dashboard
-                  </Link>
+                    <span style={{
+                      fontSize: '0.7rem',
+                      background: 'rgba(31, 220, 143, 0.2)',
+                      color: '#1fdc8f',
+                      padding: '0.15rem 0.4rem',
+                      borderRadius: '4px',
+                    }}>
+                      Soon
+                    </span>
+                  </span>
                   <Link 
                     href="/contribute/mor-token" 
                     style={{
@@ -692,28 +704,32 @@ export function AnimatedHeader() {
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
           >
-            <Link 
-              href="/contribute/staking-dashboard" 
+            <span 
               style={{
-                color: 'white',
+                color: 'rgba(255, 255, 255, 0.4)',
                 textDecoration: 'none',
-                display: 'block',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '0.5rem',
                 padding: '0.75rem 1rem',
                 fontSize: '1rem',
                 fontWeight: 'bold',
                 fontFamily: 'MOS, sans-serif',
                 borderRadius: '8px',
-                transition: 'background 0.2s',
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.background = 'rgba(31, 220, 143, 0.15)';
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.background = 'transparent';
+                cursor: 'not-allowed',
               }}
             >
               Staking Dashboard
-            </Link>
+              <span style={{
+                fontSize: '0.7rem',
+                background: 'rgba(31, 220, 143, 0.2)',
+                color: '#1fdc8f',
+                padding: '0.15rem 0.4rem',
+                borderRadius: '4px',
+              }}>
+                Soon
+              </span>
+            </span>
             <Link 
               href="/contribute/mor-token" 
               style={{

@@ -86,7 +86,7 @@ const BlogCard = ({ post }: { post: BlogPost }) => {
         bg="rgba(255, 255, 255, 0.03)"
         border="1px solid rgba(255, 255, 255, 0.1)"
         overflow="hidden"
-        h="100%"
+        h={imageUrl ? "100%" : "auto"}
         transition="all 0.3s"
         _hover={{
           bg: "rgba(31, 220, 143, 0.05)",
@@ -147,8 +147,9 @@ const BlogCard = ({ post }: { post: BlogPost }) => {
             <Text
               fontSize="1.125rem"
               lineHeight="1.7"
-              color="rgba(255, 255, 255, 0.7)"
+              color="white"
               flex="1"
+              fontFamily="'Helvetica Neue', Helvetica, sans-serif"
             >
               {excerpt}
             </Text>
@@ -275,11 +276,12 @@ export default function BlogsPage() {
             </Heading>
             <Text
               fontSize={{ base: "1.125rem", sm: "1.25rem", md: "1.5rem" }}
-              color="rgba(255, 255, 255, 0.8)"
+              color="white"
               maxW="800px"
               mx="auto"
               lineHeight="1.7"
               px={{ base: "1rem", md: "0" }}
+              fontFamily="'Helvetica Neue', Helvetica, sans-serif"
             >
               Insights, tutorials, and updates from the Morpheus Asia community. 
               Stay informed about the latest developments in decentralized AI.
@@ -353,6 +355,7 @@ export default function BlogsPage() {
               <Grid
                 templateColumns={{ base: "1fr", md: "repeat(2, 1fr)" }}
                 gap="2rem"
+                alignItems="start"
               >
                 {currentPosts.map(post => (
                   <BlogCard key={post.id} post={post} />
@@ -463,10 +466,11 @@ export default function BlogsPage() {
             <Text
               fontSize={{ base: "1rem", md: "1.25rem" }}
               mb="2rem"
-              color="rgba(255, 255, 255, 0.9)"
+              color="white"
               lineHeight="1.7"
               maxW="700px"
               mx="auto"
+              fontFamily="'Helvetica Neue', Helvetica, sans-serif"
             >
               Join our community channels to never miss an update. Get the latest articles, 
               announcements, and insights delivered directly to you.
