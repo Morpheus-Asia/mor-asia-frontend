@@ -232,7 +232,7 @@ export function TableOfContents({ contentSelector = '.doc-content' }: TableOfCon
                 color={isActive ? "#1fdc8f" : "rgba(255, 255, 255, 0.9)"}
                 lineHeight="1.6"
                 transition="all 0.2s ease"
-                noOfLines={2}
+                lineClamp={2}
                 wordBreak="break-word"
                 fontFamily="'Helvetica Neue', Helvetica, sans-serif"
               >
