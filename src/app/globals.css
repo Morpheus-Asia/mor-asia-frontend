@@ -90,3 +90,25 @@ h1, h2, h3, h4, h5, h6 {
 .learn-content-scroll::-webkit-scrollbar-thumb:hover {
   background: rgba(255, 255, 255, 0.3);
 }
+
+/* Learn page content typography */
+.learn-content,
+.doc-content {
+  font-family: 'Helvetica Neue', Helvetica, sans-serif;
+  color: white;
+}
+
+.learn-content p,
+.learn-content li,
+.learn-content span,
+.doc-content p,
+.doc-content li,
+.doc-content span {
+  font-family: 'Helvetica Neue', Helvetica, sans-serif;
+  color: white;
+}
+
+/* Learn sidebar typography */
+.learn-sidebar-scroll {
+  font-family: 'Helvetica Neue', Helvetica, sans-serif;
+}

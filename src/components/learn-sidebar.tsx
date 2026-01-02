@@ -48,9 +48,9 @@ export function LearnSidebar({ isOpen, onClose, navItems = defaultNavItems }: Le
           <Box
             w="100%"
             py="0.75rem"
-            px={level > 0 ? "1.5rem" : "1rem"}
-            mt={level === 0 ? "0.5rem" : "0"}
-            mb={level === 0 ? "0.25rem" : "0"}
+            pl="1rem"
+            mt="0.5rem"
+            mb="0.25rem"
           >
             <Text
               fontSize="0.875rem"
@@ -61,6 +61,7 @@ export function LearnSidebar({ isOpen, onClose, navItems = defaultNavItems }: Le
               textAlign="left"
               lineHeight="1.6"
               wordBreak="break-word"
+              fontFamily="'Helvetica Neue', Helvetica, sans-serif"
             >
               {item.label}
             </Text>
@@ -71,8 +72,9 @@ export function LearnSidebar({ isOpen, onClose, navItems = defaultNavItems }: Le
             <HStack
               w="100%"
               py="0.5rem"
-              px={level > 0 ? "1.5rem" : "1rem"}
-              borderRadius="8px"
+              pl="1rem"
+              pr="0.5rem"
+              borderRadius="0"
               transition="all 0.2s"
               align="flex-start"
               _hover={{
@@ -83,13 +85,13 @@ export function LearnSidebar({ isOpen, onClose, navItems = defaultNavItems }: Le
               cursor="pointer"
             >
               <Text
-                fontSize={level > 0 ? "0.875rem" : "0.9375rem"}
-                fontWeight={level > 0 ? "normal" : "bold"}
+                fontSize="0.9375rem"
+                fontWeight="bold"
                 color={isActive ? "#1fdc8f" : "rgba(255, 255, 255, 0.9)"}
                 textAlign="left"
-                pl={level > 0 ? "0.5rem" : "0"}
                 lineHeight="1.6"
                 wordBreak="break-word"
+                fontFamily="'Helvetica Neue', Helvetica, sans-serif"
               >
                 {item.label}
               </Text>
@@ -99,7 +101,7 @@ export function LearnSidebar({ isOpen, onClose, navItems = defaultNavItems }: Le
 
         {/* Always show children (no collapse) */}
         {hasChildren && (
-          <VStack align="stretch" mt="0.25rem" ml="1rem" gap="0.25rem">
+          <VStack align="stretch" mt="0.25rem" gap="0.25rem">
             {item.children!.map(child => renderNavItem(child, level + 1))}
           </VStack>
         )}
@@ -153,13 +155,14 @@ export function LearnSidebar({ isOpen, onClose, navItems = defaultNavItems }: Le
               }}
               className="learn-sidebar-scroll"
             >
-              <VStack align="stretch" gap="0.25rem" pt="5rem" pb="2rem" px="1rem">
+              <VStack align="stretch" gap="0.25rem" pt="5rem" pb="2rem">
                 <Text
                   fontSize="1.125rem"
                   fontWeight="bold"
                   color="white"
                   mb="0.5rem"
-                  px="1rem"
+                  pl="1rem"
+                  fontFamily="'Helvetica Neue', Helvetica, sans-serif"
                 >
                   Documentation
                 </Text>
@@ -172,7 +175,7 @@ export function LearnSidebar({ isOpen, onClose, navItems = defaultNavItems }: Le
 
       {/* Desktop Sidebar Content */}
       <Box display={{ base: 'none', lg: 'block' }}>
-        <VStack align="stretch" gap="0.25rem" pt="1rem" pb="2rem" px="1rem">
+        <VStack align="stretch" gap="0.25rem" pt="0" pb="2rem">
           {navItems.map(item => renderNavItem(item))}
         </VStack>
       </Box>

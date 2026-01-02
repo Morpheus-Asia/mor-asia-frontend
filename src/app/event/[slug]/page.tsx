@@ -234,11 +234,101 @@ export default function EventPage() {
 
             {/* Description */}
             <Box
+              className="event-content"
               fontSize={{ base: "1.125rem", md: "1.25rem" }}
               lineHeight="1.8"
-              color="rgba(255, 255, 255, 0.9)"
+              color="white"
+              fontFamily="'Helvetica Neue', Helvetica, sans-serif"
               pb="2rem"
               borderBottom="2px solid rgba(255, 255, 255, 0.1)"
+              css={{
+                '& h1': {
+                  fontSize: 'clamp(1.75rem, 5vw, 2.5rem)',
+                  fontWeight: 'bold',
+                  color: 'white',
+                  marginTop: '2rem',
+                  marginBottom: '1rem',
+                  lineHeight: '1.3',
+                  fontFamily: "'Helvetica Neue', Helvetica, sans-serif",
+                },
+                '& h2': {
+                  fontSize: 'clamp(1.5rem, 4vw, 2rem)',
+                  fontWeight: 'bold',
+                  color: 'white',
+                  marginTop: '1.5rem',
+                  marginBottom: '0.75rem',
+                  lineHeight: '1.3',
+                  fontFamily: "'Helvetica Neue', Helvetica, sans-serif",
+                },
+                '& h3': {
+                  fontSize: 'clamp(1.25rem, 3.5vw, 1.5rem)',
+                  fontWeight: 'bold',
+                  color: 'white',
+                  marginTop: '1.25rem',
+                  marginBottom: '0.5rem',
+                  lineHeight: '1.4',
+                  fontFamily: "'Helvetica Neue', Helvetica, sans-serif",
+                },
+                '& p': {
+                  marginBottom: '1.25rem',
+                  color: 'white',
+                  lineHeight: '1.8',
+                  fontFamily: "'Helvetica Neue', Helvetica, sans-serif",
+                },
+                '& a': {
+                  color: '#1fdc8f',
+                  textDecoration: 'underline',
+                },
+                '& a:hover': {
+                  color: '#18c57d',
+                },
+                '& ul': {
+                  marginLeft: 'clamp(1rem, 5vw, 2rem)',
+                  marginBottom: '1.25rem',
+                  marginTop: '0.75rem',
+                  listStyleType: 'disc',
+                  paddingLeft: '0.5rem',
+                },
+                '& ol': {
+                  marginLeft: 'clamp(1rem, 5vw, 2rem)',
+                  marginBottom: '1.25rem',
+                  marginTop: '0.75rem',
+                  listStyleType: 'decimal',
+                  paddingLeft: '0.5rem',
+                },
+                '& li': {
+                  marginBottom: '0.5rem',
+                  color: 'white',
+                  lineHeight: '1.7',
+                  paddingLeft: '0.5rem',
+                  fontFamily: "'Helvetica Neue', Helvetica, sans-serif",
+                },
+                '& li::marker': {
+                  color: '#1fdc8f',
+                },
+                '& strong': {
+                  fontWeight: 'bold',
+                  color: 'white',
+                  fontFamily: "'Helvetica Neue', Helvetica, sans-serif",
+                },
+                '& em': {
+                  fontStyle: 'italic',
+                  color: 'white',
+                  fontFamily: "'Helvetica Neue', Helvetica, sans-serif",
+                },
+                '& blockquote': {
+                  borderLeft: '4px solid #1fdc8f',
+                  paddingLeft: 'clamp(1rem, 3vw, 1.5rem)',
+                  paddingTop: '0.5rem',
+                  paddingBottom: '0.5rem',
+                  marginTop: '1rem',
+                  marginBottom: '1rem',
+                  color: 'white',
+                  fontStyle: 'italic',
+                  background: 'rgba(31, 220, 143, 0.05)',
+                  fontFamily: "'Helvetica Neue', Helvetica, sans-serif",
+                },
+              }}
             >
               <ReactMarkdown>{event.Description}</ReactMarkdown>
             </Box>

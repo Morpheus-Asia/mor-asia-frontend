@@ -113,7 +113,7 @@ export default function DocPage() {
   }
 
   return (
-    <VStack gap="2rem" align="stretch" maxW="900px">
+    <VStack gap="2rem" align="stretch" w="100%">
       {/* Breadcrumb */}
       <Text fontSize="0.875rem" color="rgba(255, 255, 255, 0.6)">
         <ChakraLink as={Link} href="/learn" color="#1fdc8f" _hover={{ textDecoration: 'underline' }}>
@@ -141,7 +141,7 @@ export default function DocPage() {
           {doc.Title}
         </Heading>
         {doc.updatedAt && (
-          <Text fontSize="0.875rem" color="rgba(255, 255, 255, 0.5)">
+          <Text fontSize="0.875rem" color="rgba(255, 255, 255, 0.5)" fontFamily="'Helvetica Neue', Helvetica, sans-serif">
             Last updated: {new Date(doc.updatedAt).toLocaleDateString('en-US', {
               year: 'numeric',
               month: 'long',
@@ -192,8 +192,9 @@ export default function DocPage() {
           },
           '& p': {
             marginBottom: '1.25rem',
-            color: 'rgba(255, 255, 255, 0.9)',
+            color: 'white',
             lineHeight: '1.8',
+            fontFamily: "'Helvetica Neue', Helvetica, sans-serif",
           },
           '& a': {
             color: '#1fdc8f',
@@ -218,9 +219,10 @@ export default function DocPage() {
           },
           '& li': {
             marginBottom: '0.5rem',
-            color: 'rgba(255, 255, 255, 0.9)',
+            color: 'white',
             lineHeight: '1.7',
             paddingLeft: '0.25rem',
+            fontFamily: "'Helvetica Neue', Helvetica, sans-serif",
           },
           '& li::marker': {
             color: '#1fdc8f',
@@ -267,7 +269,7 @@ export default function DocPage() {
           '& pre code': {
             background: 'transparent',
             padding: 0,
-            color: 'rgba(255, 255, 255, 0.9)',
+            color: 'white',
             fontSize: 'clamp(0.8rem, 2.5vw, 0.9rem)',
           },
           '& blockquote': {
@@ -277,9 +279,10 @@ export default function DocPage() {
             paddingBottom: '0.5rem',
             marginTop: '1.25rem',
             marginBottom: '1.25rem',
-            color: 'rgba(255, 255, 255, 0.85)',
+            color: 'white',
             fontStyle: 'italic',
             background: 'rgba(31, 220, 143, 0.05)',
+            fontFamily: "'Helvetica Neue', Helvetica, sans-serif",
           },
           '& blockquote p': {
             marginBottom: '0.5rem',

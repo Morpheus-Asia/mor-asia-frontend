@@ -3,6 +3,7 @@
 import { Box, Flex, Button, Text, HStack, Spinner, VStack } from "@chakra-ui/react";
 import { useState, useEffect } from "react";
 import { LearnSidebar, NavItem } from "morpheus-asia/components/learn-sidebar";
+import { TableOfContents } from "morpheus-asia/components/table-of-contents";
 
 interface Doc {
   id: number;
@@ -189,6 +190,23 @@ export function LearnLayoutClient({ children }: LearnLayoutClientProps) {
         {/* Main Content - uses page scroll */}
         <Box flex="1" minW="0" pt="1.5rem">
           {children}
+        </Box>
+
+        {/* Right Column - Table of Contents */}
+        <Box
+          display={{ base: 'none', xl: 'block' }}
+          flexShrink={0}
+          w="240px"
+          position="sticky"
+          top="6rem"
+          h="calc(100vh - 12rem)"
+          overflowY="auto"
+          overflowX="hidden"
+          borderLeft="1px solid rgba(255, 255, 255, 0.1)"
+          pl="1.5rem"
+          className="learn-sidebar-scroll"
+        >
+          <TableOfContents contentSelector=".doc-content" />
         </Box>
       </Flex>
     </Box>

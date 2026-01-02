@@ -1,11 +1,11 @@
 'use client';
 
-import { Box, Heading, Text, VStack, HStack, Link, Grid } from "@chakra-ui/react";
+import { Box, Container, Heading, Text, VStack, HStack, Link, Grid } from "@chakra-ui/react";
 
 export default function MORTokenPage() {
   return (
-    <Box as="main" position="relative" minH="100vh" pt="3rem" pb="4rem">
-      <Box px="1rem" w="100%">
+    <Box as="main" position="relative" minH="100vh" pt={{ base: "2rem", md: "3rem" }} pb="4rem">
+      <Container maxW="1200px" px={{ base: "1rem", md: "2rem" }}>
         <VStack gap="4rem" align="stretch">
           {/* Header Section */}
           <Box textAlign="center">
@@ -31,6 +31,7 @@ export default function MORTokenPage() {
               maxW="900px"
               mx="auto"
               lineHeight="1.8"
+              fontFamily="'Helvetica Neue', Helvetica, sans-serif"
             >
               The native utility token powering the Morpheus decentralized AI network
             </Text>
@@ -52,6 +53,7 @@ export default function MORTokenPage() {
               color="white"
               lineHeight="1.8"
               mb="1.5rem"
+              fontFamily="'Helvetica Neue', Helvetica, sans-serif"
             >
               MOR is the native utility token of the Morpheus network, designed to coordinate and 
               incentivize the decentralized AI ecosystem. It serves as the medium of exchange for 
@@ -62,6 +64,7 @@ export default function MORTokenPage() {
               fontSize="1.25rem"
               color="white"
               lineHeight="1.8"
+              fontFamily="'Helvetica Neue', Helvetica, sans-serif"
             >
               By holding and using MOR tokens, participants gain access to a global network of AI 
               models and computing resources while contributing to the growth of decentralized artificial 
@@ -108,6 +111,7 @@ export default function MORTokenPage() {
                   fontSize="1.125rem"
                   color="white"
                   lineHeight="1.7"
+                  fontFamily="'Helvetica Neue', Helvetica, sans-serif"
                 >
                   Use MOR tokens to access a wide range of AI models and services on the 
                   Morpheus network. Pay only for what you use with transparent, decentralized pricing.
@@ -138,6 +142,7 @@ export default function MORTokenPage() {
                   fontSize="1.125rem"
                   color="white"
                   lineHeight="1.7"
+                  fontFamily="'Helvetica Neue', Helvetica, sans-serif"
                 >
                   Earn MOR tokens by providing computational resources to the network. Contribute 
                   your GPU power and get rewarded for enabling decentralized AI inference.
@@ -168,6 +173,7 @@ export default function MORTokenPage() {
                   fontSize="1.125rem"
                   color="white"
                   lineHeight="1.7"
+                  fontFamily="'Helvetica Neue', Helvetica, sans-serif"
                 >
                   Stake your MOR tokens to participate in network governance. Vote on proposals, 
                   protocol upgrades, and help shape the future of decentralized AI.
@@ -198,6 +204,7 @@ export default function MORTokenPage() {
                   fontSize="1.125rem"
                   color="white"
                   lineHeight="1.7"
+                  fontFamily="'Helvetica Neue', Helvetica, sans-serif"
                 >
                   MOR follows a fair launch model with no pre-mine or VC allocation. Tokens are 
                   distributed to community members, builders, compute providers, and capital contributors.
@@ -232,7 +239,7 @@ export default function MORTokenPage() {
                     24%
                   </Text>
                 </HStack>
-                <Text fontSize="1.125rem" color="rgba(255, 255, 255, 0.8)" lineHeight="1.7">
+                <Text fontSize="1.125rem" color="white" lineHeight="1.7" fontFamily="'Helvetica Neue', Helvetica, sans-serif">
                   Contributors who provide stETH to bootstrap protocol-owned liquidity
                 </Text>
               </Box>
@@ -251,7 +258,7 @@ export default function MORTokenPage() {
                     24%
                   </Text>
                 </HStack>
-                <Text fontSize="1.125rem" color="rgba(255, 255, 255, 0.8)" lineHeight="1.7">
+                <Text fontSize="1.125rem" color="white" lineHeight="1.7" fontFamily="'Helvetica Neue', Helvetica, sans-serif">
                   Node operators providing computational resources for AI inference
                 </Text>
               </Box>
@@ -270,7 +277,7 @@ export default function MORTokenPage() {
                     24%
                   </Text>
                 </HStack>
-                <Text fontSize="1.125rem" color="rgba(255, 255, 255, 0.8)" lineHeight="1.7">
+                <Text fontSize="1.125rem" color="white" lineHeight="1.7" fontFamily="'Helvetica Neue', Helvetica, sans-serif">
                   Developers building applications, tools, and integrations on Morpheus
                 </Text>
               </Box>
@@ -289,7 +296,7 @@ export default function MORTokenPage() {
                     4%
                   </Text>
                 </HStack>
-                <Text fontSize="1.125rem" color="rgba(255, 255, 255, 0.8)" lineHeight="1.7">
+                <Text fontSize="1.125rem" color="white" lineHeight="1.7" fontFamily="'Helvetica Neue', Helvetica, sans-serif">
                   Reserved for network security and protecting user funds
                 </Text>
               </Box>
@@ -323,6 +330,7 @@ export default function MORTokenPage() {
                   color="white"
                   lineHeight="1.8"
                   mb="1rem"
+                  fontFamily="'Helvetica Neue', Helvetica, sans-serif"
                 >
                   Deposit stETH into the Morpheus protocol to earn MOR emissions. Your contribution 
                   helps build protocol-owned liquidity and earns you a proportional share of daily 
@@ -345,6 +353,7 @@ export default function MORTokenPage() {
                   color="white"
                   lineHeight="1.8"
                   mb="1rem"
+                  fontFamily="'Helvetica Neue', Helvetica, sans-serif"
                 >
                   Set up and operate compute nodes to provide AI inference services. Earn MOR tokens 
                   by contributing GPU resources and processing AI requests from users on the network.
@@ -366,6 +375,7 @@ export default function MORTokenPage() {
                   color="white"
                   lineHeight="1.8"
                   mb="1rem"
+                  fontFamily="'Helvetica Neue', Helvetica, sans-serif"
                 >
                   Develop applications, smart contracts, or tools for the Morpheus ecosystem. 
                   Quality contributions that add value to the network can earn MOR through builder 
@@ -388,6 +398,7 @@ export default function MORTokenPage() {
                   color="white"
                   lineHeight="1.8"
                   mb="1rem"
+                  fontFamily="'Helvetica Neue', Helvetica, sans-serif"
                 >
                   Purchase MOR tokens on decentralized exchanges like Uniswap. Always verify the 
                   contract address and use reputable DEXs to ensure you&apos;re getting authentic MOR tokens.
@@ -420,6 +431,7 @@ export default function MORTokenPage() {
               mb="2.5rem"
               maxW="800px"
               mx="auto"
+              fontFamily="'Helvetica Neue', Helvetica, sans-serif"
             >
               Purchase MOR tokens on your preferred exchange and join the decentralized AI revolution.
             </Text>
@@ -501,6 +513,7 @@ export default function MORTokenPage() {
               mb="2.5rem"
               maxW="800px"
               mx="auto"
+              fontFamily="'Helvetica Neue', Helvetica, sans-serif"
             >
               Join the Morpheus ecosystem and start earning MOR tokens by contributing to 
               the future of decentralized AI.
@@ -556,7 +569,7 @@ export default function MORTokenPage() {
             </HStack>
           </Box>
         </VStack>
-      </Box>
+      </Container>
     </Box>
   );
 }

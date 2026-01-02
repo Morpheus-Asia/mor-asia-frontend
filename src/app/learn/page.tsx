@@ -113,16 +113,17 @@ export default function LearnOverviewPage() {
           </Heading>
           <Text
             fontSize={{ base: "1.125rem", md: "1.25rem" }}
-            color="rgba(255, 255, 255, 0.7)"
+            color="white"
             lineHeight="1.6"
-            maxW="700px"
             as="div"
+            fontFamily="'Helvetica Neue', Helvetica, sans-serif"
+            className="learn-content"
           >
             <ReactMarkdown
               remarkPlugins={[remarkGfm]}
               rehypePlugins={[rehypeRaw]}
               components={{
-                p: ({ children }) => <Text as="p" mb="1rem" _last={{ mb: 0 }}>{children}</Text>,
+                p: ({ children }) => <Text as="p" mb="1rem" _last={{ mb: 0 }} color="white" fontFamily="'Helvetica Neue', Helvetica, sans-serif">{children}</Text>,
                 a: ({ href, children }) => (
                   <ChakraLink href={href} target="_blank" rel="noopener noreferrer" color="#1fdc8f">
                     {children}
@@ -140,7 +141,7 @@ export default function LearnOverviewPage() {
       {loading && (
         <Box textAlign="center" py="4rem">
           <Spinner size="xl" color="#1fdc8f" />
-          <Text mt="1rem" fontSize="1.25rem" color="rgba(255, 255, 255, 0.7)">
+          <Text mt="1rem" fontSize="1.25rem" color="white" fontFamily="'Helvetica Neue', Helvetica, sans-serif">
             Loading documentation...
           </Text>
         </Box>
@@ -170,7 +171,7 @@ export default function LearnOverviewPage() {
           border="1px solid rgba(255, 255, 255, 0.1)"
           textAlign="center"
         >
-          <Text color="rgba(255, 255, 255, 0.6)" fontSize="1rem">
+          <Text color="white" fontSize="1rem" fontFamily="'Helvetica Neue', Helvetica, sans-serif">
             Documentation coming soon. Check back later for comprehensive guides and resources.
           </Text>
         </Box>
