@@ -111,19 +111,171 @@ export default function LearnOverviewPage() {
           >
             {learnPage.Title}
           </Heading>
-          <Text
-            fontSize={{ base: "1.125rem", md: "1.25rem" }}
+          <Box
+            className="doc-content"
+            fontSize={{ base: "1rem", md: "1.0625rem" }}
+            lineHeight="1.8"
             color="white"
-            lineHeight="1.6"
-            as="div"
-            fontFamily="'Helvetica Neue', Helvetica, sans-serif"
-            className="learn-content"
+            css={{
+              '& h1': {
+                fontSize: 'clamp(1.75rem, 5vw, 2.25rem)',
+                fontWeight: 'bold',
+                color: 'white',
+                marginTop: '2.5rem',
+                marginBottom: '1.25rem',
+                lineHeight: '1.3',
+              },
+              '& h2': {
+                fontSize: 'clamp(1.4rem, 4vw, 1.75rem)',
+                fontWeight: 'bold',
+                color: 'white',
+                marginTop: '2rem',
+                marginBottom: '1rem',
+                lineHeight: '1.3',
+              },
+              '& h3': {
+                fontSize: 'clamp(1.2rem, 3.5vw, 1.4rem)',
+                fontWeight: 'bold',
+                color: 'white',
+                marginTop: '1.75rem',
+                marginBottom: '0.875rem',
+                lineHeight: '1.4',
+              },
+              '& h4': {
+                fontSize: 'clamp(1.1rem, 3vw, 1.2rem)',
+                fontWeight: 'bold',
+                color: 'white',
+                marginTop: '1.5rem',
+                marginBottom: '0.75rem',
+                lineHeight: '1.4',
+              },
+              '& p': {
+                marginBottom: '1.25rem',
+                color: 'white',
+                lineHeight: '1.8',
+                fontFamily: "'Helvetica Neue', Helvetica, sans-serif",
+              },
+              '& a': {
+                color: '#1fdc8f',
+                textDecoration: 'underline',
+              },
+              '& a:hover': {
+                color: '#18c57d',
+              },
+              '& ul': {
+                marginLeft: 'clamp(1rem, 5vw, 1.5rem)',
+                marginBottom: '1.25rem',
+                marginTop: '0.75rem',
+                listStyleType: 'disc',
+                paddingLeft: '0.5rem',
+              },
+              '& ol': {
+                marginLeft: 'clamp(1rem, 5vw, 1.5rem)',
+                marginBottom: '1.25rem',
+                marginTop: '0.75rem',
+                listStyleType: 'decimal',
+                paddingLeft: '0.5rem',
+              },
+              '& li': {
+                marginBottom: '0.5rem',
+                color: 'white',
+                lineHeight: '1.7',
+                paddingLeft: '0.25rem',
+                fontFamily: "'Helvetica Neue', Helvetica, sans-serif",
+              },
+              '& li::marker': {
+                color: '#1fdc8f',
+              },
+              '& li > p': {
+                marginBottom: '0.25rem',
+                display: 'inline',
+              },
+              '& ul ul, & ol ol, & ul ol, & ol ul': {
+                marginTop: '0.5rem',
+                marginBottom: '0.5rem',
+              },
+              '& hr': {
+                border: 'none',
+                borderTop: '1px solid rgba(255, 255, 255, 0.1)',
+                marginTop: '2rem',
+                marginBottom: '2rem',
+              },
+              '& strong': {
+                fontWeight: 'bold',
+                color: 'white',
+              },
+              '& em': {
+                fontStyle: 'italic',
+                color: 'white',
+              },
+              '& code': {
+                background: 'rgba(31, 220, 143, 0.1)',
+                color: '#1fdc8f',
+                padding: '0.2rem 0.4rem',
+                borderRadius: '4px',
+                fontSize: '0.9em',
+                fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace',
+              },
+              '& pre': {
+                background: 'rgba(9, 13, 14, 0.6)',
+                border: '1px solid rgba(255, 255, 255, 0.1)',
+                padding: 'clamp(1rem, 3vw, 1.25rem)',
+                borderRadius: '8px',
+                overflow: 'auto',
+                marginBottom: '1.25rem',
+                marginTop: '0.75rem',
+              },
+              '& pre code': {
+                background: 'transparent',
+                padding: 0,
+                color: 'white',
+                fontSize: 'clamp(0.8rem, 2.5vw, 0.9rem)',
+              },
+              '& blockquote': {
+                borderLeft: '3px solid #1fdc8f',
+                paddingLeft: 'clamp(0.75rem, 3vw, 1.25rem)',
+                paddingTop: '0.5rem',
+                paddingBottom: '0.5rem',
+                marginTop: '1.25rem',
+                marginBottom: '1.25rem',
+                color: 'white',
+                fontStyle: 'italic',
+                background: 'rgba(31, 220, 143, 0.05)',
+                fontFamily: "'Helvetica Neue', Helvetica, sans-serif",
+              },
+              '& blockquote p': {
+                marginBottom: '0.5rem',
+              },
+              '& img': {
+                maxWidth: '100%',
+                borderRadius: '8px',
+                marginTop: '1.5rem',
+                marginBottom: '1.5rem',
+              },
+              '& table': {
+                width: '100%',
+                marginBottom: '1.25rem',
+                marginTop: '0.75rem',
+                borderCollapse: 'collapse',
+                display: 'block',
+                overflowX: 'auto',
+              },
+              '& th, & td': {
+                border: '1px solid rgba(255, 255, 255, 0.15)',
+                padding: 'clamp(0.5rem, 2vw, 0.75rem)',
+                textAlign: 'left',
+              },
+              '& th': {
+                background: 'rgba(31, 220, 143, 0.1)',
+                fontWeight: 'bold',
+                color: 'white',
+              },
+            }}
           >
             <ReactMarkdown
               remarkPlugins={[remarkGfm]}
               rehypePlugins={[rehypeRaw]}
               components={{
-                p: ({ children }) => <Text as="p" mb="1rem" _last={{ mb: 0 }} color="white" fontFamily="'Helvetica Neue', Helvetica, sans-serif">{children}</Text>,
                 a: ({ href, children }) => (
                   <ChakraLink href={href} target="_blank" rel="noopener noreferrer" color="#1fdc8f">
                     {children}
@@ -133,7 +285,7 @@ export default function LearnOverviewPage() {
             >
               {learnPage.Content || ''}
             </ReactMarkdown>
-          </Text>
+          </Box>
         </Box>
       )}
 

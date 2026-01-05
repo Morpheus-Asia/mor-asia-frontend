@@ -126,6 +126,23 @@ export async function getClubs() {
 }
 
 /**
+ * Fetch a single club by slug
+ */
+export async function getClubBySlug(slug: string) {
+  const response = await fetchStrapi<any[]>(`/api/clubs?filters[slug][$eq]=${slug}&populate=*`);
+  
+  // Strapi returns an array, so we need to get the first item
+  if (response.data && response.data.length > 0) {
+    return {
+      data: response.data[0],
+      meta: response.meta,
+    };
+  }
+  
+  throw new Error('Club not found');
+}
+
+/**
  * Fetch all doc sections with their related docs
  */
 export async function getDocSections() {
