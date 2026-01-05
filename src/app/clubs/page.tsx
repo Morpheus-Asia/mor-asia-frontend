@@ -2,12 +2,13 @@
 
 import { Box, Container, Heading, Text, VStack, Spinner, Image, Link as ChakraLink, Grid } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
+import Link from "next/link";
 
 interface Club {
   id: number;
   documentId: string;
   Name: string;
-  Link?: string;
+  slug: string;
   Logo?: {
     id: number;
     url: string;
@@ -162,7 +163,7 @@ export default function ClubsPage() {
                             border="2px solid rgba(255, 255, 255, 0.2)"
                             p={{ base: "1.5rem", md: "2rem" }}
                             transition="all 0.3s"
-                            cursor={club.Link ? "pointer" : "default"}
+                            cursor="pointer"
                             w="100%"
                             maxW="400px"
                             _hover={{
@@ -202,34 +203,22 @@ export default function ClubsPage() {
                                 >
                                   {club.Name || 'N/A'}
                                 </Heading>
-                                {club.Link && (
-                                  <Text
-                                    color="#1fdc8f"
-                                    fontSize={{ base: "0.875rem", md: "1rem" }}
-                                    textAlign="center"
-                                  >
-                                    Visit Website →
-                                  </Text>
-                                )}
+                                <Text
+                                  color="#1fdc8f"
+                                  fontSize={{ base: "0.875rem", md: "1rem" }}
+                                  textAlign="center"
+                                >
+                                  Learn More →
+                                </Text>
                               </VStack>
                             </VStack>
                           </Box>
                         );
 
-                        return club.Link ? (
-                          <ChakraLink
-                            key={club.id}
-                            href={club.Link}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            _hover={{ textDecoration: 'none' }}
-                          >
+                        return (
+                          <Link key={club.id} href={`/club/${club.slug}`}>
                             {clubContent}
-                          </ChakraLink>
-                        ) : (
-                          <Box key={club.id}>
-                            {clubContent}
-                          </Box>
+                          </Link>
                         );
                       })}
                     </Grid>
