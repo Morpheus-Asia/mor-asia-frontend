@@ -212,6 +212,7 @@ export interface DocSection {
   documentId: string;
   Title: string;
   Slug: string;
+  Position?: number;
   docs?: Doc[];
   createdAt: string;
   updatedAt: string;

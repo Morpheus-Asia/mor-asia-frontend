@@ -13,13 +13,7 @@ export interface NavItem {
 }
 
 // Default static nav items as fallback
-const defaultNavItems: NavItem[] = [
-  {
-    id: 'overview',
-    label: 'Overview',
-    href: '/learn',
-  },
-];
+const defaultNavItems: NavItem[] = [];
 
 interface LearnSidebarProps {
   isOpen: boolean;

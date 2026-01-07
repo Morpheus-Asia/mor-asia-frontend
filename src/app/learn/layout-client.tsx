@@ -21,6 +21,7 @@ interface DocSection {
   documentId: string;
   Title: string;
   Slug: string;
+  Position?: number;
   docs?: Doc[];
   createdAt: string;
   updatedAt: string;
@@ -41,15 +42,16 @@ interface DocSectionsResponse {
 
 // Transform Strapi doc sections to nav items
 function transformToNavItems(sections: DocSection[]): NavItem[] {
-  const navItems: NavItem[] = [
-    {
-      id: 'overview',
-      label: 'Overview',
-      href: '/learn',
-    },
-  ];
+  // Sort sections by Position (0 first, then 1, etc.)
+  const sortedSections = [...sections].sort((a, b) => {
+    const posA = a.Position ?? 999; // If Position is undefined, put at end
+    const posB = b.Position ?? 999;
+    return posA - posB;
+  });
 
-  sections.forEach((section) => {
+  const navItems: NavItem[] = [];
+
+  sortedSections.forEach((section) => {
     const sectionItem: NavItem = {
       id: section.Slug || section.documentId,
       label: section.Title,
@@ -77,13 +79,7 @@ interface LearnLayoutClientProps {
 
 export function LearnLayoutClient({ children }: LearnLayoutClientProps) {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const [navItems, setNavItems] = useState<NavItem[]>([
-    {
-      id: 'overview',
-      label: 'Overview',
-      href: '/learn',
-    },
-  ]);
+  const [navItems, setNavItems] = useState<NavItem[]>([]);
   const [sidebarLoading, setSidebarLoading] = useState(true);
 
   useEffect(() => {
