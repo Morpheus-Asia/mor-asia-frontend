@@ -11,10 +11,11 @@ export default function MORTokenPage() {
           <Box textAlign="center">
             <Heading
               as="h1"
-              fontSize="4rem"
+              fontSize={{ base: "2.5rem", md: "4rem" }}
               fontWeight="bold"
               mb="1.5rem"
               letterSpacing="0.02em"
+              lineHeight="1.2"
             >
               MOR Token
             </Heading>
@@ -41,10 +42,12 @@ export default function MORTokenPage() {
           <Box>
             <Heading
               as="h2"
-              fontSize="2.5rem"
+              fontSize={{ base: "1.75rem", md: "2.5rem" }}
               fontWeight="bold"
               mb="2rem"
               color="white"
+              fontFamily="'Helvetica Neue', Helvetica, sans-serif"
+              lineHeight="1.2"
             >
               What is MOR?
             </Heading>
@@ -76,10 +79,12 @@ export default function MORTokenPage() {
           <Box>
             <Heading
               as="h2"
-              fontSize="2.5rem"
+              fontSize={{ base: "1.75rem", md: "2.5rem" }}
               fontWeight="bold"
               mb="2rem"
               color="white"
+              fontFamily="'Helvetica Neue', Helvetica, sans-serif"
+              lineHeight="1.2"
             >
               Key Features
             </Heading>
@@ -104,6 +109,7 @@ export default function MORTokenPage() {
                   fontWeight="bold"
                   mb="1rem"
                   color="#1fdc8f"
+                  fontFamily="'Helvetica Neue', Helvetica, sans-serif"
                 >
                   Access to AI Services
                 </Heading>
@@ -135,6 +141,7 @@ export default function MORTokenPage() {
                   fontWeight="bold"
                   mb="1rem"
                   color="#1fdc8f"
+                  fontFamily="'Helvetica Neue', Helvetica, sans-serif"
                 >
                   Compute Provider Rewards
                 </Heading>
@@ -166,6 +173,7 @@ export default function MORTokenPage() {
                   fontWeight="bold"
                   mb="1rem"
                   color="#1fdc8f"
+                  fontFamily="'Helvetica Neue', Helvetica, sans-serif"
                 >
                   Staking & Governance
                 </Heading>
@@ -197,6 +205,7 @@ export default function MORTokenPage() {
                   fontWeight="bold"
                   mb="1rem"
                   color="#1fdc8f"
+                  fontFamily="'Helvetica Neue', Helvetica, sans-serif"
                 >
                   Fair Distribution
                 </Heading>
@@ -217,10 +226,12 @@ export default function MORTokenPage() {
           <Box>
             <Heading
               as="h2"
-              fontSize="2.5rem"
+              fontSize={{ base: "1.75rem", md: "2.5rem" }}
               fontWeight="bold"
               mb="2rem"
               color="white"
+              fontFamily="'Helvetica Neue', Helvetica, sans-serif"
+              lineHeight="1.2"
             >
               Token Distribution
             </Heading>
@@ -232,10 +243,10 @@ export default function MORTokenPage() {
                 borderRadius="8px"
               >
                 <HStack justify="space-between" mb="0.5rem">
-                  <Text fontSize="1.25rem" fontWeight="bold" color="white">
+                  <Text fontSize="1.25rem" fontWeight="bold" color="white" fontFamily="'Helvetica Neue', Helvetica, sans-serif">
                     Capital Providers
                   </Text>
-                  <Text fontSize="1.25rem" fontWeight="bold" color="#1fdc8f">
+                  <Text fontSize="1.25rem" fontWeight="bold" color="#1fdc8f" fontFamily="'Helvetica Neue', Helvetica, sans-serif">
                     24%
                   </Text>
                 </HStack>
@@ -251,10 +262,10 @@ export default function MORTokenPage() {
                 borderRadius="8px"
               >
                 <HStack justify="space-between" mb="0.5rem">
-                  <Text fontSize="1.25rem" fontWeight="bold" color="white">
+                  <Text fontSize="1.25rem" fontWeight="bold" color="white" fontFamily="'Helvetica Neue', Helvetica, sans-serif">
                     Compute Providers
                   </Text>
-                  <Text fontSize="1.25rem" fontWeight="bold" color="#1fdc8f">
+                  <Text fontSize="1.25rem" fontWeight="bold" color="#1fdc8f" fontFamily="'Helvetica Neue', Helvetica, sans-serif">
                     24%
                   </Text>
                 </HStack>
@@ -270,10 +281,10 @@ export default function MORTokenPage() {
                 borderRadius="8px"
               >
                 <HStack justify="space-between" mb="0.5rem">
-                  <Text fontSize="1.25rem" fontWeight="bold" color="white">
+                  <Text fontSize="1.25rem" fontWeight="bold" color="white" fontFamily="'Helvetica Neue', Helvetica, sans-serif">
                     Community Builders
                   </Text>
-                  <Text fontSize="1.25rem" fontWeight="bold" color="#1fdc8f">
+                  <Text fontSize="1.25rem" fontWeight="bold" color="#1fdc8f" fontFamily="'Helvetica Neue', Helvetica, sans-serif">
                     24%
                   </Text>
                 </HStack>
@@ -289,10 +300,10 @@ export default function MORTokenPage() {
                 borderRadius="8px"
               >
                 <HStack justify="space-between" mb="0.5rem">
-                  <Text fontSize="1.25rem" fontWeight="bold" color="white">
+                  <Text fontSize="1.25rem" fontWeight="bold" color="white" fontFamily="'Helvetica Neue', Helvetica, sans-serif">
                     Protection Fund
                   </Text>
-                  <Text fontSize="1.25rem" fontWeight="bold" color="#1fdc8f">
+                  <Text fontSize="1.25rem" fontWeight="bold" color="#1fdc8f" fontFamily="'Helvetica Neue', Helvetica, sans-serif">
                     4%
                   </Text>
                 </HStack>
@@ -307,10 +318,12 @@ export default function MORTokenPage() {
           <Box>
             <Heading
               as="h2"
-              fontSize="2.5rem"
+              fontSize={{ base: "1.75rem", md: "2.5rem" }}
               fontWeight="bold"
               mb="2rem"
               color="white"
+              fontFamily="'Helvetica Neue', Helvetica, sans-serif"
+              lineHeight="1.2"
             >
               How to Get MOR Tokens
             </Heading>
@@ -322,6 +335,7 @@ export default function MORTokenPage() {
                   fontWeight="bold"
                   mb="1rem"
                   color="white"
+                  fontFamily="'Helvetica Neue', Helvetica, sans-serif"
                 >
                   1. Provide Capital
                 </Heading>
@@ -345,6 +359,7 @@ export default function MORTokenPage() {
                   fontWeight="bold"
                   mb="1rem"
                   color="white"
+                  fontFamily="'Helvetica Neue', Helvetica, sans-serif"
                 >
                   2. Run Compute Nodes
                 </Heading>
@@ -367,6 +382,7 @@ export default function MORTokenPage() {
                   fontWeight="bold"
                   mb="1rem"
                   color="white"
+                  fontFamily="'Helvetica Neue', Helvetica, sans-serif"
                 >
                   3. Build on Morpheus
                 </Heading>
@@ -390,6 +406,7 @@ export default function MORTokenPage() {
                   fontWeight="bold"
                   mb="1rem"
                   color="white"
+                  fontFamily="'Helvetica Neue', Helvetica, sans-serif"
                 >
                   4. Trade on DEXs
                 </Heading>
@@ -417,10 +434,12 @@ export default function MORTokenPage() {
           >
             <Heading
               as="h2"
-              fontSize="2.5rem"
+              fontSize={{ base: "1.75rem", md: "2.5rem" }}
               fontWeight="bold"
               mb="1.5rem"
               color="white"
+              fontFamily="'Helvetica Neue', Helvetica, sans-serif"
+              lineHeight="1.2"
             >
               Start HODLing MOR
             </Heading>
@@ -452,6 +471,7 @@ export default function MORTokenPage() {
                   fontWeight="bold"
                   borderRadius="8px"
                   transition="all 0.3s"
+                  fontFamily="'Helvetica Neue', Helvetica, sans-serif"
                   _hover={{
                     transform: "translateY(-2px)",
                     boxShadow: "0 8px 20px rgba(0, 82, 255, 0.4)",
@@ -477,6 +497,7 @@ export default function MORTokenPage() {
                   fontWeight="bold"
                   borderRadius="8px"
                   transition="all 0.3s"
+                  fontFamily="'Helvetica Neue', Helvetica, sans-serif"
                   _hover={{
                     transform: "translateY(-2px)",
                     boxShadow: "0 8px 20px rgba(255, 0, 122, 0.4)",
@@ -499,10 +520,12 @@ export default function MORTokenPage() {
           >
             <Heading
               as="h2"
-              fontSize="2.5rem"
+              fontSize={{ base: "1.75rem", md: "2.5rem" }}
               fontWeight="bold"
               mb="1.5rem"
               color="white"
+              fontFamily="'Helvetica Neue', Helvetica, sans-serif"
+              lineHeight="1.2"
             >
               Ready to Get Started?
             </Heading>
@@ -535,6 +558,7 @@ export default function MORTokenPage() {
                   fontWeight="bold"
                   borderRadius="8px"
                   transition="all 0.3s"
+                  fontFamily="'Helvetica Neue', Helvetica, sans-serif"
                   _hover={{
                     transform: "translateY(-2px)",
                     boxShadow: "0 8px 20px rgba(31, 220, 143, 0.4)",
@@ -558,6 +582,7 @@ export default function MORTokenPage() {
                   borderRadius="8px"
                   border="2px solid #1fdc8f"
                   transition="all 0.3s"
+                  fontFamily="'Helvetica Neue', Helvetica, sans-serif"
                   _hover={{
                     bg: "rgba(31, 220, 143, 0.1)",
                     transform: "translateY(-2px)",

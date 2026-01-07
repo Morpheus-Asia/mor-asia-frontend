@@ -121,16 +121,6 @@ export function LearnSidebar({ isOpen, onClose, navItems = defaultNavItems }: Le
               }}
             >
               <VStack align="stretch" gap="0.25rem" pt="1rem" pb="2rem">
-                <Text
-                  fontSize="1.125rem"
-                  fontWeight="bold"
-                  color="white"
-                  mb="0.5rem"
-                  pl="1rem"
-                  fontFamily="'Helvetica Neue', Helvetica, sans-serif"
-                >
-                  Documentation
-                </Text>
                 {navItems.map(item => renderNavItem(item))}
               </VStack>
             </motion.div>

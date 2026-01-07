@@ -125,7 +125,7 @@ const EventCard = ({ event }: { event: Event }) => {
 
       <Box p="2rem">
         <VStack align="stretch" gap="1rem" h="100%">
-          <HStack justify="space-between" flexWrap="wrap" gap="0.5rem">
+          <HStack justify="flex-start" flexWrap="wrap" gap="0.5rem">
             <Box
               bg="rgba(31, 220, 143, 0.2)"
               px="0.75rem"
@@ -137,9 +137,6 @@ const EventCard = ({ event }: { event: Event }) => {
             >
               Event
             </Box>
-            <Text fontSize="0.875rem" color="rgba(255, 255, 255, 0.5)">
-              {typeof dateTime === 'object' ? dateTime.date : dateTime === 'TBA' ? 'TBA' : dateTime}
-            </Text>
           </HStack>
 
           <Heading
@@ -169,11 +166,16 @@ const EventCard = ({ event }: { event: Event }) => {
             flexWrap="wrap"
             gap="0.5rem"
           >
-            {typeof dateTime === 'object' && (
-              <Text fontSize="0.875rem" color="rgba(255, 255, 255, 0.6)">
-                🕐 {dateTime.time}
+            <HStack gap="0.5rem" flexWrap="wrap">
+              <Text fontSize="0.875rem" color="white" fontWeight="bold">
+                {typeof dateTime === 'object' ? dateTime.date : dateTime === 'TBA' ? 'TBA' : dateTime}
               </Text>
-            )}
+              {typeof dateTime === 'object' && (
+                <Text fontSize="0.875rem" color="white" fontWeight="bold">
+                  {dateTime.time}
+                </Text>
+              )}
+            </HStack>
             {/* Register Button */}
             {Register_Link && Register_Link !== 'N/A' && (
               <Box onClick={(e) => e.stopPropagation()}>

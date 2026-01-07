@@ -1,6 +1,6 @@
 'use client';
 
-import { Box, Flex, Button, Text, HStack, Spinner, VStack } from "@chakra-ui/react";
+import { Box, Flex, Text, Spinner, VStack } from "@chakra-ui/react";
 import { useState, useEffect } from "react";
 import { LearnSidebar, NavItem } from "morpheus-asia/components/learn-sidebar";
 import { TableOfContents } from "morpheus-asia/components/table-of-contents";
@@ -120,36 +120,42 @@ export function LearnLayoutClient({ children }: LearnLayoutClientProps) {
   return (
     <Box>
       {/* Header with Documentation title */}
-      <Box pb="1rem" borderBottom="1px solid rgba(255, 255, 255, 0.1)">
-        <HStack gap="0.75rem" align="center">
-          {/* Mobile Menu Button */}
-          <Button
-            aria-label="Toggle sidebar"
-            onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-            display={{ base: 'flex', lg: 'none' }}
-            bg="transparent"
-            color="rgba(255, 255, 255, 0.6)"
-            border="none"
-            borderRadius="0"
-            minW="auto"
-            h="auto"
-            px="0.5rem"
-            py="0.35rem"
-            fontSize="1.25rem"
-            _hover={{ bg: "transparent", color: "rgba(255, 255, 255, 0.9)" }}
-          >
-            ☰
-          </Button>
-          <Text
-            fontSize="0.875rem"
-            color="rgba(255, 255, 255, 0.6)"
-            textTransform="uppercase"
-            letterSpacing="0.05em"
-          >
-            Documentation
-          </Text>
-        </HStack>
-      </Box>
+      <Flex 
+        pb="1rem" 
+        borderBottom="1px solid rgba(255, 255, 255, 0.1)"
+        align="center"
+        gap="0.5rem"
+      >
+        {/* Mobile Menu Button */}
+        <Box
+          as="button"
+          aria-label="Toggle sidebar"
+          onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+          display={{ base: 'flex', lg: 'none' }}
+          alignItems="center"
+          justifyContent="center"
+          bg="transparent"
+          color="rgba(255, 255, 255, 0.6)"
+          border="none"
+          cursor="pointer"
+          p="0"
+          _hover={{ color: "rgba(255, 255, 255, 0.9)" }}
+        >
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+          </svg>
+        </Box>
+        <Text
+          fontSize="0.875rem"
+          color="rgba(255, 255, 255, 0.6)"
+          textTransform="uppercase"
+          letterSpacing="0.05em"
+        >
+          Documentation
+        </Text>
+      </Flex>
 
       {/* Two column layout */}
       <Flex gap="2rem" align="flex-start" position="relative" direction={{ base: 'column', lg: 'row' }}>

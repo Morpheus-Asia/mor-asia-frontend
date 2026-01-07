@@ -176,26 +176,6 @@ export default function EventPage() {
             </Text>
           </Link>
 
-          {/* Cover Image */}
-          {imageUrl && (
-            <Box
-              w="100%"
-              h={{ base: "250px", md: "400px", lg: "500px" }}
-              overflow="hidden"
-              position="relative"
-              bg="rgba(9, 13, 14, 0.3)"
-              borderRadius="8px"
-            >
-              <Image
-                src={imageUrl}
-                alt={event.Cover?.alternativeText || event.Title || 'Event cover'}
-                w="100%"
-                h="100%"
-                objectFit="cover"
-              />
-            </Box>
-          )}
-
           {/* Event Header */}
           <Box>
             <HStack gap="1rem" mb="1.5rem" flexWrap="wrap">
@@ -210,12 +190,12 @@ export default function EventPage() {
               >
                 Event
               </Box>
-              <Text fontSize={{ base: "0.875rem", md: "1rem" }} color="rgba(255, 255, 255, 0.7)">
+              <Text fontSize={{ base: "0.875rem", md: "1rem" }} color="white" fontWeight="bold">
                 {typeof dateTime === 'object' ? dateTime.date : dateTime}
               </Text>
               {typeof dateTime === 'object' && (
-                <Text fontSize={{ base: "0.875rem", md: "1rem" }} color="rgba(255, 255, 255, 0.7)">
-                  🕐 {dateTime.time}
+                <Text fontSize={{ base: "0.875rem", md: "1rem" }} color="white" fontWeight="bold">
+                  {dateTime.time}
                 </Text>
               )}
             </HStack>
@@ -231,6 +211,33 @@ export default function EventPage() {
             >
               {event.Title}
             </Heading>
+
+            {/* Cover Image */}
+            {imageUrl && (
+              <Box
+                display="flex"
+                justifyContent="flex-start"
+                w="100%"
+                mb="2rem"
+              >
+                <Box
+                  maxW={{ base: "100%", md: "400px", lg: "500px" }}
+                  w="100%"
+                  overflow="hidden"
+                  position="relative"
+                  bg="rgba(9, 13, 14, 0.3)"
+                  borderRadius="8px"
+                >
+                  <Image
+                    src={imageUrl}
+                    alt={event.Cover?.alternativeText || event.Title || 'Event cover'}
+                    w="100%"
+                    h="auto"
+                    objectFit="contain"
+                  />
+                </Box>
+              </Box>
+            )}
 
             {/* Description */}
             <Box
