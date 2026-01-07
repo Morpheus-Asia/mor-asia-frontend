@@ -133,14 +133,14 @@ export function LearnLayoutClient({ children }: LearnLayoutClientProps) {
             display={{ base: 'flex', lg: 'none' }}
             bg="transparent"
             color="rgba(255, 255, 255, 0.6)"
-            border="1px solid rgba(255, 255, 255, 0.2)"
-            borderRadius="6px"
+            border="none"
+            borderRadius="0"
             minW="auto"
             h="auto"
             px="0.5rem"
             py="0.35rem"
-            fontSize="0.875rem"
-            _hover={{ bg: "rgba(255, 255, 255, 0.1)", borderColor: "rgba(255, 255, 255, 0.3)" }}
+            fontSize="1.25rem"
+            _hover={{ bg: "transparent", color: "rgba(255, 255, 255, 0.9)" }}
           >
             ☰
           </Button>
@@ -156,7 +156,7 @@ export function LearnLayoutClient({ children }: LearnLayoutClientProps) {
       </Box>
 
       {/* Two column layout */}
-      <Flex gap="2rem" align="flex-start" position="relative">
+      <Flex gap="2rem" align="flex-start" position="relative" direction={{ base: 'column', lg: 'row' }}>
         {/* Desktop Sidebar - sticky with its own scroll */}
         <Box
           display={{ base: 'none', lg: 'block' }}
@@ -183,8 +183,17 @@ export function LearnLayoutClient({ children }: LearnLayoutClientProps) {
         </Box>
 
         {/* Mobile Sidebar */}
-        <Box display={{ base: 'block', lg: 'none' }}>
-          <LearnSidebar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} navItems={navItems} />
+        <Box display={{ base: 'block', lg: 'none' }} w="100%">
+          {sidebarLoading ? (
+            <VStack py="2rem" gap="1rem">
+              <Spinner size="md" color="#1fdc8f" />
+              <Text fontSize="0.875rem" color="rgba(255, 255, 255, 0.5)">
+                Loading...
+              </Text>
+            </VStack>
+          ) : (
+            <LearnSidebar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} navItems={navItems} />
+          )}
         </Box>
 
         {/* Main Content - uses page scroll */}

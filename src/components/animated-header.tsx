@@ -113,68 +113,66 @@ export function AnimatedHeader() {
     <header style={{ 
       padding: isMobile ? "1rem" : "1.5rem clamp(1rem, 6vw, 2rem)", 
       display: "flex",
+      flexDirection: isMobile ? "column" : "row",
       alignItems: "center",
-      justifyContent: isMobile ? "space-between" : "center",
+      justifyContent: isMobile ? "flex-start" : "center",
       position: 'sticky',
       top: 0,
       zIndex: 1000,
     }}>
-      {/* Mobile Logo */}
+      {/* Mobile Logo and Hamburger Container */}
       {isMobile && (
-        <Link href="/" style={{ display: 'block', cursor: 'pointer' }}>
-          <Image
-            src="/ma-logo-dark-2.png"
-            alt="Morpheus Asia Logo"
-            width={45}
-            height={45}
-            priority
-          />
-        </Link>
-      )}
+        <div style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          width: '100%',
+        }}>
+          <Link href="/" style={{ display: 'block', cursor: 'pointer' }}>
+            <Image
+              src="/ma-logo-dark-2.png"
+              alt="Morpheus Asia Logo"
+              width={45}
+              height={45}
+              priority
+            />
+          </Link>
 
-      {/* Mobile Hamburger */}
-      {isMobile && (
-        <button
-          onClick={toggleMobileMenu}
-          style={{
-            background: 'rgba(255, 255, 255, 0.08)',
-            backdropFilter: 'blur(10px)',
-            WebkitBackdropFilter: 'blur(10px)',
-            border: 'none',
-            padding: '0.75rem',
-            borderRadius: '8px',
-            cursor: 'pointer',
-            display: 'flex',
-            flexDirection: 'column',
-            gap: '4px',
-            zIndex: 1001,
-          }}
-        >
-          <span style={{
-            width: '24px',
-            height: '3px',
-            background: 'white',
-            borderRadius: '2px',
-            transition: 'all 0.3s',
-            transform: isMobileMenuOpen ? 'rotate(45deg) translateY(7px)' : 'none',
-          }} />
-          <span style={{
-            width: '24px',
-            height: '3px',
-            background: 'white',
-            borderRadius: '2px',
-            transition: 'all 0.3s',
-            opacity: isMobileMenuOpen ? 0 : 1,
-          }} />
-          <span style={{
-            width: '24px',
-            height: '3px',
-            background: 'white',
-            borderRadius: '2px',
-            transition: 'all 0.3s',
-            transform: isMobileMenuOpen ? 'rotate(-45deg) translateY(-7px)' : 'none',
-          }} />
-        </button>
+          {/* Mobile Hamburger */}
+          <button
+            onClick={toggleMobileMenu}
+            style={{
+              background: 'transparent',
+              border: 'none',
+              padding: '0.75rem',
+              borderRadius: '0',
+              cursor: 'pointer',
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '4px',
+              zIndex: 1001,
+            }}
+          >
+            <span style={{
+              width: '24px',
+              height: '3px',
+              background: 'white',
+              borderRadius: '2px',
+            }} />
+            <span style={{
+              width: '24px',
+              height: '3px',
+              background: 'white',
+              borderRadius: '2px',
+            }} />
+            <span style={{
+              width: '24px',
+              height: '3px',
+              background: 'white',
+              borderRadius: '2px',
+            }} />
+          </button>
+        </div>
       )}
 
       {/* Desktop Navigation */}
@@ -321,31 +319,28 @@ export function AnimatedHeader() {
       )}
 
       {/* Mobile Menu */}
-      <AnimatePresence>
-        {isMobile && isMobileMenuOpen && (
-          <motion.div
-            initial={{ opacity: 0, x: '100%' }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: '100%' }}
-            transition={{ duration: 0.3, ease: 'easeInOut' }}
-            style={{
-              position: 'fixed',
-              top: 0,
-              right: 0,
-              width: '70%',
-              maxWidth: '300px',
-              height: '100vh',
-              background: 'rgba(0, 0, 0, 0.95)',
-              backdropFilter: 'blur(20px)',
-              WebkitBackdropFilter: 'blur(20px)',
-              padding: '2rem 1.5rem',
-              display: 'flex',
-              flexDirection: 'column',
-              gap: '2rem',
-              zIndex: 1000,
-              borderLeft: '1px solid rgba(255, 255, 255, 0.1)',
-            }}
-          >
+      {isMobile && (
+        <AnimatePresence>
+          {isMobileMenuOpen && (
+            <motion.div
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: 'auto' }}
+              exit={{ opacity: 0, height: 0 }}
+              transition={{ duration: 0.3, ease: 'easeInOut' }}
+              style={{
+                width: '100%',
+                background: 'rgba(0, 0, 0, 0.95)',
+                backdropFilter: 'blur(20px)',
+                WebkitBackdropFilter: 'blur(20px)',
+                padding: '2rem 1.5rem',
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '2rem',
+                borderTop: '1px solid rgba(255, 255, 255, 0.1)',
+                overflow: 'hidden',
+                marginTop: '1rem',
+              }}
+            >
             <div>
               <button
                 style={{
@@ -545,21 +540,6 @@ export function AnimatedHeader() {
           </motion.div>
         )}
       </AnimatePresence>
-
-      {/* Mobile Menu Overlay */}
-      {isMobile && isMobileMenuOpen && (
-        <div
-          onClick={closeMobileMenu}
-          style={{
-            position: 'fixed',
-            top: 0,
-            left: 0,
-            width: '100%',
-            height: '100vh',
-            background: 'rgba(0, 0, 0, 0.5)',
-            zIndex: 999,
-          }}
-        />
       )}
 
       {/* Desktop Dropdown Menu - Community */}

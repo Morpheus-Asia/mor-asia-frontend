@@ -111,51 +111,22 @@ export function LearnSidebar({ isOpen, onClose, navItems = defaultNavItems }: Le
 
   return (
     <>
-      {/* Mobile Overlay */}
-      <AnimatePresence>
-        {isOpen && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.2 }}
-            onClick={onClose}
-            style={{
-              position: 'fixed',
-              top: 0,
-              left: 0,
-              right: 0,
-              bottom: 0,
-              background: 'rgba(9, 13, 14, 0.7)',
-              zIndex: 10000,
-            }}
-          />
-        )}
-      </AnimatePresence>
-
       {/* Mobile Sidebar */}
       <AnimatePresence>
         {isOpen && (
-          <Box display={{ base: 'block', lg: 'none' }}>
+          <Box display={{ base: 'block', lg: 'none' }} w="100%" mb="1rem">
             <motion.div
-              initial={{ x: '-100%' }}
-              animate={{ x: 0 }}
-              exit={{ x: '-100%' }}
+              initial={{ height: 0, opacity: 0 }}
+              animate={{ height: 'auto', opacity: 1 }}
+              exit={{ height: 0, opacity: 0 }}
               transition={{ type: 'tween', duration: 0.25, ease: 'easeOut' }}
               style={{
-                position: 'fixed',
-                top: 0,
-                left: 0,
-                width: '280px',
-                height: '100vh',
-                zIndex: 10001,
-                overflowY: 'auto',
-                borderRight: '1px solid rgba(255, 255, 255, 0.1)',
+                overflow: 'hidden',
+                borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
                 background: '#090d0e',
               }}
-              className="learn-sidebar-scroll"
             >
-              <VStack align="stretch" gap="0.25rem" pt="5rem" pb="2rem">
+              <VStack align="stretch" gap="0.25rem" pt="1rem" pb="2rem">
                 <Text
                   fontSize="1.125rem"
                   fontWeight="bold"
