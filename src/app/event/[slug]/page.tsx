@@ -328,6 +328,16 @@ export default function EventPage() {
                   background: 'rgba(31, 220, 143, 0.05)',
                   fontFamily: "'Helvetica Neue', Helvetica, sans-serif",
                 },
+                '& img': {
+                  maxWidth: 'min(100%, 600px)',
+                  height: 'auto',
+                  borderRadius: '8px',
+                  marginTop: '2rem',
+                  marginBottom: '2rem',
+                  marginLeft: 'auto',
+                  marginRight: 'auto',
+                  display: 'block',
+                },
               }}
             >
               <ReactMarkdown>{event.Description}</ReactMarkdown>
