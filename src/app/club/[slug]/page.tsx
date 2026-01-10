@@ -19,7 +19,8 @@ interface Club {
     alternativeText?: string;
   };
   Region: string;
-  Description?: string;
+  Desc?: string;
+  University?: string;
   createdAt: string;
   updatedAt: string;
   publishedAt: string;
@@ -152,17 +153,18 @@ export default function ClubPage() {
             </Text>
           </Link>
 
-          {/* Logo */}
-          {logoUrl && (
-            <Box
-              w="100%"
-              display="flex"
-              justifyContent="center"
-              mb="2rem"
-            >
+          {/* Club Header with Logo */}
+          <HStack
+            gap={{ base: "1.5rem", md: "2rem" }}
+            align="center"
+            flexDirection={{ base: "column", md: "row" }}
+          >
+            {/* Logo */}
+            {logoUrl && (
               <Box
-                w={{ base: "200px", md: "300px" }}
-                h={{ base: "200px", md: "300px" }}
+                w={{ base: "150px", md: "180px" }}
+                h={{ base: "150px", md: "180px" }}
+                flexShrink={0}
                 display="flex"
                 alignItems="center"
                 justifyContent="center"
@@ -170,7 +172,7 @@ export default function ClubPage() {
                 borderRadius="8px"
                 border="2px solid rgba(255, 255, 255, 0.1)"
                 overflow="hidden"
-                p="2rem"
+                p="1.5rem"
               >
                 <Image
                   src={logoUrl}
@@ -180,150 +182,246 @@ export default function ClubPage() {
                   objectFit="contain"
                 />
               </Box>
+            )}
+
+            {/* Title Area */}
+            <Box textAlign={{ base: "center", md: "left" }}>
+              <HStack gap="1rem" mb="1rem" flexWrap="wrap" justify={{ base: "center", md: "flex-start" }}>
+                <Box
+                  bg="rgba(31, 220, 143, 0.2)"
+                  px="1rem"
+                  py="0.5rem"
+                  fontSize="0.875rem"
+                  fontWeight="bold"
+                  textTransform="uppercase"
+                  color="#1fdc8f"
+                >
+                  Club
+                </Box>
+                {club.Region && (
+                  <Text fontSize={{ base: "0.875rem", md: "1rem" }} color="rgba(255, 255, 255, 0.7)">
+                    {club.Region}
+                  </Text>
+                )}
+              </HStack>
+
+              {/* Title */}
+              <Heading
+                as="h1"
+                fontSize={{ base: "1.75rem", sm: "2rem", md: "2.5rem", lg: "3rem" }}
+                fontWeight="bold"
+                lineHeight="1.2"
+                color="white"
+              >
+                {club.Name}
+              </Heading>
+
+              {/* University Link */}
+              {club.University && (
+                <Box
+                  as="a"
+                  href={club.University}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  display="inline-block"
+                  mt="0.75rem"
+                  color="#1fdc8f"
+                  fontSize={{ base: "0.875rem", md: "1rem" }}
+                  _hover={{ textDecoration: 'underline' }}
+                >
+                  {club.University}
+                </Box>
+              )}
+            </Box>
+          </HStack>
+
+          {/* Description (Markdown) */}
+          {club.Desc && (
+            <Box
+              className="club-content"
+              fontSize={{ base: "1rem", md: "1.125rem" }}
+              lineHeight="1.8"
+              color="white"
+              fontFamily="'Helvetica Neue', Helvetica, sans-serif"
+              css={{
+                '& > :first-of-type': {
+                  marginTop: '0',
+                },
+                '& h1': {
+                  fontSize: 'clamp(1.75rem, 5vw, 2.5rem)',
+                  fontWeight: 'bold',
+                  color: 'white',
+                  marginTop: '3rem',
+                  marginBottom: '1.5rem',
+                  lineHeight: '1.3',
+                  fontFamily: "'Helvetica Neue', Helvetica, sans-serif",
+                },
+                '& h2': {
+                  fontSize: 'clamp(1.5rem, 4vw, 2rem)',
+                  fontWeight: 'bold',
+                  color: 'white',
+                  marginTop: '2.5rem',
+                  marginBottom: '1.25rem',
+                  lineHeight: '1.3',
+                  fontFamily: "'Helvetica Neue', Helvetica, sans-serif",
+                },
+                '& h3': {
+                  fontSize: 'clamp(1.25rem, 3.5vw, 1.5rem)',
+                  fontWeight: 'bold',
+                  color: 'white',
+                  marginTop: '2rem',
+                  marginBottom: '1rem',
+                  lineHeight: '1.4',
+                  fontFamily: "'Helvetica Neue', Helvetica, sans-serif",
+                },
+                '& h4': {
+                  fontSize: 'clamp(1.125rem, 3vw, 1.25rem)',
+                  fontWeight: 'bold',
+                  color: 'white',
+                  marginTop: '1.5rem',
+                  marginBottom: '0.75rem',
+                  lineHeight: '1.4',
+                  fontFamily: "'Helvetica Neue', Helvetica, sans-serif",
+                },
+                '& p': {
+                  marginBottom: '1.5rem',
+                  color: 'white',
+                  lineHeight: '1.8',
+                  fontFamily: "'Helvetica Neue', Helvetica, sans-serif",
+                },
+                '& a': {
+                  color: '#1fdc8f',
+                  textDecoration: 'underline',
+                },
+                '& a:hover': {
+                  color: '#18c57d',
+                },
+                '& ul': {
+                  marginLeft: 'clamp(1rem, 5vw, 2rem)',
+                  marginBottom: '1.5rem',
+                  marginTop: '1rem',
+                  listStyleType: 'disc',
+                  paddingLeft: '0.5rem',
+                },
+                '& ol': {
+                  marginLeft: 'clamp(1rem, 5vw, 2rem)',
+                  marginBottom: '1.5rem',
+                  marginTop: '1rem',
+                  listStyleType: 'decimal',
+                  paddingLeft: '0.5rem',
+                },
+                '& li': {
+                  marginBottom: '0.75rem',
+                  color: 'white',
+                  lineHeight: '1.7',
+                  paddingLeft: '0.5rem',
+                  fontFamily: "'Helvetica Neue', Helvetica, sans-serif",
+                },
+                '& li::marker': {
+                  color: '#1fdc8f',
+                },
+                '& li > p': {
+                  marginBottom: '0.5rem',
+                  display: 'inline',
+                },
+                '& ul ul, & ol ol, & ul ol, & ol ul': {
+                  marginTop: '0.5rem',
+                  marginBottom: '0.5rem',
+                },
+                '& hr': {
+                  border: 'none',
+                  borderTop: '2px solid rgba(255, 255, 255, 0.1)',
+                  marginTop: '2rem',
+                  marginBottom: '2rem',
+                },
+                '& strong': {
+                  fontWeight: 'bold',
+                  color: 'white',
+                  fontFamily: "'Helvetica Neue', Helvetica, sans-serif",
+                },
+                '& em': {
+                  fontStyle: 'italic',
+                  color: 'white',
+                  fontFamily: "'Helvetica Neue', Helvetica, sans-serif",
+                },
+                '& code': {
+                  background: 'rgba(31, 220, 143, 0.1)',
+                  color: '#1fdc8f',
+                  padding: '0.25rem 0.5rem',
+                  borderRadius: '4px',
+                  fontSize: '0.9em',
+                  fontFamily: 'monospace',
+                },
+                '& pre': {
+                  background: 'rgba(9, 13, 14, 0.4)',
+                  border: '1px solid rgba(255, 255, 255, 0.1)',
+                  padding: 'clamp(1rem, 3vw, 1.5rem)',
+                  borderRadius: '8px',
+                  overflow: 'auto',
+                  marginBottom: '1.5rem',
+                  marginTop: '1rem',
+                },
+                '& pre code': {
+                  background: 'transparent',
+                  padding: 0,
+                  color: 'white',
+                  fontSize: 'clamp(0.875rem, 2.5vw, 0.95rem)',
+                },
+                '& blockquote': {
+                  borderLeft: '4px solid #1fdc8f',
+                  paddingLeft: 'clamp(1rem, 3vw, 1.5rem)',
+                  paddingTop: '0.5rem',
+                  paddingBottom: '0.5rem',
+                  marginTop: '1.5rem',
+                  marginBottom: '1.5rem',
+                  color: 'white',
+                  fontStyle: 'italic',
+                  background: 'rgba(31, 220, 143, 0.05)',
+                  fontFamily: "'Helvetica Neue', Helvetica, sans-serif",
+                },
+                '& blockquote p': {
+                  marginBottom: '0.5rem',
+                },
+                '& img': {
+                  maxWidth: 'min(100%, 600px)',
+                  height: 'auto',
+                  borderRadius: '8px',
+                  marginTop: '2rem',
+                  marginBottom: '2rem',
+                  marginLeft: 'auto',
+                  marginRight: 'auto',
+                  display: 'block',
+                },
+                '& table': {
+                  width: '100%',
+                  marginBottom: '1.5rem',
+                  marginTop: '1rem',
+                  borderCollapse: 'collapse',
+                  display: 'block',
+                  overflowX: 'auto',
+                  fontFamily: "'Helvetica Neue', Helvetica, sans-serif",
+                },
+                '& th, & td': {
+                  border: '1px solid rgba(255, 255, 255, 0.2)',
+                  padding: 'clamp(0.5rem, 2vw, 0.75rem)',
+                  textAlign: 'left',
+                  color: 'white',
+                },
+                '& th': {
+                  background: 'rgba(31, 220, 143, 0.1)',
+                  fontWeight: 'bold',
+                  color: 'white',
+                },
+              }}
+            >
+              <ReactMarkdown
+                remarkPlugins={[remarkGfm]}
+                rehypePlugins={[rehypeRaw]}
+              >
+                {club.Desc}
+              </ReactMarkdown>
             </Box>
           )}
-
-          {/* Club Header */}
-          <Box>
-            <HStack gap="1rem" mb="1.5rem" flexWrap="wrap">
-              <Box
-                bg="rgba(31, 220, 143, 0.2)"
-                px="1rem"
-                py="0.5rem"
-                fontSize="0.875rem"
-                fontWeight="bold"
-                textTransform="uppercase"
-                color="#1fdc8f"
-              >
-                Club
-              </Box>
-              {club.Region && (
-                <Text fontSize={{ base: "0.875rem", md: "1rem" }} color="rgba(255, 255, 255, 0.7)">
-                  {club.Region}
-                </Text>
-              )}
-            </HStack>
-
-            {/* Title */}
-            <Heading
-              as="h1"
-              fontSize={{ base: "2rem", sm: "2.5rem", md: "3.5rem", lg: "4rem" }}
-              fontWeight="bold"
-              mb="2rem"
-              lineHeight="1.2"
-              color="white"
-            >
-              {club.Name}
-            </Heading>
-
-            {/* Description */}
-            {club.Description && (
-              <Box
-                className="club-content"
-                fontSize={{ base: "1.125rem", md: "1.25rem" }}
-                lineHeight="1.8"
-                color="white"
-                fontFamily="'Helvetica Neue', Helvetica, sans-serif"
-                pb="2rem"
-                borderBottom="2px solid rgba(255, 255, 255, 0.1)"
-                css={{
-                  '& h1': {
-                    fontSize: 'clamp(1.75rem, 5vw, 2.5rem)',
-                    fontWeight: 'bold',
-                    color: 'white',
-                    marginTop: '2rem',
-                    marginBottom: '1rem',
-                    lineHeight: '1.3',
-                    fontFamily: "'Helvetica Neue', Helvetica, sans-serif",
-                  },
-                  '& h2': {
-                    fontSize: 'clamp(1.5rem, 4vw, 2rem)',
-                    fontWeight: 'bold',
-                    color: 'white',
-                    marginTop: '1.5rem',
-                    marginBottom: '0.75rem',
-                    lineHeight: '1.3',
-                    fontFamily: "'Helvetica Neue', Helvetica, sans-serif",
-                  },
-                  '& h3': {
-                    fontSize: 'clamp(1.25rem, 3.5vw, 1.5rem)',
-                    fontWeight: 'bold',
-                    color: 'white',
-                    marginTop: '1.25rem',
-                    marginBottom: '0.5rem',
-                    lineHeight: '1.4',
-                    fontFamily: "'Helvetica Neue', Helvetica, sans-serif",
-                  },
-                  '& p': {
-                    marginBottom: '1.25rem',
-                    color: 'white',
-                    lineHeight: '1.8',
-                    fontFamily: "'Helvetica Neue', Helvetica, sans-serif",
-                  },
-                  '& a': {
-                    color: '#1fdc8f',
-                    textDecoration: 'underline',
-                  },
-                  '& a:hover': {
-                    color: '#18c57d',
-                  },
-                  '& ul': {
-                    marginLeft: 'clamp(1rem, 5vw, 2rem)',
-                    marginBottom: '1.25rem',
-                    marginTop: '0.75rem',
-                    listStyleType: 'disc',
-                    paddingLeft: '0.5rem',
-                  },
-                  '& ol': {
-                    marginLeft: 'clamp(1rem, 5vw, 2rem)',
-                    marginBottom: '1.25rem',
-                    marginTop: '0.75rem',
-                    listStyleType: 'decimal',
-                    paddingLeft: '0.5rem',
-                  },
-                  '& li': {
-                    marginBottom: '0.5rem',
-                    color: 'white',
-                    lineHeight: '1.7',
-                    paddingLeft: '0.5rem',
-                    fontFamily: "'Helvetica Neue', Helvetica, sans-serif",
-                  },
-                  '& li::marker': {
-                    color: '#1fdc8f',
-                  },
-                  '& strong': {
-                    fontWeight: 'bold',
-                    color: 'white',
-                    fontFamily: "'Helvetica Neue', Helvetica, sans-serif",
-                  },
-                  '& em': {
-                    fontStyle: 'italic',
-                    color: 'white',
-                    fontFamily: "'Helvetica Neue', Helvetica, sans-serif",
-                  },
-                  '& blockquote': {
-                    borderLeft: '4px solid #1fdc8f',
-                    paddingLeft: 'clamp(1rem, 3vw, 1.5rem)',
-                    paddingTop: '0.5rem',
-                    paddingBottom: '0.5rem',
-                    marginTop: '1rem',
-                    marginBottom: '1rem',
-                    color: 'white',
-                    fontStyle: 'italic',
-                    background: 'rgba(31, 220, 143, 0.05)',
-                    fontFamily: "'Helvetica Neue', Helvetica, sans-serif",
-                  },
-                }}
-              >
-                <ReactMarkdown
-                  remarkPlugins={[remarkGfm]}
-                  rehypePlugins={[rehypeRaw]}
-                >
-                  {club.Description}
-                </ReactMarkdown>
-              </Box>
-            )}
-          </Box>
         </VStack>
       </Container>
     </Box>
