@@ -1,6 +1,6 @@
 'use client';
 
-import { Box, Container, Heading, Text, VStack, HStack, Spinner, Image } from "@chakra-ui/react";
+import { Box, Container, Heading, Text, VStack, HStack, Spinner, Image, Link as ChakraLink } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
@@ -218,8 +218,7 @@ export default function ClubPage() {
 
               {/* University Link */}
               {club.University && (
-                <Box
-                  as="a"
+                <ChakraLink
                   href={club.University}
                   target="_blank"
                   rel="noopener noreferrer"
@@ -230,7 +229,7 @@ export default function ClubPage() {
                   _hover={{ textDecoration: 'underline' }}
                 >
                   {club.University}
-                </Box>
+                </ChakraLink>
               )}
             </Box>
           </HStack>

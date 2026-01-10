@@ -158,6 +158,9 @@ export default function DocPage() {
         lineHeight="1.8"
         color="white"
         css={{
+          '& > :first-of-type': {
+            marginTop: '0',
+          },
           '& h1': {
             fontSize: 'clamp(1.75rem, 5vw, 2.25rem)',
             fontWeight: 'bold',
@@ -165,6 +168,7 @@ export default function DocPage() {
             marginTop: '2.5rem',
             marginBottom: '1.25rem',
             lineHeight: '1.3',
+            fontFamily: "'Helvetica Neue', Helvetica, sans-serif",
           },
           '& h2': {
             fontSize: 'clamp(1.4rem, 4vw, 1.75rem)',
@@ -173,6 +177,7 @@ export default function DocPage() {
             marginTop: '2rem',
             marginBottom: '1rem',
             lineHeight: '1.3',
+            fontFamily: "'Helvetica Neue', Helvetica, sans-serif",
           },
           '& h3': {
             fontSize: 'clamp(1.2rem, 3.5vw, 1.4rem)',
@@ -181,6 +186,7 @@ export default function DocPage() {
             marginTop: '1.75rem',
             marginBottom: '0.875rem',
             lineHeight: '1.4',
+            fontFamily: "'Helvetica Neue', Helvetica, sans-serif",
           },
           '& h4': {
             fontSize: 'clamp(1.1rem, 3vw, 1.2rem)',
@@ -189,6 +195,7 @@ export default function DocPage() {
             marginTop: '1.5rem',
             marginBottom: '0.75rem',
             lineHeight: '1.4',
+            fontFamily: "'Helvetica Neue', Helvetica, sans-serif",
           },
           '& p': {
             marginBottom: '1.25rem',
