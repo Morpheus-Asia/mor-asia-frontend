@@ -314,9 +314,25 @@ export function AnimatedHeader() {
             }}>
               New Here?
             </Link>
-            <Link href="/sign-up" style={linkStyle}>
+            <span style={{
+              ...linkStyle,
+              color: 'rgba(255, 255, 255, 0.4)',
+              cursor: 'not-allowed',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '0.5rem',
+            }}>
               Account
-            </Link>
+              <span style={{
+                fontSize: '0.7rem',
+                background: 'rgba(31, 220, 143, 0.2)',
+                color: '#1fdc8f',
+                padding: '0.15rem 0.4rem',
+                borderRadius: '4px',
+              }}>
+                Soon
+              </span>
+            </span>
           </motion.nav>
         </div>
       )}
@@ -565,18 +581,29 @@ export function AnimatedHeader() {
               New Here?
             </Link>
 
-            <Link 
-              href="/sign-up" 
+            <span 
               style={{
                 ...linkStyle,
-                display: 'block',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '0.5rem',
                 padding: '1rem 0',
                 borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
+                color: 'rgba(255, 255, 255, 0.4)',
+                cursor: 'not-allowed',
               }}
-              onClick={closeMobileMenu}
             >
               Account
-            </Link>
+              <span style={{
+                fontSize: '0.7rem',
+                background: 'rgba(31, 220, 143, 0.2)',
+                color: '#1fdc8f',
+                padding: '0.15rem 0.4rem',
+                borderRadius: '4px',
+              }}>
+                Soon
+              </span>
+            </span>
           </motion.div>
         )}
       </AnimatePresence>
