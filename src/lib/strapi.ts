@@ -228,3 +228,119 @@ export interface LearnPage {
   updatedAt: string;
   publishedAt: string;
 }
+
+// Types for Forms
+export interface QuestionBoolean {
+  id: number;
+  documentId: string;
+  Question: string;
+  Order: number;
+  createdAt: string;
+  updatedAt: string;
+  publishedAt: string;
+}
+
+export interface QuestionMcq {
+  id: number;
+  documentId: string;
+  Question: string;
+  Order: number;
+  a?: string;
+  b?: string;
+  c?: string;
+  d?: string;
+  e?: string;
+  f?: string;
+  g?: string;
+  createdAt: string;
+  updatedAt: string;
+  publishedAt: string;
+}
+
+export interface QuestionSubjective {
+  id: number;
+  documentId: string;
+  Question: string;
+  Order: number;
+  createdAt: string;
+  updatedAt: string;
+  publishedAt: string;
+}
+
+export interface Submission {
+  id: number;
+  documentId: string;
+  DateTime: string;
+  Content: string;
+  createdAt: string;
+  updatedAt: string;
+  publishedAt: string;
+}
+
+export interface Form {
+  id: number;
+  documentId: string;
+  Name: string;
+  Slug: string;
+  question_booleans?: QuestionBoolean[];
+  question_mcqs?: QuestionMcq[];
+  question_subjectives?: QuestionSubjective[];
+  submissions?: Submission[];
+  createdAt: string;
+  updatedAt: string;
+  publishedAt: string;
+}
+
+/**
+ * Fetch all forms
+ */
+export async function getForms() {
+  return fetchStrapi<Form[]>('/api/forms?populate=*');
+}
+
+/**
+ * Fetch a single form by slug with all question relations
+ */
+export async function getFormBySlug(slug: string) {
+  const response = await fetchStrapi<Form[]>(
+    `/api/forms?filters[Slug][$eq]=${slug}&populate[question_booleans][populate]=*&populate[question_mcqs][populate]=*&populate[question_subjectives][populate]=*`
+  );
+  
+  if (response.data && response.data.length > 0) {
+    return {
+      data: response.data[0],
+      meta: response.meta,
+    };
+  }
+  
+  throw new Error('Form not found');
+}
+
+/**
+ * Create a form submission
+ */
+export async function createSubmission(formDocumentId: string, content: string) {
+  const url = `${STRAPI_URL}/api/submissions`;
+  
+  const response = await fetch(url, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      data: {
+        DateTime: new Date().toISOString(),
+        Content: content,
+        form: formDocumentId,
+      },
+    }),
+  });
+
+  if (!response.ok) {
+    const errorText = await response.text();
+    console.error('Strapi API error details:', errorText);
+    throw new Error(`Failed to create submission: ${response.status} ${response.statusText}`);
+  }
+
+  return response.json();
+}

@@ -314,25 +314,9 @@ export function AnimatedHeader() {
             }}>
               New Here?
             </Link>
-            <span style={{
-              ...linkStyle,
-              color: 'rgba(255, 255, 255, 0.4)',
-              cursor: 'not-allowed',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '0.5rem',
-            }}>
+            <Link href="/sign-up" style={linkStyle}>
               Account
-              <span style={{
-                fontSize: '0.7rem',
-                background: 'rgba(31, 220, 143, 0.2)',
-                color: '#1fdc8f',
-                padding: '0.15rem 0.4rem',
-                borderRadius: '4px',
-              }}>
-                Soon
-              </span>
-            </span>
+            </Link>
           </motion.nav>
         </div>
       )}
@@ -551,29 +535,17 @@ export function AnimatedHeader() {
                   >
                     MOR Token
                   </Link>
-                  <span 
+                  <Link 
+                    href="/forms" 
                     style={{
                       ...linkStyle,
                       fontSize: '1rem',
                       padding: '0.75rem 0',
-                      color: 'rgba(255, 255, 255, 0.4)',
-                      cursor: 'not-allowed',
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: '0.5rem',
                     }}
+                    onClick={closeMobileMenu}
                   >
                     Forms
-                    <span style={{
-                      fontSize: '0.7rem',
-                      background: 'rgba(31, 220, 143, 0.2)',
-                      color: '#1fdc8f',
-                      padding: '0.15rem 0.4rem',
-                      borderRadius: '4px',
-                    }}>
-                      Soon
-                    </span>
-                  </span>
+                  </Link>
                 </div>
               )}
             </div>
@@ -593,29 +565,18 @@ export function AnimatedHeader() {
               New Here?
             </Link>
 
-            <span 
+            <Link 
+              href="/sign-up" 
               style={{
                 ...linkStyle,
-                display: 'flex',
-                alignItems: 'center',
-                gap: '0.5rem',
+                display: 'block',
                 padding: '1rem 0',
                 borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
-                color: 'rgba(255, 255, 255, 0.4)',
-                cursor: 'not-allowed',
               }}
+              onClick={closeMobileMenu}
             >
               Account
-              <span style={{
-                fontSize: '0.7rem',
-                background: 'rgba(31, 220, 143, 0.2)',
-                color: '#1fdc8f',
-                padding: '0.15rem 0.4rem',
-                borderRadius: '4px',
-              }}>
-                Soon
-              </span>
-            </span>
+            </Link>
           </motion.div>
         )}
       </AnimatePresence>
@@ -815,32 +776,28 @@ export function AnimatedHeader() {
             >
               MOR Token
             </Link>
-            <span 
+            <Link 
+              href="/forms" 
               style={{
-                color: 'rgba(255, 255, 255, 0.4)',
+                color: 'white',
                 textDecoration: 'none',
-                display: 'flex',
-                alignItems: 'center',
-                gap: '0.5rem',
+                display: 'block',
                 padding: '0.75rem 1rem',
                 fontSize: '1rem',
                 fontWeight: 'bold',
                 fontFamily: 'MOS, sans-serif',
                 borderRadius: '8px',
-                cursor: 'not-allowed',
+                transition: 'background 0.2s',
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.background = 'rgba(31, 220, 143, 0.15)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = 'transparent';
               }}
             >
               Forms
-              <span style={{
-                fontSize: '0.7rem',
-                background: 'rgba(31, 220, 143, 0.2)',
-                color: '#1fdc8f',
-                padding: '0.15rem 0.4rem',
-                borderRadius: '4px',
-              }}>
-                Soon
-              </span>
-            </span>
+            </Link>
           </motion.div>
         )}
       </AnimatePresence>
