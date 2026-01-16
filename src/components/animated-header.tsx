@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRef, useState, useEffect } from 'react';
+import { useAuth } from 'morpheus-asia/lib/auth-context';
 
 const linkStyle = {
   color: "white",
@@ -16,6 +17,7 @@ const linkStyle = {
 };
 
 export function AnimatedHeader() {
+  const { isLoggedIn } = useAuth();
   const navRef = useRef<HTMLElement>(null);
   const investButtonRef = useRef<HTMLButtonElement>(null);
   const communityButtonRef = useRef<HTMLButtonElement>(null);
@@ -314,25 +316,9 @@ export function AnimatedHeader() {
             }}>
               New Here?
             </Link>
-            <span style={{
-              ...linkStyle,
-              color: 'rgba(255, 255, 255, 0.4)',
-              cursor: 'not-allowed',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '0.5rem',
-            }}>
+            <Link href={isLoggedIn ? "/account" : "/sign-up"} style={linkStyle}>
               Account
-              <span style={{
-                fontSize: '0.7rem',
-                background: 'rgba(31, 220, 143, 0.2)',
-                color: '#1fdc8f',
-                padding: '0.15rem 0.4rem',
-                borderRadius: '4px',
-              }}>
-                Soon
-              </span>
-            </span>
+            </Link>
           </motion.nav>
         </div>
       )}
@@ -581,29 +567,18 @@ export function AnimatedHeader() {
               New Here?
             </Link>
 
-            <span 
+            <Link 
+              href={isLoggedIn ? "/account" : "/sign-up"} 
               style={{
                 ...linkStyle,
-                display: 'flex',
-                alignItems: 'center',
-                gap: '0.5rem',
+                display: 'block',
                 padding: '1rem 0',
                 borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
-                color: 'rgba(255, 255, 255, 0.4)',
-                cursor: 'not-allowed',
               }}
+              onClick={closeMobileMenu}
             >
               Account
-              <span style={{
-                fontSize: '0.7rem',
-                background: 'rgba(31, 220, 143, 0.2)',
-                color: '#1fdc8f',
-                padding: '0.15rem 0.4rem',
-                borderRadius: '4px',
-              }}>
-                Soon
-              </span>
-            </span>
+            </Link>
           </motion.div>
         )}
       </AnimatePresence>

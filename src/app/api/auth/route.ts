@@ -1,6 +1,41 @@
 import { NextResponse } from 'next/server';
+import crypto from 'crypto';
 
 const STRAPI_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:1337';
+const PASSWORDLESS_SECRET = process.env.PASSWORDLESS_SECRET || 'default-secret-change-me';
+const PASSWORDLESS_API_TOKEN = process.env.PASSWORDLESS_API_TOKEN || '';
+
+// Generate a deterministic password from email using PASSWORDLESS_SECRET
+function generatePasswordFromEmail(email: string): string {
+  const hash = crypto
+    .createHmac('sha256', PASSWORDLESS_SECRET)
+    .update(email.toLowerCase().trim())
+    .digest('hex');
+  return hash;
+}
+
+// Set user confirmed status to false using API token
+async function resetUserConfirmedStatus(userId: number): Promise<void> {
+  if (!PASSWORDLESS_API_TOKEN) {
+    console.warn('PASSWORDLESS_API_TOKEN not set, cannot reset confirmed status');
+    return;
+  }
+
+  try {
+    await fetch(`${STRAPI_URL}/api/users/${userId}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${PASSWORDLESS_API_TOKEN}`,
+      },
+      body: JSON.stringify({
+        confirmed: false,
+      }),
+    });
+  } catch (error) {
+    console.error('Error resetting user confirmed status:', error);
+  }
+}
 
 export async function POST(request: Request) {
   try {
@@ -16,9 +51,8 @@ export async function POST(request: Request) {
         );
       }
 
-      // Step 1: Register the user in Strapi
-      // Generate a random password for passwordless auth
-      const randomPassword = Math.random().toString(36).slice(-16) + Math.random().toString(36).slice(-16);
+      // Generate deterministic password from email using secret
+      const password = generatePasswordFromEmail(email);
       
       const registerResponse = await fetch(`${STRAPI_URL}/api/auth/local/register`, {
         method: 'POST',
@@ -28,7 +62,7 @@ export async function POST(request: Request) {
         body: JSON.stringify({
           username: email,
           email: email,
-          password: randomPassword,
+          password: password,
         }),
       });
 
@@ -73,11 +107,9 @@ export async function POST(request: Request) {
       }
 
       // Strapi automatically sends confirmation email on registration
-      // Return the temp password so frontend can use it for auto-login after confirmation
       return NextResponse.json({
         success: true,
         message: 'Account created successfully. Please check your email for confirmation.',
-        tempKey: randomPassword, // Used for auto-login after email confirmation
         user: {
           id: registerData.user?.id,
           email: registerData.user?.email,
@@ -154,13 +186,16 @@ export async function POST(request: Request) {
       });
 
     } else if (action === 'login') {
-      // Login with email and password to get JWT
-      if (!email || !body.password) {
+      // Login with email - password is generated from PASSWORDLESS_SECRET
+      if (!email) {
         return NextResponse.json(
-          { error: 'Email and password are required' },
+          { error: 'Email is required' },
           { status: 400 }
         );
       }
+
+      // Generate the same deterministic password from email
+      const password = generatePasswordFromEmail(email);
 
       const loginResponse = await fetch(`${STRAPI_URL}/api/auth/local`, {
         method: 'POST',
@@ -169,7 +204,7 @@ export async function POST(request: Request) {
         },
         body: JSON.stringify({
           identifier: email,
-          password: body.password,
+          password: password,
         }),
       });
 
@@ -181,6 +216,11 @@ export async function POST(request: Request) {
           { error: loginData.error?.message || 'Failed to login' },
           { status: loginResponse.status }
         );
+      }
+
+      // Reset confirmed status to false for next sign-in
+      if (loginData.user?.id) {
+        await resetUserConfirmedStatus(loginData.user.id);
       }
 
       return NextResponse.json({

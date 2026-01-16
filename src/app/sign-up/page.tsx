@@ -4,9 +4,11 @@ import { Box, Container, Heading, Text, VStack, Input, HStack } from "@chakra-ui
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { useAuth } from "morpheus-asia/lib/auth-context";
 
 export default function SignUpPage() {
   const router = useRouter();
+  const { login } = useAuth();
   const [email, setEmail] = useState('');
   const [code, setCode] = useState('');
   const [codeSent, setCodeSent] = useState(false);
@@ -14,7 +16,6 @@ export default function SignUpPage() {
   const [confirming, setConfirming] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
-  const [tempKey, setTempKey] = useState<string | null>(null);
 
   const handleSendCode = async () => {
     if (!email) {
@@ -49,11 +50,6 @@ export default function SignUpPage() {
 
       if (!response.ok) {
         throw new Error(data.error || 'Failed to send verification code');
-      }
-
-      // Store the temp key for auto-login after confirmation
-      if (data.tempKey) {
-        setTempKey(data.tempKey);
       }
 
       setCodeSent(true);
@@ -97,37 +93,31 @@ export default function SignUpPage() {
 
       setSuccess('Email confirmed! Logging you in...');
 
-      // Step 2: If we have tempKey, auto-login to get JWT
-      if (tempKey && email) {
-        const loginResponse = await fetch('/api/auth', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            action: 'login',
-            email: email,
-            password: tempKey,
-          }),
-        });
+      // Step 2: Auto-login to get JWT (password is generated server-side from email)
+      const loginResponse = await fetch('/api/auth', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          action: 'login',
+          email: email,
+        }),
+      });
 
-        const loginData = await loginResponse.json();
+      const loginData = await loginResponse.json();
 
-        if (loginResponse.ok && loginData.jwt) {
-          // Store JWT and user data
-          localStorage.setItem('jwt', loginData.jwt);
-          if (loginData.user) {
-            localStorage.setItem('user', JSON.stringify(loginData.user));
-          }
+      if (loginResponse.ok && loginData.jwt && loginData.user) {
+        // Store JWT and user data using auth context
+        login(loginData.jwt, loginData.user);
 
-          setSuccess('Welcome! Redirecting...');
-          
-          // Redirect to home page
-          setTimeout(() => {
-            router.push('/');
-          }, 500);
-          return;
-        }
+        setSuccess('Welcome! Redirecting...');
+        
+        // Redirect to home page
+        setTimeout(() => {
+          router.push('/');
+        }, 500);
+        return;
       }
 
       // Fallback: redirect to sign-in if auto-login fails

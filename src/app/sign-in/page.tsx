@@ -2,12 +2,128 @@
 
 import { Box, Container, Heading, Text, VStack, Input, HStack } from "@chakra-ui/react";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { useAuth } from "morpheus-asia/lib/auth-context";
 
 export default function SignInPage() {
+  const router = useRouter();
+  const { login } = useAuth();
   const [email, setEmail] = useState('');
   const [code, setCode] = useState('');
   const [codeSent, setCodeSent] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [signingIn, setSigningIn] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [success, setSuccess] = useState<string | null>(null);
+
+  const handleSendCode = async () => {
+    if (!email) {
+      setError('Please enter your email address');
+      return;
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      setError('Please enter a valid email address');
+      return;
+    }
+
+    setLoading(true);
+    setError(null);
+    setSuccess(null);
+
+    try {
+      const response = await fetch('/api/auth', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          action: 'resend',
+          email,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Failed to send verification code');
+      }
+
+      setCodeSent(true);
+      setSuccess('Verification email sent! Check your inbox.');
+    } catch (err) {
+      console.error('Error sending code:', err);
+      setError(err instanceof Error ? err.message : 'Failed to send verification code');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleSignIn = async () => {
+    if (!code) {
+      setError('Please enter the verification code from your email');
+      return;
+    }
+
+    setSigningIn(true);
+    setError(null);
+    setSuccess(null);
+
+    try {
+      // Step 1: Confirm the email with the code
+      const confirmResponse = await fetch('/api/auth', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          action: 'confirm',
+          code: code.trim(),
+        }),
+      });
+
+      const confirmData = await confirmResponse.json();
+
+      if (!confirmResponse.ok) {
+        throw new Error(confirmData.error || 'Invalid verification code');
+      }
+
+      setSuccess('Code verified! Signing you in...');
+
+      // Step 2: Login with the email (password generated server-side)
+      const loginResponse = await fetch('/api/auth', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          action: 'login',
+          email: email,
+        }),
+      });
+
+      const loginData = await loginResponse.json();
+
+      if (loginResponse.ok && loginData.jwt && loginData.user) {
+        login(loginData.jwt, loginData.user);
+        setSuccess('Welcome back! Redirecting...');
+        
+        setTimeout(() => {
+          router.push('/');
+        }, 500);
+        return;
+      }
+
+      throw new Error(loginData.error || 'Failed to sign in');
+    } catch (err) {
+      console.error('Error signing in:', err);
+      setError(err instanceof Error ? err.message : 'Failed to sign in');
+    } finally {
+      setSigningIn(false);
+    }
+  };
 
   return (
     <Box as="main" position="relative" minH="100vh" pt={{ base: "2rem", md: "3rem" }} pb="4rem">
@@ -88,12 +204,36 @@ export default function SignInPage() {
                     transition="all 0.2s"
                     whiteSpace="nowrap"
                     border={codeSent ? "1px solid #1fdc8f" : "none"}
-                    onClick={() => setCodeSent(true)}
-                    _hover={{ bg: codeSent ? "rgba(31, 220, 143, 0.3)" : "#18c57d" }}
+                    onClick={handleSendCode}
+                    opacity={loading ? 0.7 : 1}
+                    cursor={loading ? 'not-allowed' : 'pointer'}
+                    _hover={{ bg: loading ? undefined : (codeSent ? "rgba(31, 220, 143, 0.3)" : "#18c57d") }}
                   >
-                    {codeSent ? "Resend" : "Send Code"}
+                    {loading ? "Sending..." : (codeSent ? "Resend" : "Send Code")}
                   </Box>
                 </HStack>
+
+                {/* Error Message */}
+                {error && (
+                  <Text
+                    fontSize="0.875rem"
+                    color="#ff6b6b"
+                    mt="0.5rem"
+                  >
+                    {error}
+                  </Text>
+                )}
+
+                {/* Success Message */}
+                {success && (
+                  <Text
+                    fontSize="0.875rem"
+                    color="#1fdc8f"
+                    mt="0.5rem"
+                  >
+                    {success}
+                  </Text>
+                )}
               </Box>
 
               {/* Code Input */}
@@ -109,7 +249,7 @@ export default function SignInPage() {
                 </Text>
                 <Input
                   type="text"
-                  placeholder="Enter 6-digit code"
+                  placeholder="Paste verification code from email"
                   value={code}
                   onChange={(e) => setCode(e.target.value)}
                   size="lg"
@@ -118,8 +258,7 @@ export default function SignInPage() {
                   borderRadius="0"
                   color="white"
                   fontFamily="'Helvetica Neue', Helvetica, sans-serif"
-                  letterSpacing="0.25em"
-                  _placeholder={{ color: 'rgba(255, 255, 255, 0.4)', letterSpacing: 'normal' }}
+                  _placeholder={{ color: 'rgba(255, 255, 255, 0.4)' }}
                   _hover={{
                     borderColor: 'rgba(255, 255, 255, 0.2)',
                   }}
@@ -144,9 +283,12 @@ export default function SignInPage() {
                 textTransform="uppercase"
                 transition="all 0.2s"
                 mt="0.5rem"
-                _hover={{ bg: "#18c57d" }}
+                onClick={handleSignIn}
+                opacity={signingIn ? 0.7 : 1}
+                cursor={signingIn ? 'not-allowed' : 'pointer'}
+                _hover={{ bg: signingIn ? undefined : "#18c57d" }}
               >
-                Sign In
+                {signingIn ? 'Signing In...' : 'Sign In'}
               </Box>
             </VStack>
           </Box>
