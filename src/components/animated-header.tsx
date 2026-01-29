@@ -501,30 +501,20 @@ export function AnimatedHeader() {
                   paddingLeft: '1rem',
                   marginTop: '0.5rem',
                 }}>
-                  <span 
+                  <Link 
+                    href="https://dashboard.morpheus.asia/" 
+                    target="_blank"
+                    rel="noopener noreferrer"
                     style={{
                       ...linkStyle,
                       fontSize: '1rem',
                       padding: '0.75rem 0',
                       borderBottom: '1px solid rgba(255, 255, 255, 0.05)',
-                      color: 'rgba(255, 255, 255, 0.4)',
-                      cursor: 'not-allowed',
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: '0.5rem',
                     }}
+                    onClick={closeMobileMenu}
                   >
                     Staking Dashboard
-                    <span style={{
-                      fontSize: '0.7rem',
-                      background: 'rgba(31, 220, 143, 0.2)',
-                      color: '#1fdc8f',
-                      padding: '0.15rem 0.4rem',
-                      borderRadius: '4px',
-                    }}>
-                      Soon
-                    </span>
-                  </span>
+                  </Link>
                   <Link 
                     href="/contribute/mor-token" 
                     style={{
@@ -730,32 +720,30 @@ export function AnimatedHeader() {
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
           >
-            <span 
+            <Link 
+              href="https://dashboard.morpheus.asia/" 
+              target="_blank"
+              rel="noopener noreferrer"
               style={{
-                color: 'rgba(255, 255, 255, 0.4)',
+                color: 'white',
                 textDecoration: 'none',
-                display: 'flex',
-                alignItems: 'center',
-                gap: '0.5rem',
+                display: 'block',
                 padding: '0.75rem 1rem',
                 fontSize: '1rem',
                 fontWeight: 'bold',
                 fontFamily: 'MOS, sans-serif',
                 borderRadius: '8px',
-                cursor: 'not-allowed',
+                transition: 'background 0.2s',
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.background = 'rgba(31, 220, 143, 0.15)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = 'transparent';
               }}
             >
               Staking Dashboard
-              <span style={{
-                fontSize: '0.7rem',
-                background: 'rgba(31, 220, 143, 0.2)',
-                color: '#1fdc8f',
-                padding: '0.15rem 0.4rem',
-                borderRadius: '4px',
-              }}>
-                Soon
-              </span>
-            </span>
+            </Link>
             <Link 
               href="/contribute/mor-token" 
               style={{
