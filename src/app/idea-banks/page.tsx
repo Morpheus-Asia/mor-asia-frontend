@@ -207,7 +207,12 @@ export default function IdeaBanksPage() {
                             fontSize={{ base: "0.875rem", md: "1rem" }}
                             color="rgba(255, 255, 255, 0.7)"
                             lineHeight="1.6"
-                            noOfLines={3}
+                            css={{
+                              display: '-webkit-box',
+                              WebkitLineClamp: 3,
+                              WebkitBoxOrient: 'vertical',
+                              overflow: 'hidden',
+                            }}
                           >
                             {ideaBank.Summary}
                           </Text>
