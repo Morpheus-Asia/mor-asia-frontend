@@ -533,10 +533,22 @@ export function AnimatedHeader() {
                       ...linkStyle,
                       fontSize: '1rem',
                       padding: '0.75rem 0',
+                      borderBottom: '1px solid rgba(255, 255, 255, 0.05)',
                     }}
                     onClick={closeMobileMenu}
                   >
                     Forms
+                  </Link>
+                  <Link 
+                    href="/idea-banks" 
+                    style={{
+                      ...linkStyle,
+                      fontSize: '1rem',
+                      padding: '0.75rem 0',
+                    }}
+                    onClick={closeMobileMenu}
+                  >
+                    Idea Bank
                   </Link>
                 </div>
               )}
@@ -787,6 +799,28 @@ export function AnimatedHeader() {
               }}
             >
               Forms
+            </Link>
+            <Link 
+              href="/idea-banks" 
+              style={{
+                color: 'white',
+                textDecoration: 'none',
+                display: 'block',
+                padding: '0.75rem 1rem',
+                fontSize: '1rem',
+                fontWeight: 'bold',
+                fontFamily: 'MOS, sans-serif',
+                borderRadius: '8px',
+                transition: 'background 0.2s',
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.background = 'rgba(31, 220, 143, 0.15)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = 'transparent';
+              }}
+            >
+              Idea Bank
             </Link>
           </motion.div>
         )}

@@ -143,6 +143,30 @@ export async function getClubBySlug(slug: string) {
 }
 
 /**
+ * Fetch all idea banks with relations
+ */
+export async function getIdeaBanks() {
+  return fetchStrapi('/api/idea-banks?populate=*&sort[0]=createdAt:desc');
+}
+
+/**
+ * Fetch a single idea bank by slug
+ */
+export async function getIdeaBankBySlug(slug: string) {
+  const response = await fetchStrapi<any[]>(`/api/idea-banks?filters[slug][$eq]=${slug}&populate=*`);
+  
+  // Strapi returns an array, so we need to get the first item
+  if (response.data && response.data.length > 0) {
+    return {
+      data: response.data[0],
+      meta: response.meta,
+    };
+  }
+  
+  throw new Error('Idea bank not found');
+}
+
+/**
  * Fetch all doc sections with their related docs
  */
 export async function getDocSections() {
