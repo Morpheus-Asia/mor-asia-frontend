@@ -1,21 +1,17 @@
 'use client';
 
-import { Box, Container, Heading, Text, VStack, Spinner, Image, Grid } from "@chakra-ui/react";
+import { Box, Container, Heading, Text, VStack, Spinner, Grid } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 
 interface IdeaBank {
   id: number;
   documentId: string;
-  Title: string;
+  Name: string;
   slug: string;
-  Summary?: string;
-  Image?: {
-    id: number;
-    url: string;
-    alternativeText?: string;
-  };
-  Category?: string;
+  Description?: string;
+  Budget?: string;
+  Contact?: string;
   createdAt: string;
   updatedAt: string;
   publishedAt: string;
@@ -65,14 +61,6 @@ export default function IdeaBanksPage() {
 
     fetchIdeaBanks();
   }, []);
-
-  // Get image URL
-  const getImageUrl = (image: IdeaBank['Image']) => {
-    if (!image?.url) return null;
-    return image.url.startsWith('http') 
-      ? image.url 
-      : `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:1337'}${image.url}`;
-  };
 
   return (
     <Box as="main" position="relative" minH="100vh" pt={{ base: "2rem", md: "3rem" }} pb="4rem">
@@ -135,10 +123,7 @@ export default function IdeaBanksPage() {
               }}
               gap={{ base: "1.5rem", md: "2rem" }}
             >
-              {ideaBanks.map((ideaBank) => {
-                const imageUrl = getImageUrl(ideaBank.Image);
-                
-                return (
+              {ideaBanks.map((ideaBank) => (
                   <Link key={ideaBank.id} href={`/idea-bank/${ideaBank.slug}`}>
                     <Box
                       bg="rgba(255, 255, 255, 0.03)"
@@ -154,42 +139,8 @@ export default function IdeaBanksPage() {
                         boxShadow: "0 8px 24px rgba(31, 220, 143, 0.3)",
                       }}
                     >
-                      {/* Image */}
-                      {imageUrl && (
-                        <Box
-                          w="100%"
-                          h="200px"
-                          overflow="hidden"
-                          bg="rgba(9, 13, 14, 0.3)"
-                        >
-                          <Image
-                            src={imageUrl}
-                            alt={ideaBank.Image?.alternativeText || ideaBank.Title || 'Idea Bank image'}
-                            w="100%"
-                            h="100%"
-                            objectFit="cover"
-                          />
-                        </Box>
-                      )}
-                      
                       {/* Content */}
                       <VStack gap="0.75rem" align="stretch" p={{ base: "1.25rem", md: "1.5rem" }}>
-                        {/* Category Tag */}
-                        {ideaBank.Category && (
-                          <Box
-                            bg="rgba(31, 220, 143, 0.2)"
-                            px="0.75rem"
-                            py="0.25rem"
-                            fontSize="0.75rem"
-                            fontWeight="bold"
-                            textTransform="uppercase"
-                            color="#1fdc8f"
-                            w="fit-content"
-                          >
-                            {ideaBank.Category}
-                          </Box>
-                        )}
-                        
                         {/* Title */}
                         <Heading
                           as="h3"
@@ -198,11 +149,11 @@ export default function IdeaBanksPage() {
                           color="white"
                           lineHeight="1.3"
                         >
-                          {ideaBank.Title || 'Untitled'}
+                          {ideaBank.Name || 'Untitled'}
                         </Heading>
-                        
-                        {/* Summary */}
-                        {ideaBank.Summary && (
+
+                        {/* Description */}
+                        {ideaBank.Description && (
                           <Text
                             fontSize={{ base: "0.875rem", md: "1rem" }}
                             color="rgba(255, 255, 255, 0.7)"
@@ -214,10 +165,21 @@ export default function IdeaBanksPage() {
                               overflow: 'hidden',
                             }}
                           >
-                            {ideaBank.Summary}
+                            {ideaBank.Description}
                           </Text>
                         )}
-                        
+
+                        {/* Budget */}
+                        {ideaBank.Budget && (
+                          <Text
+                            fontSize={{ base: "0.8rem", md: "0.9rem" }}
+                            color="#1fdc8f"
+                            fontWeight="bold"
+                          >
+                            Budget: {ideaBank.Budget}
+                          </Text>
+                        )}
+
                         {/* Read More */}
                         <Text
                           color="#1fdc8f"
@@ -230,8 +192,7 @@ export default function IdeaBanksPage() {
                       </VStack>
                     </Box>
                   </Link>
-                );
-              })}
+                ))}
             </Grid>
           )}
 

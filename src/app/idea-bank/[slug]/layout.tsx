@@ -14,38 +14,31 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
       };
     }
 
-    const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:1337';
-    const imageUrl = ideaBank.Image?.url
-      ? (ideaBank.Image.url.startsWith('http')
-          ? ideaBank.Image.url
-          : `${baseUrl}${ideaBank.Image.url}`)
-      : '/ma-logo-dark-2.png';
-
-    const description = ideaBank.Summary 
-      ? ideaBank.Summary.substring(0, 160) 
-      : `${ideaBank.Title} - An idea from the Morpheus Asia community`;
+    const description = ideaBank.Description
+      ? ideaBank.Description.substring(0, 160)
+      : `${ideaBank.Name} - An idea from the Morpheus Asia community`;
 
     return {
-      title: `${ideaBank.Title} | Morpheus Asia Idea Bank`,
+      title: `${ideaBank.Name} | Morpheus Asia Idea Bank`,
       description,
       openGraph: {
-        title: ideaBank.Title,
+        title: ideaBank.Name,
         description,
         images: [
           {
-            url: imageUrl,
+            url: '/ma-logo-dark-2.png',
             width: 1200,
             height: 630,
-            alt: ideaBank.Title,
+            alt: ideaBank.Name,
           },
         ],
         type: 'article',
       },
       twitter: {
         card: "summary_large_image",
-        title: ideaBank.Title,
+        title: ideaBank.Name,
         description,
-        images: [imageUrl],
+        images: ['/ma-logo-dark-2.png'],
       },
     };
   } catch (error) {
