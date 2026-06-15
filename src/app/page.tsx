@@ -592,6 +592,8 @@ export default function Home() {
               { name: "Rene", role: "Asia Community Lead & Co-Founder Morpheus Asia", image: "/rene.jpg", link: "https://x.com/rene05x" },
               { name: "Eric", role: "Asia Community Lead & Co-Founder Morpheus Asia", image: "/eric.jpg", link: "https://x.com/canmasu" },
               { name: "Hussain", role: "Morpheus Asia Project Officer", image: "/hussain.jpg", link: "http://x.com/nothussainrana" },
+              { name: "Mohammed Eshan", role: "Morpheus Asia coordinator", image: "/eshan.jpg", link: "https://x.com/EshanOne" },
+              { name: "Aslam Mpaata", role: "Morpheus Asia Tech Intern", image: "/aslam.jpg", link: "https://x.com/AslamMpaata" },
             ].map((member, index) => (
               <VStack
                 key={index}
